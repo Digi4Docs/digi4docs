@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Start</title>
+</head>
+<body>
+<div layout:fragment="title-image">
+    <img src="./img/home-title.jpg" class="card-img-top" />
+</div>
+<div layout:fragment="title">Hallo, [[${#httpServletRequest.remoteUser}]]!</div>
+<div layout:fragment="content">
+ Test Lorum ipsum
+</div>
+</body>
+</html>

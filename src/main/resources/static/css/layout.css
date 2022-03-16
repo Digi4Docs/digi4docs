@@ -1,0 +1,10 @@
+body {
+  background-image: url("../img/background.png");
+  color: var(--bs-gray-700);
+}
+
+.navbar-brand img {
+  height: 2rem;
+}
+
+/*# sourceMappingURL=layout.css.map */

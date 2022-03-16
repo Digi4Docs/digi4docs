@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{security/layout}">
+<head>
+    <title>Anmelden</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex">
+        <div class="w-100">
+            <h3>Anmelden</h3>
+        </div>
+    </div>
+
+    <div class="text-danger" th:if="${param.error}">
+        Du hast deine E-Mail-Adresse oder dein Passwort nicht korrekt angegeben.
+    </div>
+    <div class="text-success" th:if="${param.logout}">
+        Du wurdest abgemeldet.
+    </div>
+
+    <form class="mt-4" th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label class="form-control-placeholder" for="email">E-Mail</label>
+            <input type="text" class="form-control" required="" name="email">
+        </div>
+        <div class="form-group">
+            <label class="form-control-placeholder" for="password">Passwort</label>
+            <input id="password-field" type="password" class="form-control" required="" name="password">
+        </div>
+        <div class="form-group mt-4">
+            <button type="submit" class="form-control btn btn-primary rounded submit px-3">
+                Anmelden
+            </button>
+        </div>
+        <div class="form-group d-flex mt-3">
+            <div class="w-50 text-start">
+                <input type="checkbox" name="remember-me" id="remember-me"/>
+                <label class="checkbox-wrap checkbox-primary mb-0" for="remember-me">
+                    angemeldet bleiben
+                </label>
+            </div>
+            <div class="w-50 text-end">
+                <a th:href="@{/reset-password}">Passwort vergessen</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
