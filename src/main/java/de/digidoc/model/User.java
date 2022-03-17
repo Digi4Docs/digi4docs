@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.ALL;
+
 @Getter
 @Setter
 @Builder
@@ -17,7 +19,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, length = 255)
@@ -53,6 +55,6 @@ public class User {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval=true)
     private Set<UserRole> roles;
 }

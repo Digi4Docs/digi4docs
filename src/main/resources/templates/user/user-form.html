@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+<div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+    <span th:each="err : ${#fields.errors('global')}" th:text="${err}" />
+</div>
+
+<fieldset class="border rounded p-3">
+    <legend>Informationen zur Person</legend>
+    <div class="row">
+        <div class="col-md-6 mb-3 pe-md-3">
+            <label for="firstname" class="form-label">Vorname</label>
+            <input type="text" maxlength="255" th:field="*{firstname}" class="form-control"
+                   th:classappend="${#fields.hasErrors('firstname') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="firstname"
+                   name="firstname"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
+        </div>
+        <div class="col-md-6 ps-md-3">
+            <label for="lastname" class="form-label">Nachname</label>
+            <input type="text" maxlength="255" th:field="*{lastname}" class="form-control"
+                   th:classappend="${#fields.hasErrors('lastname') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="lastname"
+                   name="lastname"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3 pe-md-3">
+            <label for="email" class="form-label">E-Mail</label>
+            <input type="text" maxlength="255" th:field="*{email}" class="form-control"
+                   th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="email"
+                   name="email"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div class="col-md-6 ps-md-3">
+            <label for="password" class="form-label">Passwort</label>
+            <input type="password" maxlength="255" th:field="*{password}"
+                   class="form-control"
+                   th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="password"
+                   name="password" autocomplete="new-password"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="border rounded p-3 mt-4">
+    <legend>Angaben zu Schülern</legend>
+    <div class="row">
+        <div class="col-md-6 mb-3 pe-md-3">
+            <label for="classYear" class="form-label">Jahrgang</label>
+            <input type="number" min="1900" step="1" th:field="*{classYear}" class="form-control"
+                   th:classappend="${#fields.hasErrors('classYear') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="classYear"
+                   name="classYear"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('classYear')}" th:errors="*{classYear}"></div>
+        </div>
+        <div class="col-md-3 mb-3 ps-md-3">
+            <label for="classNumber" class="form-label">Klasse (Zahl)</label>
+            <input type="number" min="1" step="1" th:field="*{classNumber}" class="form-control"
+                   th:classappend="${#fields.hasErrors('classNumber') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="classNumber"
+                   name="classNumber"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('classNumber')}" th:errors="*{classNumber}"></div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="classIdentifier" class="form-label">Klasse (Buchstabe)</label>
+            <input type="text" maxlength="1" th:field="*{classIdentifier}" class="form-control"
+                   th:classappend="${#fields.hasErrors('classIdentifier') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="classIdentifier"
+                   name="classIdentifier"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('classIdentifier')}"
+                 th:errors="*{classIdentifier}"></div>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="border rounded p-3 mt-4">
+    <legend>Berechtigungen</legend>
+    <div class="row">
+        <div class="col-md-6 mb-3 pe-md-3">
+            <label class="mb-2">Status</label>
+            <div class="d-block">
+                <input type="checkbox"
+                       th:classappend="${#fields.hasErrors('isActive') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                       id="isActive"
+                       name="isActive"
+                       th:field="*{isActive}"
+                       class="form-check-input"
+                       checked="checked"
+                />
+                <label for="isActive" class="form-check-label">aktiv</label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('isActive')}" th:errors="*{isActive}"></div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3 ps-md-3">
+            <label class="mb-2">Rollen</label>
+            <div class="d-block" th:each="roleOpt : ${T(de.digidoc.model.Role).values()}">
+                <input
+                        th:classappend="${#fields.hasErrors('roles') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                        name="roles"
+                        type="checkbox"
+                        class="form-check-input ms-2"
+                        th:id="${roleOpt}"
+                        th:value="${roleOpt}"
+                        th:field="*{roles}"
+                />
+                <label th:for="${roleOpt}" th:text="${roleOpt.displayValue}"
+                       class="form-check-label"></label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+</body>
+</html>

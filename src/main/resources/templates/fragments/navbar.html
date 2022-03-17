@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success border-bottom border-4 border-warning">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/home}">
-            <img src="./img/logo.png"/>
+            <img th:src="@{~/img/logo.png}"/>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,40 +13,40 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item me-2">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI eq '/home' ? 'active' : ''}"
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/home' ? 'active' : ''}"
                        th:href="@{/home}">
                         <i class="bi bi-house-door-fill"></i> Home</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TEACHER')">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI eq '/tasks' ? 'active' : ''}"
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/tasks' ? 'active' : ''}"
                        href="#">
                         <i class="bi bi-clipboard-check-fill"></i> Aufgaben</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI eq '/courses' ? 'active' : ''}"
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/courses' ? 'active' : ''}"
                        href="#">
                         <i class="bi bi-collection-fill"></i> Kurse</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI eq '/users' ? 'active' : ''}"
-                       href="#">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/users' ? 'active' : ''}"
+                       th:href="@{/users}">
                         <i class="bi bi-people-fill"></i> Benutzer</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link"
-                       th:classappend="${#httpServletRequest.requestURI eq '/statistics' ? 'active' : ''}" href="#">
+                       th:classappend="${#httpServletRequest.requestURI == '/statistics' ? 'active' : ''}" href="#">
                         <i class="bi bi-bar-chart-line-fill"></i> Statistik</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link"
-                       th:classappend="${#httpServletRequest.requestURI eq '/settings' ? 'active' : ''}" href="#">
+                       th:classappend="${#httpServletRequest.requestURI == '/settings' ? 'active' : ''}" href="#">
                         <i class="bi bi-gear-fill"></i> Einstellungen</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item me-2">
+                <li class="nav-item me-2" th:title="'Du bist angemeldet als ' + ${#httpServletRequest.remoteUser}">
                     <a class="nav-link" th:classappend="${#httpServletRequest.requestURI eq '/profile' ? 'active' : ''}"
-                       href="#"><i class="bi bi-person-square"></i> Profil</a>
+                       th:href="@{/profile}"><i class="bi bi-person-square"></i> Profil</a>
                 </li>
                 <li class="nav-item">
                     <form th:action="@{/logout}" method="post">

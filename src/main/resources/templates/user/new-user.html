@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Neuer Benutzer</title>
+</head>
+<body>
+<div layout:fragment="title">Neuer Benutzer</div>
+<div layout:fragment="content">
+    <form th:action="@{/user}" method="post" th:object="${userNewForm}" class="mt-4 border-top pt-4"
+          autocomplete="off" novalidate>
+
+        <div th:insert="user/user-form"></div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success text-white">
+                    <i class="bi bi-person-plus-fill"></i>
+                    Benutzer anlegen
+                </button>
+                <a th:href="@{/users}" class="btn btn-secondary ms-2">Zurück zur Liste</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

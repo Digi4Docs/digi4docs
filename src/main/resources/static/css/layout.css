@@ -7,4 +7,8 @@ body {
   height: 2rem;
 }
 
+legend {
+  font-size: 1.25rem;
+}
+
 /*# sourceMappingURL=layout.css.map */

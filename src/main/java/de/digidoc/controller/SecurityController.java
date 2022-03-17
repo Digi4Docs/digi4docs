@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SecurityController {
 
-    @GetMapping(value = {"/", "/login"})
+    @GetMapping("/login")
     public String login() {
         return "security/login";
     }

@@ -7,7 +7,7 @@
 </head>
 <body>
 <div layout:fragment="title-image">
-    <img src="./img/home-title.jpg" class="card-img-top" />
+    <img th:src="@{~/img/home-title.jpg}" class="card-img-top" />
 </div>
 <div layout:fragment="title">Hallo, [[${#httpServletRequest.remoteUser}]]!</div>
 <div layout:fragment="content">
