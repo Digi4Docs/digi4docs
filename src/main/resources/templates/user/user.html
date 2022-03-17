@@ -21,8 +21,14 @@
                     <i class="bi bi-person-plus-fill"></i>
                     Speichern
                 </button>
-                <a th:href="@{/users}" class="btn btn-secondary ms-2">Zurück zur Liste</a>
-                <a th:href="@{'/user/confirm-delete/' + ${user.id}}" class="btn btn-danger ms-2">Löschen</a>
+                <a th:href="@{/users}" class="btn btn-secondary ms-2">
+                    <i class="bi bi-table"></i>
+                    Zurück zur Liste
+                </a>
+                <a th:href="@{'/user/confirm-delete/' + ${user.id}}" class="btn btn-danger ms-2">
+                    <i class="bi bi-trash-fill"></i>
+                    Löschen
+                </a>
             </div>
         </div>
     </form>

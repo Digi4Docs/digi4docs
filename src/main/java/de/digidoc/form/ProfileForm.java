@@ -1,17 +1,25 @@
 package de.digidoc.form;
 
-import de.digidoc.model.Role;
+import de.digidoc.form.validation.UniqueUserEmailForm;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Getter
 @Setter
-public class UserForm {
+@UniqueUserEmailForm(message = "Diese E-Mail existiert bereits im System. Wähle eine andere E-Mail.")
+public class ProfileForm {
+    protected Integer id;
+
+    @NotEmpty(message = "Bitte gibt eine E-Mail an.")
+    @Size(max = 255, message = "Die E-Mail darf maximal 255 Zeichen lang sein.")
+    @Email(message = "Bitte gib eine gültige E-Mail an.")
+    protected String email;
+
     @NotEmpty(message = "Bitte gibt einen Vornamen an.")
     @Size(max = 255, message = "Der Vorname darf maximal 255 Zeichen lang sein.")
     protected String firstname;
@@ -22,15 +30,4 @@ public class UserForm {
 
     @Min(value = 1, message = "Der Wert für Klasse muss mindestens 1 sein.")
     protected Integer classNumber;
-
-    @Size(min = 0, max = 1, message = "Der Klassenbuchstabe darf maximal 1 Zeichen lang sein.")
-    protected String classIdentifier;
-
-    @Min(value = 1900, message = "Der Jahrgang darf nicht vor 1900 liegen.")
-    protected Integer classYear;
-
-    protected Boolean isActive;
-
-    @NotEmpty(message = "Bitte wähle mindestens eine Rolle aus.")
-    protected List<Role> roles;
 }

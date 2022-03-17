@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Mein Profil</title>
+</head>
+<body>
+<div layout:fragment="title">Mein Profil bearbeiten</div>
+<div layout:fragment="content">
+    <form th:action="@{/profile}" method="post" th:object="${profileForm}" class="mt-4 border-top pt-4">
+
+        <input type="hidden" th:field="*{id}" name="id"/>
+
+        <div class="alert alert-success mb-3" th:if="${success}">Deine Daten wurden aktualisiert.</div>
+        <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+        <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+            <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+        </div>
+
+        <fieldset class="border rounded p-3">
+            <legend>Informationen zur Person</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="firstname" class="form-label">Vorname</label>
+                    <input type="text" maxlength="255" th:field="*{firstname}" class="form-control"
+                           th:classappend="${#fields.hasErrors('firstname') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="firstname"
+                           name="firstname"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('firstname')}"
+                         th:errors="*{firstname}"></div>
+                </div>
+                <div class="col-md-6 ps-md-3">
+                    <label for="lastname" class="form-label">Nachname</label>
+                    <input type="text" maxlength="255" th:field="*{lastname}" class="form-control"
+                           th:classappend="${#fields.hasErrors('lastname') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="lastname"
+                           name="lastname"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('lastname')}"
+                         th:errors="*{lastname}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="email" class="form-label">E-Mail</label>
+                    <input type="text" maxlength="255" th:field="*{email}" class="form-control"
+                           th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="email"
+                           name="email"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+                <div class="col-md-6 ps-md-3">
+                    <label for="password" class="form-label">Passwort</label>
+                    <div class="input-group">
+                        <input type="password" maxlength="255" class="form-control" id="password" disabled
+                               value="******"/>
+                        <a th:href="@{/profile/password}" class="input-group-text btn btn-secondary">
+                            <i class="bi bi-lock"></i>
+                            Passwort ändern
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <input th:unless="${isStudent}" type="hidden" th:field="*{classNumber}" name="classNumber"/>
+        <fieldset class="border rounded p-3 mt-4" th:if="${isStudent}">
+            <legend>Angaben zu Schülern</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label class="form-label">Jahrgang</label>
+                    <input type="number" class="form-control" name="classYear" disabled/>
+                </div>
+                <div class="col-md-3 mb-3 ps-md-3">
+                    <label for="classNumber" class="form-label">Klasse (Zahl)</label>
+                    <input type="number" min="1" step="1" th:field="*{classNumber}" class="form-control"
+                           th:classappend="${#fields.hasErrors('classNumber') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="classNumber"
+                           name="classNumber"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('classNumber')}"
+                         th:errors="*{classNumber}"></div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Klasse (Buchstabe)</label>
+                    <input type="text" class="form-control" name="classIdentifier" readonly/>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success text-white">
+                    <i class="bi bi-check"></i>
+                    Speichern
+                </button>
+                <a class="btn btn-secondary" th:href="@{/home}">
+                    <i class="bi bi-house-door-fill"></i>
+                    Zur Startseite
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

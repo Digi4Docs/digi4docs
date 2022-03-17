@@ -46,6 +46,7 @@ public class UserController {
 
         User user = userOptional.get();
         if (initFormData) {
+            userEditForm.setId(user.getId());
             userEditForm.setFirstname(user.getFirstname());
             userEditForm.setLastname(user.getLastname());
             userEditForm.setEmail(user.getEmail());
@@ -81,7 +82,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user/delete/{id}")
-    public String deleteUser(@PathVariable int id, Model model) {
+    public String deleteUser(@PathVariable int id) {
         Optional<User> userOptional = userService.findById(id);
         if (userOptional.isEmpty()) {
             return "redirect:/users";

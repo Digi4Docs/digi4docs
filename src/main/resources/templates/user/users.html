@@ -47,7 +47,9 @@
                 <span th:unless="${user.isActive}" class="badge bg-danger">inaktiv</span>
             </td>
             <td class="text-end">
-                <a th:href="@{'/user/' + ${user.id}}" class="btn btn-outline-primary">Bearbeiten</a>
+                <a th:href="@{'/user/' + ${user.id}}" class="btn btn-outline-primary">
+                    Bearbeiten
+                </a>
             </td>
         </tr>
 
