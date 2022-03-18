@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <body>
+<div class="alert alert-success mb-3" th:if="${success}">Daten erfolgreich gespeichert.</div>
 <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
 <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
     <span th:each="err : ${#fields.errors('global')}" th:text="${err}" />

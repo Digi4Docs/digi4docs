@@ -89,7 +89,7 @@ public class UserController {
         }
 
         User user = userOptional.get();
-        userService.deleteUser(user);
+        userService.delete(user);
 
         return "redirect:/users";
     }
@@ -112,7 +112,7 @@ public class UserController {
         user.setEmail(userNewForm.getEmail());
 
         try {
-            userService.addUser(user);
+            userService.add(user);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return user(userNewForm);
@@ -130,7 +130,7 @@ public class UserController {
 
         Optional<User> userOptional = userService.findById(id);
         if (userOptional.isEmpty()) {
-            return "redirect:/user/new-user";
+            return "redirect:/user";
         }
 
         User user = mapFormToUser(userOptional.get(), userEditForm);
@@ -141,13 +141,13 @@ public class UserController {
         user.setEmail(userEditForm.getEmail());
 
         try {
-            userService.saveUser(user, changePassword);
+            userService.save(user, changePassword);
+            model.addAttribute("success", true);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            return showUserPage(id, userEditForm, model, false);
         }
 
-        return "redirect:/users";
+        return showUserPage(id, userEditForm, model, false);
     }
 
     private User mapFormToUser(User user, UserForm userForm) {

@@ -55,6 +55,9 @@ public class User {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private Set<UserRole> roles;
+
+    @ManyToMany(mappedBy = "users")
+    Set<Subject> subjects;
 }

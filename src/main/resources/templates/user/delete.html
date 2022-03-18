@@ -12,9 +12,16 @@
     <div class="alert alert-danger">
         Möchtest du den Benutzer "[[${user.firstname}]] [[${user.lastname}]]" löschen? Wenn der Benutzer
         gelöscht wird, werden alle im System hinterlegten Daten entfernt. Das kann nicht mehr rückgängig gemacht werden.
+        Überlege, ob du stattdessen besser den aktiven Status des Benutzers entfernst.
     </div>
-    <a th:href="@{'/user/delete/' + ${user.id}}" class="btn btn-danger ms-2">Löschen</a>
-    <a th:href="@{'/user/' + ${user.id}}" class="btn btn-secondary ms-2">Abbrechen</a>
+    <a th:href="@{'/user/delete/' + ${user.id}}" class="btn btn-danger ms-2">
+        <i class="bi bi-trash-fill"></i>
+        Löschen
+    </a>
+    <a th:href="@{'/user/' + ${user.id}}" class="btn btn-secondary ms-2">
+        <i class="bi bi-x-circle-fill"></i>
+        Abbrechen
+    </a>
 </div>
 </body>
 </html>

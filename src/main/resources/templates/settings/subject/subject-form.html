@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<div class="alert alert-success mb-3" th:if="${success}">Daten erfolgreich gespeichert.</div>
+<div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+<div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+    <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+</div>
+
+<fieldset class="border rounded p-3">
+    <legend>Angaben zum Fach</legend>
+    <div class="row">
+        <div class="col-md-6 mb-3 pe-md-3">
+            <label for="name" class="form-label">Bezeichnung</label>
+            <input type="text" maxlength="255" th:field="*{name}" class="form-control"
+                   th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="name"
+                   name="name"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div class="col-md-6 ps-md-3">
+            <label class="mb-2">Status</label>
+            <div class="d-block">
+                <input type="checkbox"
+                       th:classappend="${#fields.hasErrors('isActive') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                       id="isActive"
+                       name="isActive"
+                       th:field="*{isActive}"
+                       class="form-check-input"
+                       checked="checked"
+                />
+                <label for="isActive" class="form-check-label">aktiv</label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('isActive')}" th:errors="*{isActive}"></div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset class="border rounded p-3 mt-4">
+    <legend>Zugeordnete Lehrkräfte</legend>
+    <div class="row overflow-auto" style="max-height: 25vh">
+        <div class="col-md-6 mb-3 ps-md-3">
+            <div class="d-block" th:each="teacher : ${teachers}">
+                <input
+                        th:classappend="${#fields.hasErrors('teachers') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                        name="teachers"
+                        type="checkbox"
+                        class="form-check-input ms-2"
+                        th:id="${teacher.id}"
+                        th:value="${teacher.id}"
+                        th:field="*{teachers}"
+                />
+                <label th:for="${teacher.id}" th:classappend="${teacher.isActive ? '' : 'text-muted fst-italic'}" th:text="${teacher.lastname + ', ' + teacher.firstname}"
+                       class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
+</fieldset>
+</body>

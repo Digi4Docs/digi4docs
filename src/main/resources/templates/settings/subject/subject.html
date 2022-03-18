@@ -3,17 +3,18 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{./layout}">
 <head>
-    <title>Benutzer bearbeiten</title>
+    <title>Einstellungen - Fach bearbeiten</title>
 </head>
 <body>
-<div layout:fragment="title">Benutzer bearbeiten</div>
+<div layout:fragment="title">Einstellungen - Fach bearbeiten</div>
 
 <div layout:fragment="content">
-    <form th:action="@{'/user/' + ${user.id}}" method="post" th:object="${userEditForm}" class="mt-4 border-top pt-4"
-          autocomplete="off" novalidate>
+    <form th:action="@{'/settings/subject/' + ${subject.id}}" method="post" th:object="${subjectForm}"
+          class="mt-4 border-top pt-4"
+          novalidate>
         <input type="hidden" th:field="*{id}" name="id"/>
 
-        <div th:insert="user/user-form"></div>
+        <div th:insert="settings/subject/subject-form"></div>
 
         <div class="row mt-4">
             <div class="col-12">
@@ -21,11 +22,11 @@
                     <i class="bi bi-check"></i>
                     Speichern
                 </button>
-                <a th:href="@{/users}" class="btn btn-secondary ms-2">
+                <a th:href="@{/settings/subjects}" class="btn btn-secondary ms-2">
                     <i class="bi bi-table"></i>
                     Zurück zur Liste
                 </a>
-                <a th:href="@{'/user/confirm-delete/' + ${user.id}}" class="btn btn-danger ms-2">
+                <a th:href="@{'/settings/subject/confirm-delete/' + ${subject.id}}" class="btn btn-danger ms-2">
                     <i class="bi bi-trash-fill"></i>
                     Löschen
                 </a>

@@ -46,7 +46,7 @@ public class ProfileController {
         user.setClassNumber(profileForm.getClassNumber());
 
         try {
-            userService.saveUser(user, false);
+            userService.save(user, false);
             model.addAttribute("success", true);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -74,7 +74,7 @@ public class ProfileController {
         }
 
         user.setPassword(changePasswordForm.getNewPassword());
-        userService.saveUser(user, true);
+        userService.save(user, true);
 
         return "redirect:/profile";
     }
