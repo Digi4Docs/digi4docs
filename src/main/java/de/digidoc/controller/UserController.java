@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 @Controller
-public class UserController {
+public class UserController extends AbstractController {
     @Autowired
     private UserService userService;
 
@@ -29,6 +29,10 @@ public class UserController {
     @GetMapping("/users")
     public String users(Model model) {
         model.addAttribute("users", userService.findAll());
+
+        addBasicBreadcrumbs();
+        showBreadcrumbs(model);
+
         return "user/users";
     }
 
@@ -63,6 +67,10 @@ public class UserController {
 
         model.addAttribute("user", user);
 
+        addBasicBreadcrumbs();
+        getBreadcrumbs().put("/user/" + user.getId(), user.getLastname() + ", " + user.getFirstname());
+        showBreadcrumbs(model);
+
         return "user/user";
     }
 
@@ -76,6 +84,12 @@ public class UserController {
 
         User user = userOptional.get();
         model.addAttribute("user", user);
+
+
+        addBasicBreadcrumbs();
+        getBreadcrumbs().put("/user/" + user.getId(), user.getLastname() + ", " + user.getFirstname());
+        getBreadcrumbs().put("/user/confirm-delete/" + user.getId(), "Benutzer löschen");
+        showBreadcrumbs(model);
 
         return "user/delete";
     }
@@ -96,7 +110,11 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user")
-    public String user(UserNewForm userNewForm) {
+    public String user(UserNewForm userNewForm, Model model) {
+        addBasicBreadcrumbs();
+        getBreadcrumbs().put("/user", "Neuer Benutzer");
+        showBreadcrumbs(model);
+
         return "user/new-user";
     }
 
@@ -104,7 +122,7 @@ public class UserController {
     @PostMapping("/user")
     public String addUser(@Valid UserNewForm userNewForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return user(userNewForm);
+            return user(userNewForm, model);
         }
 
         User user = mapFormToUser(new User(), userNewForm);
@@ -115,7 +133,7 @@ public class UserController {
             userService.add(user);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            return user(userNewForm);
+            return user(userNewForm, model);
         }
 
         return "redirect:/users";
@@ -168,5 +186,9 @@ public class UserController {
         });
 
         return user;
+    }
+
+    private void addBasicBreadcrumbs() {
+        getBreadcrumbs(true).put("/users", "Benutzer");
     }
 }

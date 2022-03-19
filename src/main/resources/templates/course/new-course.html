@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Neuer Kurs</title>
+    <script th:src="@{~/js/iconpicker/icon-picker.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/iconpicker.js}" type="text/javascript"></script>
+    <link rel="stylesheet" th:href="@{~/css/iconpicker/bootstrap-5.min.css}">
+
+    <script th:src="@{~/js/tinymce/tinymce.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/image/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/link/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/lists/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/media/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/table/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/wysiwig.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="title">Neuer Kurs</div>
+<div layout:fragment="content">
+    <form th:action="@{/course}" method="post" th:object="${courseForm}" class="mt-4 border-top pt-4" novalidate>
+        <div th:insert="course/course-form"></div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success text-white">
+                    <i class="bi bi-collection-fill"></i>
+                    Kurs anlegen
+                </button>
+                <a th:href="@{/courses}" class="btn btn-secondary ms-2">
+                    <i class="bi bi-table"></i>
+                    Zurück zur Liste
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

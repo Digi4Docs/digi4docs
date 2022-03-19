@@ -13,7 +13,10 @@
 </head>
 
 <body sec:authorize="isAuthenticated()">
-<div th:insert="fragments/navbar.html"></div>
+<div th:insert="fragments/navbar"></div>
+<div th:if="${null != breadcrumbs}">
+    <div th:insert="fragments/breadcrumbs"></div>
+</div>
 <div class="m-3 card shadow">
     <div layout:fragment="title-image"></div>
     <div class="card-body">

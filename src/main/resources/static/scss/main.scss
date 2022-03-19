@@ -2,8 +2,12 @@ $primary: #043882;
 $success: #68b022;
 $warning: #f49c00;
 $danger: #e2001a;
+$fa-font-path: "../fonts" !default;
 
 @import "../../../../../node_modules/bootstrap/scss/bootstrap";
 @import "bootstrap-icons";
+@import "fontawesome/regular";
+@import "fontawesome/solid";
+@import "fontawesome/fontawesome";
 @import "login";
 @import "layout";

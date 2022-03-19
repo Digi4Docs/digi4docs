@@ -11,4 +11,8 @@ legend {
   font-size: 1.25rem;
 }
 
+.table-column-small {
+  width: 1%;
+}
+
 /*# sourceMappingURL=layout.css.map */

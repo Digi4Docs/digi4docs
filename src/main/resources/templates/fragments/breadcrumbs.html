@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<nav aria-label="breadcrumb" class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a th:href="@{/home}">Home</a></li>
+            <li class="breadcrumb-item" th:each="entry, iterStat: ${breadcrumbs}">
+                <a th:unless="${iterStat.last}" th:href="@{${entry.key}}">[[${entry.value}]]</a>
+                <span th:if="${iterStat.last}">[[${entry.value}]]</span>
+            </li>
+        </ol>
+    </div>
+</nav>
+</body>

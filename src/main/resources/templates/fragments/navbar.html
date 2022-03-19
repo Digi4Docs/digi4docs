@@ -18,17 +18,20 @@
                         <i class="bi bi-house-heart-fill"></i> Home</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TEACHER')">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/tasks' ? 'active' : ''}"
+                    <a class="nav-link"
+                       th:classappend="${#httpServletRequest.requestURI.startsWith('/task') ? 'active' : ''}"
                        href="#">
                         <i class="bi bi-clipboard-check-fill"></i> Aufgaben</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/courses' ? 'active' : ''}"
-                       href="#">
+                    <a class="nav-link"
+                       th:classappend="${#httpServletRequest.requestURI.startsWith('/course') or #httpServletRequest.requestURI.startsWith('/module') ? 'active' : ''}"
+                       th:href="@{/courses}">
                         <i class="bi bi-collection-fill"></i> Kurse</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/users' ? 'active' : ''}"
+                    <a class="nav-link"
+                       th:classappend="${#httpServletRequest.requestURI.startsWith('/user') ? 'active' : ''}"
                        th:href="@{/users}">
                         <i class="bi bi-people-fill"></i> Benutzer</a>
                 </li>
@@ -40,7 +43,7 @@
 
                 <li class="nav-item dropdown me-2" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link dropdown-toggle"
-                       th:classappend="${#httpServletRequest.requestURI eq '/settings' ? 'active' : ''}"
+                       th:classappend="${#httpServletRequest.requestURI.startsWith('/settings') ? 'active' : ''}"
                        href="#" id="navbarSettings" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-gear-fill"></i> Einstellungen</a>
                     </a>
@@ -57,7 +60,7 @@
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item me-2" th:title="'Du bist angemeldet als ' + ${#httpServletRequest.remoteUser}">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI eq '/profile' ? 'active' : ''}"
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI.startsWith('/profile') ? 'active' : ''}"
                        th:href="@{/profile}"><i class="bi bi-person-square"></i> Profil</a>
                 </li>
                 <li class="nav-item">

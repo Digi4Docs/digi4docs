@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 @Controller
-public class ProfileController {
+public class ProfileController extends AbstractController {
 
     @Autowired
     private UserService userService;
@@ -30,6 +30,7 @@ public class ProfileController {
     @GetMapping("/profile")
     public String profile(ProfileForm profileForm, Model model) {
         User user = loadUser();
+
         return showProfilePage(profileForm, model, user, true);
     }
 
@@ -56,21 +57,25 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/password")
-    public String changePassword(ChangePasswordForm changePasswordForm) {
+    public String changePassword(ChangePasswordForm changePasswordForm, Model model) {
+        getBreadcrumbs(true).put("/profile", "Mein Profil");
+        getBreadcrumbs().put("/profile/password", "Passwort ändern");
+        showBreadcrumbs(model);
+
         return "profile/password";
     }
 
     @PostMapping("/profile/password")
     public String savePassword(@Valid ChangePasswordForm changePasswordForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return changePassword(changePasswordForm);
+            return changePassword(changePasswordForm, model);
         }
 
         User user = loadUser();
         boolean passwordMatches = bCryptPasswordEncoder.matches(changePasswordForm.getOldPassword(), user.getPassword());
         if (!passwordMatches) {
             model.addAttribute("error", "Das bisherige Passwort ist nicht korrekt");
-            return changePassword(changePasswordForm);
+            return changePassword(changePasswordForm, model);
         }
 
         user.setPassword(changePasswordForm.getNewPassword());
@@ -91,6 +96,10 @@ public class ProfileController {
         model.addAttribute("user", user);
         model.addAttribute("isStudent",
                 user.getRoles().stream().filter(userRole -> userRole.getRole().equals(Role.STUDENT)).count() > 0);
+
+
+        getBreadcrumbs(true).put("/profile", "Mein Profil");
+        showBreadcrumbs(model);
 
         return "profile/profile";
     }

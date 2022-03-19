@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Modul bearbeiten</title>
+    <script th:src="@{~/js/iconpicker/icon-picker.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/iconpicker.js}" type="text/javascript"></script>
+    <link rel="stylesheet" th:href="@{~/css/iconpicker/bootstrap-5.min.css}">
+
+    <script th:src="@{~/js/tinymce/tinymce.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/image/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/link/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/lists/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/media/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/table/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/wysiwig.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="title" class="mb-3">[[${module.title}]]</div>
+
+<div layout:fragment="content">
+    <div class="accordion" id="accordionModule">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingEdit">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEdit"
+                        aria-expanded="true" aria-controls="collapseEdit">
+                    Module bearbeiten
+                </button>
+            </h2>
+            <div id="collapseEdit" class="accordion-collapse collapse show" aria-labelledby="headingEdit"
+                 data-bs-parent="#accordionModule">
+                <div class="accordion-body">
+                    <form th:action="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id}:'/module/' + ${parentModule.id} + '/module/' + ${module.id})}" method="post" th:object="${moduleForm}" novalidate>
+                        <input type="hidden" th:field="*{id}" name="id"/>
+
+                        <div th:insert="module/module-form"></div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success text-white">
+                                    <i class="bi bi-check"></i>
+                                    Speichern
+                                </button>
+                                <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/modules':'/module/' + ${parentModule.id} + '/modules')}" class="btn btn-secondary ms-2">
+                                    <i class="bi bi-table"></i>
+                                    Zurück zur Liste
+                                </a>
+                                <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/confirm-delete/' + ${module.id}:'/module/' + ${parentModule.id} + '/module/confirm-delete/' + ${module.id})}" class="btn btn-danger ms-2">
+                                    <i class="bi bi-trash-fill"></i>
+                                    Löschen
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingModules">
+                <button th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/modules\''"
+                   class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules">
+                    Module
+                </button>
+            </h2>
+        </div>
+    </div>
+</div>
+</body>
+</html>

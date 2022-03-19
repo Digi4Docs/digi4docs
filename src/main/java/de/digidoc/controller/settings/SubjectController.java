@@ -1,5 +1,6 @@
 package de.digidoc.controller.settings;
 
+import de.digidoc.controller.AbstractController;
 import de.digidoc.form.SubjectForm;
 import de.digidoc.model.Subject;
 import de.digidoc.model.User;
@@ -23,7 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-public class SubjectController {
+public class SubjectController extends AbstractController {
     @Autowired
     private UserService userService;
 
@@ -34,6 +35,10 @@ public class SubjectController {
     @GetMapping("/settings/subjects")
     public String subjects(Model model) {
         model.addAttribute("subjects", subjectService.findAll());
+
+        addBasicBreadcrumbs();
+        showBreadcrumbs(model);
+
         return "settings/subject/subjects";
     }
 
@@ -41,6 +46,11 @@ public class SubjectController {
     @GetMapping("/settings/subject")
     public String subject(SubjectForm subjectForm, Model model) {
         model.addAttribute("teachers", userService.findAllTeachers());
+
+        addBasicBreadcrumbs();
+        getBreadcrumbs().put("/settings/subject", "Neues Fach");
+        showBreadcrumbs(model);
+
         return "settings/subject/new-subject";
     }
 
@@ -104,6 +114,11 @@ public class SubjectController {
         Subject subject = subjectOptional.get();
         model.addAttribute("subject", subject);
 
+        addBasicBreadcrumbs();
+        getBreadcrumbs().put("/settings/subject/" + subject.getId(), subject.getName());
+        getBreadcrumbs().put("/settings/subject/confirm-delete/" + subject.getId(), "Fach löschen");
+        showBreadcrumbs(model);
+
         return "settings/subject/delete";
     }
 
@@ -142,6 +157,10 @@ public class SubjectController {
         model.addAttribute("subject", subject);
         model.addAttribute("teachers", userService.findAllTeachers());
 
+        addBasicBreadcrumbs();
+        getBreadcrumbs().put("/settings/subject/" + subject.getId(), subject.getName());
+        showBreadcrumbs(model);
+
         return "settings/subject/subject";
     }
 
@@ -165,5 +184,9 @@ public class SubjectController {
         }
 
         return subject;
+    }
+
+    private void addBasicBreadcrumbs() {
+        getBreadcrumbs(true).put("/settings/subjects", "Einstellungen / Fächer");
     }
 }
