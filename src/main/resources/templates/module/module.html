@@ -17,7 +17,7 @@
     <script th:src="@{~/js/wysiwig.js}" type="text/javascript"></script>
 </head>
 <body>
-<div layout:fragment="title" class="mb-3">[[${module.title}]]</div>
+<div layout:fragment="title" class="mb-3">Modul: [[${module.title}]]</div>
 
 <div layout:fragment="content">
     <div class="accordion" id="accordionModule">
@@ -25,7 +25,7 @@
             <h2 class="accordion-header" id="headingEdit">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEdit"
                         aria-expanded="true" aria-controls="collapseEdit">
-                    Module bearbeiten
+                    <i class="bi bi-pencil-fill me-1"></i> Modul bearbeiten
                 </button>
             </h2>
             <div id="collapseEdit" class="accordion-collapse collapse show" aria-labelledby="headingEdit"
@@ -61,7 +61,16 @@
                 <button th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/modules\''"
                    class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules">
-                    Module
+                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
+                </button>
+            </h2>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTasks">
+                <button th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/tasks\''"
+                   class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTasks" aria-expanded="false" aria-controls="collapseTasks">
+                    <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
                 </button>
             </h2>
         </div>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Neue Aufgabe</title>
+    <script th:src="@{~/js/tinymce/tinymce.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/image/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/link/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/lists/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/media/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/table/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/wysiwig.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="title">Neue Aufgabe</div>
+<div layout:fragment="content">
+    <form th:action="@{'/module/' + ${parentModule.id} + '/task'}"
+          method="post" th:object="${taskForm}" class="mt-4 border-top pt-4" novalidate>
+        <div th:insert="task/task-form"></div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success text-white">
+                    <i class="bi bi-clipboard-check"></i>
+                    Aufgabe anlegen
+                </button>
+                <a th:href="@{'/module/' + ${parentModule.id} + '/tasks'}"
+                   class="btn btn-secondary ms-2">
+                    <i class="bi bi-table"></i>
+                    Zurück zur Liste
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

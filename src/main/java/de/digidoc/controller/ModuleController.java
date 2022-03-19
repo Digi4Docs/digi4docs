@@ -66,7 +66,7 @@ public class ModuleController extends AbstractModuleController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/module/{parentId}/module/{id}")
-    public String course(@PathVariable int parentId, @PathVariable int id, ModuleForm moduleForm, Model model) {
+    public String module(@PathVariable int parentId, @PathVariable int id, ModuleForm moduleForm, Model model) {
         return showDetailPage(parentId, id, moduleForm, model, true);
     }
 

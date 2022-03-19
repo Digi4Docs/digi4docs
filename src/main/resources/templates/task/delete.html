@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Aufgabe löschen</title>
+</head>
+<body>
+<div layout:fragment="title">Aufgabe löschen</div>
+
+<div layout:fragment="content">
+    <div class="alert alert-danger">
+        Möchtest du die Aufgabe "[[${task.title}]]" löschen? Wenn die Aufgabe gelöscht wird, werden alle im System
+        damit verknüpften Daten entfernt. Das kann nicht mehr rückgängig gemacht werden. Überlege, ob du stattdessen
+        besser den aktiven Status der Aufgabe entfernst.
+    </div>
+    <a th:href="@{'/module/' + ${parentModule.id} + '/task/delete/' + ${task.id}}" class="btn btn-danger ms-2">
+        <i class="bi bi-trash-fill"></i>
+        Löschen
+    </a>
+    <a th:href="@{'/module/' + ${parentModule.id} + '/task/' + ${task.id}}" class="btn btn-secondary ms-2">
+        <i class="bi bi-x-circle-fill"></i>
+        Abbrechen
+    </a>
+</div>
+</body>
+</html>

@@ -8,8 +8,8 @@
 </head>
 <body>
 <div layout:fragment="title" class="mb-3">
-    <span th:if="${null != parentModule}">Module - Modul "[[${parentModule.title}]]"</span>
-    <span th:if="${null == parentModule}">Module - Kurs "[[${course.title}]]"</span>
+    <span th:if="${null != parentModule}">Modul: [[${parentModule.title}]]</span>
+    <span th:if="${null == parentModule}">Kurs: [[${course.title}]]</span>
 </div>
 
 <div layout:fragment="content">
@@ -20,6 +20,7 @@
                         class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseModules"
                         aria-expanded="false" aria-controls="collapseModules">
+                    <i class="bi bi-pencil-fill me-1"></i>
                     <span th:if="${null == parentModule}">Kurs bearbeiten</span>
                     <span th:unless="${null == parentModule}">Modul bearbeiten</span>
                 </button>
@@ -29,7 +30,7 @@
             <h2 class="accordion-header" id="headingModules">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseModules" aria-expanded="true" aria-controls="collapseModules">
-                    Module
+                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
                 </button>
             </h2>
 
@@ -82,6 +83,16 @@
                     </table>
                 </div>
             </div>
+        </div>
+        <div class="accordion-item" th:if="${null != parentModule}">
+            <h2 class="accordion-header" id="headingTasks">
+                <button th:onclick="'window.location.href = \'' + @{'/module/' + ${parentModule.id} + '/tasks/' } + '\''"
+                        class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTasks"
+                        aria-expanded="false" aria-controls="collapseTasks">
+                    <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
+                </button>
+            </h2>
         </div>
     </div>
 </div>

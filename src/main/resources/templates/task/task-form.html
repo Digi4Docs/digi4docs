@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<div class="alert alert-success mb-3" th:if="${success}">Daten erfolgreich gespeichert.</div>
+<div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+<div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+    <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <label for="title" class="form-label">Titel</label>
+        <input type="text" maxlength="255" th:field="*{title}" class="form-control"
+               th:classappend="${#fields.hasErrors('title') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+               id="title"
+               name="title"/>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 mb-3 pe-md-3">
+        <label class="mb-2">Status</label>
+        <div class="d-block">
+            <input type="checkbox"
+                   th:classappend="${#fields.hasErrors('isActive') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="isActive"
+                   name="isActive"
+                   th:field="*{isActive}"
+                   class="form-check-input"
+                   checked="checked"
+            />
+            <label for="isActive" class="form-check-label">aktiv</label>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('isActive')}" th:errors="*{isActive}"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 mb-3">
+        <label for="description" class="form-label">Beschreibung</label>
+        <textarea th:field="*{description}" class="form-control wysiwyg-editor"
+                  th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                  id="description"
+                  name="description"></textarea>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    </div>
+</div>
+</body>

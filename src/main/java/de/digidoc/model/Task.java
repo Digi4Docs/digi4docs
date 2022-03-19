@@ -14,33 +14,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "module")
-public class Module {
+@Table(name = "task")
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, length = 255)
-    @NotEmpty(message = "Bitte geben Sie einen Titel für das Modul an.")
+    @NotEmpty(message = "Bitte geben Sie einen Titel für die Aufgabe an.")
     @Length(max = 255, message = "Der Titel darf maximal 255 Zeichen lang sein.")
     private String title;
-
-    @Column(name = "sub_title", nullable = false, length = 255)
-    @Length(max = 255, message = "Der Untertitel darf maximal 255 Zeichen lang sein.")
-    private String subTitle;
 
     @Type(type = "text")
     private String description;
 
-    @Column(length = 100)
-    private String icon;
-
     @Column(name = "is_active")
     private Boolean isActive;
-
-    @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "parent_modul", referencedColumnName = "id")
-    private Module parent;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "created_by", referencedColumnName = "id")
@@ -57,6 +46,6 @@ public class Module {
     private LocalDateTime editedAt;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "course", referencedColumnName = "id")
-    private Course course;
+    @JoinColumn(name = "module", referencedColumnName = "id")
+    private Module module;
 }
