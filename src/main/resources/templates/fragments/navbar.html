@@ -13,15 +13,46 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item me-2">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/home' || #httpServletRequest.requestURI.startsWith('/public') ? 'active' : ''}"
+                    <a class="nav-link"
+                       th:classappend="${#httpServletRequest.requestURI == '/home' || #httpServletRequest.requestURI.startsWith('/public') ? 'active' : ''}"
                        th:href="@{/home}">
                         <i class="bi bi-house-heart-fill"></i> Home</a>
                 </li>
-                <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TEACHER')">
+                <li class="nav-item dropdown me-2" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TEACHER')">
+                    <a class="nav-link dropdown-toggle"
+                       th:classappend="${#httpServletRequest.requestURI.startsWith('/task') ? 'active' : ''}"
+                       href="#" id="navbarTasks" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear-fill"></i> Aufgaben</a>
+                    </a>
+                    <ul class="dropdown-menu me-2" aria-labelledby="navbarTasks">
+                        <li>
+                            <a class="dropdown-item" th:href="@{/tasks}"
+                               th:classappend="${#httpServletRequest.requestURI == '/tasks' ? 'active' : ''}">
+                                <i class="bi bi-clipboard-heart-fill"></i>
+                                Meine Aufgaben
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/tasks/done}"
+                               th:classappend="${#httpServletRequest.requestURI == '/tasks/done' ? 'active' : ''}">
+                                <i class="bi bi-clipboard-check-fill"></i>
+                                Erledigte Aufgaben
+                            </a>
+                        </li>
+                        <li sec:authorize="hasAuthority('ADMIN')">
+                            <a class="dropdown-item" th:href="@{/tasks/all}"
+                               th:classappend="${#httpServletRequest.requestURI == '/tasks/all' ? 'active' : ''}">
+                                <i class="bi bi-clipboard-fill"></i>
+                                Alle Aufgaben
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item me-2" sec:authorize="hasAuthority('TEACHER') and !hasAuthority('ADMIN')">
                     <a class="nav-link"
                        th:classappend="${#httpServletRequest.requestURI.startsWith('/task') ? 'active' : ''}"
-                       href="#">
-                        <i class="bi bi-clipboard-check-fill"></i> Aufgaben</a>
+                       th:href="@{/tasks}">
+                        <i class="bi bi-clipboard-check-fill"></i> Meine Aufgaben</a>
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link"
@@ -60,7 +91,8 @@
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item me-2" th:title="'Du bist angemeldet als ' + ${#httpServletRequest.remoteUser}">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI.startsWith('/profile') ? 'active' : ''}"
+                    <a class="nav-link"
+                       th:classappend="${#httpServletRequest.requestURI.startsWith('/profile') ? 'active' : ''}"
                        th:href="@{/profile}"><i class="bi bi-person-square"></i> Profil</a>
                 </li>
                 <li class="nav-item">

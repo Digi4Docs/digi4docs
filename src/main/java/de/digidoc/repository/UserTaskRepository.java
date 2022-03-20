@@ -1,5 +1,6 @@
 package de.digidoc.repository;
 
+import de.digidoc.model.TaskStatus;
 import de.digidoc.model.UserTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Controller;
@@ -14,5 +15,9 @@ public interface UserTaskRepository extends JpaRepository<UserTask, Integer> {
 
     List<UserTask> findByTaskIdInAndUserId(List<Integer> taskIds, int userId);
 
-    List<UserTask> findByUserId( int userId);
+    List<UserTask> findByUserId(int userId);
+
+    List<UserTask> findByTeacherIdAndStatus(int teacherId, TaskStatus taskStatus);
+
+    List<UserTask> findByStatus(TaskStatus taskStatus);
 }

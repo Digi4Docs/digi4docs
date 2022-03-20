@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<body>
+<head>
+    <title>Meine Aufgaben</title>
+</head>
+<body>
+<div layout:fragment="title" class="mb-3">
+    <div th:if="${showAll}">Alle Aufgaben</div>
+    <div th:if="${showDone}">Erledigte Aufgaben</div>
+    <div th:if="${!showDone and !showAll}">Meine zuerledigenden Aufgaben</div>
+</div>
+
+<div layout:fragment="content">
+    <table class="table table-striped table-hover simple-datatables border mt-2 mb-1" id="taskList">
+        <thead>
+        <tr>
+            <th>Modul</th>
+            <th>Titel</th>
+            <th>Schüler*in</th>
+            <th>Jahrgang</th>
+            <th>Klasse</th>
+            <th th:if="${showAll}">Lehkraft</th>
+            <th th:if="${showAll}">Status</th>
+            <th data-sortable="false"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${userTasks.empty}">
+            <td th:if="${showDone}" th:colspan="${showAll ? '8' : '6'}">Keine Aufgaben gefunden.</td>
+            <td th:unless="${showDone}" th:colspan="${showAll ? '8' : '6'}"> Alle Aufgaben erledigt - hier gibt es im
+                Moment nichts zu tun.
+            </td>
+        </tr>
+        <tr th:each="userTask : ${userTasks}">
+            <td>[[${userTask.task.module.title}]]</td>
+            <td>[[${userTask.task.title}]]</td>
+            <td>[[${userTask.user.fullname}]]</td>
+            <td>[[${userTask.user.classYear}]]</td>
+            <td>[[${userTask.user.classIdentifier}]]</td>
+            <td th:if="${showAll}">[[${userTask.teacher.fullname}]]</td>
+            <td th:if="${showAll}">
+                <span th:replace="fragments/taskStatus(userTask=${userTask})"></span>
+            </td>
+            <td class="text-end">
+                <a th:href="@{'/tasks/task/' + ${userTask.id}}"
+                   class="btn btn-outline-primary">
+                    Bearbeiten
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>

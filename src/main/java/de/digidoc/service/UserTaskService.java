@@ -7,6 +7,7 @@ import de.digidoc.repository.UserTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,10 @@ public class UserTaskService {
     public UserTaskService(UserTaskRepository userTaskRepository, UserService userService) {
         this.userTaskRepository = userTaskRepository;
         this.userService = userService;
+    }
+
+    public Optional<UserTask> findById(int id) {
+        return userTaskRepository.findById(id);
     }
 
     public Optional<UserTask> findByTask(int taskId) {
@@ -34,6 +39,30 @@ public class UserTaskService {
     public List<UserTask> findByUser() {
         User currentUser = userService.findCurrentUser();
         return userTaskRepository.findByUserId(currentUser.getId());
+    }
+
+    public List<UserTask> findTransmittedToUser() {
+        User currentUser = userService.findCurrentUser();
+        List<UserTask> userTasks = userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.TRANSMITTED);
+        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+                Comparator.naturalOrder())));
+        return userTasks;
+    }
+
+    public List<UserTask> findAllTransmitted() {
+        List<UserTask> userTasks = userTaskRepository.findByStatus(TaskStatus.TRANSMITTED);
+        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+                Comparator.naturalOrder())));
+        return userTasks;
+    }
+
+    public List<UserTask> findDoneToUser() {
+        User currentUser = userService.findCurrentUser();
+        List<UserTask> userTasks = userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.DONE);
+        userTasks.addAll(userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.REJECTED));
+        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+                Comparator.naturalOrder())));
+        return userTasks;
     }
 
     public UserTask save(UserTask userTask) {

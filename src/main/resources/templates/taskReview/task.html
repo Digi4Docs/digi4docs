@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<body>
+<head>
+    <title>Meine Aufgaben</title>
+</head>
+<body>
+<div layout:fragment="title" class="mb-3">Aufgabe: [[${userTask.task.title}]]</div>
+
+<div layout:fragment="content">
+</div>
+</body>
