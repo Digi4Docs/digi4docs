@@ -29,6 +29,7 @@ public class HomeController {
         boolean isStudent = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).contains(Role.STUDENT.toString());
         if (isStudent) {
             model.addAttribute("courses", courseService.findAllActive());
+            model.addAttribute("personalCourses", courseService.findAllPersonal());
         }
 
         return "home";

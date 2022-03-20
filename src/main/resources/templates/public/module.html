@@ -11,7 +11,7 @@
 </div>
 <div layout:fragment="content">
     <div th:if="${!tasks.empty}" th:classappend="${childModules.empty ? '' : 'mb-4 pb-4 border-bottom'}">
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-12 text-center">
                 Um dieses Modul abzuschließen, musst du
                 <span class="text-danger d-inline">[[ ${ #lists.size(tasks) == 1 ? '1 Aufgabe' : #lists.size(tasks) + ' Aufgaben' } ]]</span>
@@ -19,6 +19,11 @@
                 geschafft.</span>
             </div>
         </div>
+
+        <div class="row mb-4 mx-3 border rounded bg-light bg-gradient" th:unless="${#strings.isEmpty(module.description)}">
+            <div class="col-12 px-4 py-3">[(${module.description})]</div>
+        </div>
+
         <div th:each="task, taskStat: ${tasks}" class="row">
             <div th:replace="public/task-box"></div>
         </div>

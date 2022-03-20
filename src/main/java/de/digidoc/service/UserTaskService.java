@@ -31,6 +31,11 @@ public class UserTaskService {
         return userTaskRepository.findByTaskIdInAndUserId(taskIds, currentUser.getId());
     }
 
+    public List<UserTask> findByUser() {
+        User currentUser = userService.findCurrentUser();
+        return userTaskRepository.findByUserId(currentUser.getId());
+    }
+
     public UserTask save(UserTask userTask) {
         if (null == userTask.getUser()) {
             userTask.setUser(userService.findCurrentUser());

@@ -10,6 +10,7 @@
     <div th:replace="public/title-image(title=${course.title}, icon=${course.icon})"></div>
 </div>
 <div layout:fragment="content">
+
     <div class="row">
         <div th:if="${childModules.empty}">
             <div class="alert alert-info">
@@ -24,6 +25,10 @@
             <span class="text-danger d-inline">[[ ${ #lists.size(childModules) == 1 ? '1 Modul' : #lists.size(childModules) + ' Module' } ]]</span>
             absolvieren.
         </div>
+    </div>
+
+    <div class="row mb-4 mx-3 border rounded bg-light bg-gradient" th:unless="${#strings.isEmpty(course.description)}">
+        <div class="col-12 px-4 py-3">[(${course.description})]</div>
     </div>
 
     <div th:each="module, itStat: ${childModules}" class="col-md-6 col-lg-4 col-xxl-3">
