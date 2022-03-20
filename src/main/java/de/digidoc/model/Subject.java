@@ -30,4 +30,10 @@ public class Subject {
     @ManyToMany
     @OrderBy("lastname, firstname")
     Set<User> users;
+
+    @Override
+    public String toString() {
+        /* is used in task.html to map all subjects to teacher within the select option */
+        return String.valueOf(id);
+    }
 }

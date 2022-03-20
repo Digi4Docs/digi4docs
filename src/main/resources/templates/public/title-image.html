@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<div class="d-flex flex-row justify-content-center bg-primary text-white p-3">
+    <div class="large-icon me-5 d-flex flex-column justify-content-center">
+        <i th:if="${!#strings.isEmpty(icon)}" th:class="${icon}"></i>
+        <i th:if="${#strings.isEmpty(icon)}" class="bi bi-emoji-smile"></i>
+    </div>
+    <div class="text-start d-flex flex-column justify-content-center">
+        <h1 th:if="${!#strings.isEmpty(title)}">[[ ${title} ]]</h1>
+        <h6 th:if="${!#strings.isEmpty(minorTitle)}" class="mb-4">[[ ${minorTitle} ]]</h6>
+        <h3 th:if="${!#strings.isEmpty(subTitle)}">[[ ${subTitle} ]]</h3>
+    </div>
+</div>
+<div class="progress rounded-0" th:if="${progressMax > 0 and null != progressCurrent}">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" th:style="${'width: ' + #numbers.formatDecimal(((progressCurrent + 0.0) / progressMax) * 100, 1, 2) + '%'}" th:aria-valuenow="${progressCurrent}" aria-valuemin="0" th:aria-valuemax="${progressMax}"></div>
+</div>
+</body>
+</html>

@@ -26120,4 +26120,30 @@ legend {
   width: 1%;
 }
 
+.vh-20 {
+  height: 20vh;
+}
+
+.h-2-5rem {
+  height: 2.5rem;
+}
+
+.icon {
+  font-size: 1.8rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  text-align: center;
+  border: 2px solid var(--bs-secondary);
+  border-radius: 0.3rem;
+  padding-top: 0.6rem;
+}
+
+.large-icon {
+  font-size: 5rem;
+}
+
+.medium-icon {
+  font-size: 2.5rem;
+}
+
 /*# sourceMappingURL=main.css.map */

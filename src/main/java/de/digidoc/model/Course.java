@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -48,4 +49,8 @@ public class Course {
 
     @Column(name = "edited_at")
     private LocalDateTime editedAt;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.DETACH)
+    @OrderBy("title")
+    private List<Module> modules;
 }

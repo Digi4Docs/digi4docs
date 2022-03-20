@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Kurs: [[${course.title}]]</title>
+</head>
+<body>
+<div layout:fragment="title-image">
+    <div th:replace="public/title-image(title=${course.title}, icon=${course.icon})"></div>
+</div>
+<div layout:fragment="content">
+    <div class="row">
+        <div th:if="${childModules.empty}">
+            <div class="alert alert-info">
+                Bisher gibt es noch keine Module in diesem Kurs.
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4" th:if="${!childModules.empty}">
+        <div class="col-12 text-center">
+            Um diesen Kurs abzuschließen, musst du
+            <span class="text-danger d-inline">[[ ${ #lists.size(childModules) == 1 ? '1 Modul' : #lists.size(childModules) + ' Module' } ]]</span>
+            absolvieren.
+        </div>
+    </div>
+
+    <div th:each="module, itStat: ${childModules}" class="col-md-6 col-lg-4 col-xxl-3">
+        <div th:replace="public/module-box"></div>
+    </div>
+</div>
+</div>
+</body>

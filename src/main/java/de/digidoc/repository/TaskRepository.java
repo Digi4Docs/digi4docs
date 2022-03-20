@@ -11,4 +11,6 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     List<Task> findAllByModuleIdOrderByTitle(Integer courseId);
+
+    List<Task> findAllByModuleIdAndIsActiveTrueOrderByTitle(Integer courseId);
 }
