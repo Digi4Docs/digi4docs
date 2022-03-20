@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -59,4 +60,8 @@ public class Module {
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "course", referencedColumnName = "id")
     private Course course;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.DETACH)
+    @OrderBy("title")
+    private List<Module> modules;
 }

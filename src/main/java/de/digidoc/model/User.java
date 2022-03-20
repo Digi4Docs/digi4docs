@@ -60,4 +60,9 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     Set<Subject> subjects;
+
+    public String getFullname()
+    {
+        return (null != lastname ? lastname : "") + ", " + (null != firstname ? firstname : "");
+    }
 }

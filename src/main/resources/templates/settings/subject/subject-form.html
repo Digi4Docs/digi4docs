@@ -50,7 +50,7 @@
                         th:value="${teacher.id}"
                         th:field="*{teachers}"
                 />
-                <label th:for="${teacher.id}" th:classappend="${teacher.isActive ? '' : 'text-muted fst-italic'}" th:text="${teacher.lastname + ', ' + teacher.firstname}"
+                <label th:for="${teacher.id}" th:classappend="${teacher.isActive ? '' : 'text-muted fst-italic'}" th:text="${teacher.fullname}"
                        class="form-check-label"></label>
             </div>
         </div>

@@ -25,6 +25,10 @@ public class SubjectService {
         return subjectRepository.findAll();
     }
 
+    public List<Subject> findAllActive() {
+        return subjectRepository.findAllByIsActiveTrueOrderByName();
+    }
+
     public Subject save(Subject subject) {
         return subjectRepository.save(subject);
     }

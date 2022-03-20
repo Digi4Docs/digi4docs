@@ -23,6 +23,7 @@
                 <button th:onclick="'window.location.href = \'' + @{${null == course}  ? '/module/' + ${parentModule.parent.id} + '/module/' + ${parentModule.id} :  '/course/' + ${course.id} + '/module/' + ${parentModule.id}} + '\''"
                         class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEdit"
                         aria-expanded="true" aria-controls="collapseEdit">
+                    <i class="bi bi-pencil-fill me-1"></i>
                     Modul bearbeiten
                 </button>
             </h2>
@@ -32,6 +33,7 @@
                 <button th:onclick="'window.location.href = \'' + @{'/module/' + ${parentModule.id}} + '/modules\''"
                         class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules">
+                    <i class="bi bi-grid-3x3-gap-fill me-1"></i>
                     Module
                 </button>
             </h2>
@@ -40,7 +42,8 @@
             <h2 class="accordion-header" id="headingTasks">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseTasks" aria-expanded="false" aria-controls="collapseTasks">
-                    <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
+                    <i class="bi bi-clipboard-check-fill me-1"></i>
+                    Aufgaben
                 </button>
             </h2>
             <div id="collapseTasks" class="accordion-collapse collapse show" aria-labelledby="headingTasks"

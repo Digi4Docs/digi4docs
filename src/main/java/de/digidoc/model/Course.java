@@ -2,11 +2,13 @@ package de.digidoc.model;
 
 import lombok.*;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -48,4 +50,9 @@ public class Course {
 
     @Column(name = "edited_at")
     private LocalDateTime editedAt;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.DETACH)
+    @Where(clause = "is_active = 'TRUE'")
+    @OrderBy("title")
+    private List<Module> modules;
 }

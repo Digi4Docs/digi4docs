@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
 
     List<User> findDistinctByRolesRoleOrRolesRoleOrderByLastnameAscFirstnameAsc(Role teacherRole, Role adminRole);
+
+    List<User> findDistinctByRolesRoleOrRolesRoleAndIsActiveTrueOrderByLastnameAscFirstnameAsc(Role teacherRole, Role adminRole);
 }

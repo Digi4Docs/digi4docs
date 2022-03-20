@@ -35,7 +35,7 @@
         <tr th:each="subject : ${subjects}">
             <td>[[${subject.name}]]</td>
             <td>
-                <a class="d-block" th:each="teacher : ${subject.users}" th:href="@{'/user/' + ${teacher.id}}">[[${teacher.lastname}]], [[${teacher.firstname}]]</a>
+                <a class="d-block" th:each="teacher : ${subject.users}" th:href="@{'/user/' + ${teacher.id}}">[[${teacher.fullname}]]</a>
             </td>
             <td>
                 <span th:if="${subject.isActive}" class="badge bg-success">aktiv</span>

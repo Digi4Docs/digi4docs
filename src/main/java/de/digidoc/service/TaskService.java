@@ -3,10 +3,7 @@ package de.digidoc.service;
 import de.digidoc.model.Task;
 import de.digidoc.model.User;
 import de.digidoc.repository.TaskRepository;
-import de.digidoc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -16,12 +13,12 @@ import java.util.Optional;
 @Component
 public class TaskService {
     private TaskRepository taskRepository;
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskService(TaskRepository taskRepository, UserService userService) {
         this.taskRepository = taskRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public Optional<Task> findById(int id) {
@@ -32,10 +29,12 @@ public class TaskService {
         return taskRepository.findAllByModuleIdOrderByTitle(moduleId);
     }
 
+    public List<Task> findAllActiveByModule(Integer moduleId) {
+        return taskRepository.findAllByModuleIdAndIsActiveTrueOrderByTitle(moduleId);
+    }
+
     public Task save(Task task) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-        User currentUser = userRepository.findByEmail(principal.getUsername());
+        User currentUser = userService.findCurrentUser();
 
         if (null == task.getCreatedBy()) {
             task.setCreatedBy(currentUser);

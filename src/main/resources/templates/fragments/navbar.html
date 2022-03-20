@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-success border-bottom border-4 border-warning">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success bg-gradient border-bottom border-4 border-warning">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/home}">
             <img th:src="@{~/img/logo.png}"/>
@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item me-2">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/home' ? 'active' : ''}"
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/home' || #httpServletRequest.requestURI.startsWith('/public') ? 'active' : ''}"
                        th:href="@{/home}">
                         <i class="bi bi-house-heart-fill"></i> Home</a>
                 </li>

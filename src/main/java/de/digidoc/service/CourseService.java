@@ -3,10 +3,7 @@ package de.digidoc.service;
 import de.digidoc.model.Course;
 import de.digidoc.model.User;
 import de.digidoc.repository.CourseRepository;
-import de.digidoc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -16,12 +13,12 @@ import java.util.Optional;
 @Component
 public class CourseService {
     private CourseRepository courseRepository;
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserRepository userRepository) {
+    public CourseService(CourseRepository courseRepository, UserService userService) {
         this.courseRepository = courseRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public Optional<Course> findById(int id) {
@@ -32,16 +29,18 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
+    public List<Course> findAllActive() {
+        return courseRepository.findAllByIsActiveTrueOrderByTitle();
+    }
+
     public Course save(Course course) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-        User currentUser = userRepository.findByEmail(principal.getUsername());
+        User currentUser = userService.findCurrentUser();
 
         if (null == course.getCreatedBy()) {
             course.setCreatedBy(currentUser);
             course.setCreatedAt(LocalDateTime.now());
         }
-        
+
         course.setEditedBy(currentUser);
         course.setEditedAt(LocalDateTime.now());
 

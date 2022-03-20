@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function (event) {
+    // remove form field validation when changing the invalid entry
     let elements = document.querySelectorAll("input, select, textarea");
     for (const element of elements) {
         element.addEventListener("change", (event) => {
@@ -11,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
+    // setup data tables
     let tables = document.querySelectorAll("table.simple-datatables");
     for(const table of tables) {
          new simpleDatatables.DataTable(table, {
@@ -22,5 +24,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
                  info: "Zeige {start} bis {end} von {rows} Einträgen",
              }
          });
+    }
+
+    // ensure forms will not be resubmitted on page reload
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
     }
 });
