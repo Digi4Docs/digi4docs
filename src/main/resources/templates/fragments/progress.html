@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<div class="progress rounded-0 rounded-bottom" th:data-bs-toggle="${current > 0 ? 'tooltip' : ''}" data-bs-placement="right"
+     th:title="${'Du hast schon ' + #numbers.formatDecimal((((null != current ? current : 0) + 0.0) / max) * 100, 1, 0) + '% geschafft.'}">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+         th:style="${'width: ' + #numbers.formatDecimal((((null != current ? current : 0) + 0.0) / max) * 100, 1, 0) + '%'}"
+         th:aria-valuenow="${null != current ? current : 0}" aria-valuemin="0"
+         th:aria-valuemax="${max}"></div>
+</div>
+</body>

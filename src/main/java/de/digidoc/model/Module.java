@@ -2,6 +2,7 @@ package de.digidoc.model;
 
 import lombok.*;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -62,6 +63,11 @@ public class Module {
     private Course course;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.DETACH)
+    @Where(clause = "is_active = '1'")
     @OrderBy("title")
     private List<Module> modules;
+
+    @OneToMany(mappedBy = "module", cascade = CascadeType.DETACH)
+    @Where(clause = "is_active = '1'")
+    private List<Task> tasks;
 }

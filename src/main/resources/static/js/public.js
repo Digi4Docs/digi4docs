@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
+
+    // update teacher select box after selecting a subject
     const subjectId = document.getElementById('subjectId');
     const teacherId = document.getElementById('teacherId');
     if (null != subjectId && null != teacherId) {
@@ -29,4 +31,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         });
     }
+
+    // init progress circles
+    const circle = new CircularProgressBar('pie');
+    circle.initial();
 });

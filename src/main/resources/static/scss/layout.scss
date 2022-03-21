@@ -33,9 +33,13 @@ legend {
   padding-top: 0.6rem;
 }
 
-.large-icon {
-  font-size: 5rem;
+.title-icon {
+  font-size: 2rem;
+  position: absolute;
+  left: calc(50% - 1rem);
+  top: 15%;
 }
+
 .medium-icon {
   font-size: 2.5rem;
 }

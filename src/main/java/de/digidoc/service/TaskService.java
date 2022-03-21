@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Component
 public class TaskService {
-    private TaskRepository taskRepository;
-    private UserService userService;
+    private final TaskRepository taskRepository;
+    private final UserService userService;
 
     @Autowired
     public TaskService(TaskRepository taskRepository, UserService userService) {
@@ -27,10 +27,6 @@ public class TaskService {
 
     public List<Task> findAllByModule(Integer moduleId) {
         return taskRepository.findAllByModuleIdOrderByTitle(moduleId);
-    }
-
-    public List<Task> findAllActiveByModule(Integer moduleId) {
-        return taskRepository.findAllByModuleIdAndIsActiveTrueOrderByTitle(moduleId);
     }
 
     public Task save(Task task) {

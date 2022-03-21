@@ -4,6 +4,7 @@ import de.digidoc.form.PublicTaskForm;
 import de.digidoc.model.Module;
 import de.digidoc.model.*;
 import de.digidoc.service.*;
+import de.digidoc.util.ProgressCountProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -39,6 +43,9 @@ public class PublicCourseController extends AbstractController {
     @Autowired
     private UserTaskService userTaskService;
 
+    @Autowired
+    private ProgressCountProvider progressCountProvider;
+
     @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/public/course/{id}")
     public String course(@PathVariable int id, Model model) {
@@ -50,7 +57,13 @@ public class PublicCourseController extends AbstractController {
 
         Course course = courseOptional.get();
         model.addAttribute("course", course);
-        model.addAttribute("childModules", moduleService.findAllActiveByCourse(id));
+        Map<Integer, Integer> personalModuleTaskCountMap = progressCountProvider.getPersonalModuleTaskCountMap(course.getModules());
+        model.addAttribute("personalModuleTaskTotal", personalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
+        model.addAttribute("personalModuleTaskCounts", personalModuleTaskCountMap);
+
+        Map<Integer, Integer> generalModuleTaskCountMap = progressCountProvider.getGeneralModuleTaskCountMap(course.getModules());
+        model.addAttribute("generalModuleTaskTotal", generalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
+        model.addAttribute("generalModuleTaskCounts", generalModuleTaskCountMap);
 
         showBreadcrumbs(course, null, model);
 
@@ -81,12 +94,17 @@ public class PublicCourseController extends AbstractController {
 
         model.addAttribute("course", course);
         model.addAttribute("module", module);
-        model.addAttribute("childModules", moduleService.findAllActiveByParentModule(moduleId));
-        List<Task> tasks = taskService.findAllActiveByModule(moduleId);
-        model.addAttribute("tasks", tasks);
 
-        if (!tasks.isEmpty()) {
-            Map<Integer, UserTask> userTasks = userTaskService.findByTasks(tasks.stream().map(Task::getId).collect(Collectors.toList())).stream().collect(Collectors.toMap(userTask -> userTask.getTask().getId(), userTask -> userTask));
+        Map<Integer, Integer> personalModuleTaskCountMap = progressCountProvider.getPersonalModuleTaskCountMap(module.getModules());
+        model.addAttribute("personalModuleTaskTotal", personalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
+        model.addAttribute("personalModuleTaskCounts", personalModuleTaskCountMap);
+
+        Map<Integer, Integer> generalModuleTaskCountMap = progressCountProvider.getGeneralModuleTaskCountMap(module.getModules());
+        model.addAttribute("generalModuleTaskTotal", generalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
+        model.addAttribute("generalModuleTaskCounts", generalModuleTaskCountMap);
+
+        if (!module.getTasks().isEmpty()) {
+            Map<Integer, UserTask> userTasks = userTaskService.findByTasks(module.getTasks().stream().map(Task::getId).collect(Collectors.toList())).stream().collect(Collectors.toMap(userTask -> userTask.getTask().getId(), userTask -> userTask));
             model.addAttribute("userTasks", userTasks);
             model.addAttribute("userTasksDone", userTasks.values().stream().filter(userTask -> TaskStatus.DONE.equals(userTask.getStatus())).count());
         }

@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="de">
 <body>
-<div class="m-3 p-3 border rounded-3 d-flex flex-column">
-    <div class="d-flex flex-row">
-        <div class="flex-grow-1">
-            <div class="d-block text-muted small mb-2">Modul [[ ${itStat.count} ]]</div>
-            <div class="d-block h6 h-2-5rem overflow-hidden">[[ ${module.title} ]]</div>
+<div class="m-3 d-flex flex-column">
+    <div class="p-3 border rounded-top">
+        <div class="d-flex flex-row">
+            <div class="flex-grow-1">
+                <div class="d-block text-muted small mb-2">Modul [[ ${itStat.count} ]]</div>
+                <div class="d-block h6 h-2-5rem overflow-hidden">[[ ${module.title} ]]</div>
+            </div>
+            <div th:if="${!#strings.isEmpty(module.icon)}">
+                <i th:classappend="${module.icon}" class="ms-3 icon"></i>
+            </div>
         </div>
-        <div th:if="${!#strings.isEmpty(module.icon)}">
-            <i th:classappend="${module.icon}" class="ms-3 icon"></i>
+        <div class="overflow-auto vh-20 flex-grow-1">
+            [(${module.description})]
+        </div>
+        <div class="text-center">
+            <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}" class="btn btn-primary">
+                <i class="bi bi-eye-fill"></i>
+                Ansehen
+            </a>
         </div>
     </div>
-    <div class="overflow-auto vh-20 flex-grow-1">
-        [(${module.description})]
-    </div>
-    <div class="text-center">
-        <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}" class="btn btn-primary">
-            <i class="bi bi-eye-fill"></i>
-            Ansehen
-        </a>
-    </div>
+    <div th:replace="fragments/progress(current=${personalModuleTaskCounts.get(module.id)},max=${generalModuleTaskCounts.get(module.id)})"></div>
 </div>
 </body>
 </html>

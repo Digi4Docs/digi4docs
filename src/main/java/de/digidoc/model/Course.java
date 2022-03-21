@@ -52,7 +52,7 @@ public class Course {
     private LocalDateTime editedAt;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.DETACH)
-    @Where(clause = "is_active = 'TRUE'")
+    @Where(clause = "is_active = '1'")
     @OrderBy("title")
     private List<Module> modules;
 }
