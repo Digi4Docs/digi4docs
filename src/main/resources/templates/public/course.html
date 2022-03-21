@@ -32,8 +32,10 @@
         <div class="col-12 px-4 py-3">[(${course.description})]</div>
     </div>
 
-    <div th:each="module, itStat: ${course.modules}" class="col-md-6 col-lg-4 col-xxl-3">
-        <div th:replace="public/module-box"></div>
+    <div class="row">
+        <div th:each="module, itStat: ${course.modules}" class="col-md-6 col-lg-4 col-xxl-3">
+            <div th:replace="public/module-box"></div>
+        </div>
     </div>
 </div>
 </body>

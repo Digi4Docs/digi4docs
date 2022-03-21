@@ -32,8 +32,7 @@
         <label for="icon" class="form-label">Icon</label>
         <input type="text" maxlength="255" th:field="*{icon}" class="form-control icon-picker"
                th:classappend="${#fields.hasErrors('icon') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-               id="icon"
-               name="icon"/>
+               id="icon" name="icon" autocomplete="off" />
         <div class="invalid-feedback" th:if="${#fields.hasErrors('icon')}" th:errors="*{icon}"></div>
     </div>
     <div class="col-md-6 ps-md-3">
