@@ -43,10 +43,9 @@
             <div class="row">
                 <div class="col-md-6 mb-3 pe-md-3">
                     <label for="email" class="form-label">E-Mail</label>
-                    <input type="text" maxlength="255" th:field="*{email}" class="form-control"
+                    <input type="email" maxlength="255" th:field="*{email}" class="form-control"
                            th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                           id="email"
-                           name="email"/>
+                           id="email" name="email"/>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                 </div>
                 <div class="col-md-6 ps-md-3">

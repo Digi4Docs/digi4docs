@@ -8,9 +8,10 @@
 </head>
 <body>
 <div layout:fragment="title" class="mb-3">
-    <div th:if="${showAll}">Alle Aufgaben</div>
-    <div th:if="${showDone}">Erledigte Aufgaben</div>
-    <div th:if="${!showDone and !showAll}">Meine zuerledigenden Aufgaben</div>
+    <div th:if="${showAll and !showDone}">Alle offenen Aufgaben</div>
+    <div th:if="${showAll and showDone}">Alle erledigten Aufgaben</div>
+    <div th:if="${!showAll and showDone}">Meine erledigten Aufgaben</div>
+    <div th:if="${!showAll and !showDone}">Meine Aufgaben</div>
 </div>
 
 <div layout:fragment="content">

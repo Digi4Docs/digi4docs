@@ -29,6 +29,10 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public Optional<User> findActiveUserByEmail(String email) {
+        return userRepository.findByEmailAndIsActiveTrue(email);
+    }
+
     public Optional<User> findById(int id) {
         return userRepository.findById(id);
     }
