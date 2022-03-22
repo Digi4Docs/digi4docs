@@ -36,14 +36,21 @@
                             <a class="dropdown-item" th:href="@{/tasks/done}"
                                th:classappend="${#httpServletRequest.requestURI == '/tasks/done' ? 'active' : ''}">
                                 <i class="bi bi-clipboard-check-fill"></i>
-                                Erledigte Aufgaben
+                                Meine erledigten Aufgaben
                             </a>
                         </li>
                         <li sec:authorize="hasAuthority('ADMIN')">
                             <a class="dropdown-item" th:href="@{/tasks/all}"
                                th:classappend="${#httpServletRequest.requestURI == '/tasks/all' ? 'active' : ''}">
                                 <i class="bi bi-clipboard-fill"></i>
-                                Alle Aufgaben
+                                Alle offenen Aufgaben
+                            </a>
+                        </li>
+                        <li sec:authorize="hasAuthority('ADMIN')">
+                            <a class="dropdown-item" th:href="@{/tasks/done-all}"
+                               th:classappend="${#httpServletRequest.requestURI == '/tasks/done-all' ? 'active' : ''}">
+                                <i class="bi bi-clipboard-fill"></i>
+                                Alle erledigten Aufgaben
                             </a>
                         </li>
                     </ul>

@@ -2,7 +2,7 @@
 <html lang="de">
 <body>
 <div class="d-flex flex-row justify-content-center bg-primary bg-gradient text-white p-3">
-    <div class="pie position-relative me-3" th:data-pie="${'{
+    <div class="pie position-relative me-3" th:if="${null != progressPercentage}" th:data-pie="${'{
         &quot;textPosition&quot;: &quot;1.5em&quot;,
          &quot;animationSmooth&quot;: &quot;.5s ease-out&quot;,
          &quot;percent&quot;: ' + progressPercentage + ',
@@ -19,7 +19,7 @@
             <i th:if="${#strings.isEmpty(icon)}" class="bi bi-emoji-smile"></i>
         </div>
     </div>
-    <div class="text-start d-flex flex-column justify-content-center">
+    <div class="d-flex flex-column justify-content-center" th:classappend="${null != progressPercentage ? 'text-start' : 'text-center'}">
         <h1 th:if="${!#strings.isEmpty(title)}">[[ ${title} ]]</h1>
         <h6 th:if="${!#strings.isEmpty(minorTitle)}" class="mb-4">[[ ${minorTitle} ]]</h6>
         <h3 th:if="${!#strings.isEmpty(subTitle)}">[[ ${subTitle} ]]</h3>

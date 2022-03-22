@@ -51,6 +51,11 @@ public class UserService {
         return userRepository.findByEmail(principal.getUsername());
     }
 
+    public boolean hasCurrentUserRole(Role role) {
+        User currentUser = findCurrentUser();
+        return 0 < currentUser.getRoles().stream().filter(userRole -> role.equals(userRole.getRole())).count();
+    }
+
     public User add(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

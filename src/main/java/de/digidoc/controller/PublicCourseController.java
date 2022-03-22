@@ -136,6 +136,7 @@ public class PublicCourseController extends AbstractController {
         if (bindingResult.hasErrors()) {
             return task(id, taskId, publicTaskForm, model);
         }
+
         Optional<Course> courseOptional = courseService.findById(id);
         if (!courseOptional.isPresent() || !courseOptional.get().getIsActive()) {
             return "redirect:/home";
@@ -169,14 +170,16 @@ public class PublicCourseController extends AbstractController {
             userTask.setTransmittedAt(LocalDateTime.now());
         }
 
+        boolean successful = false;
         try {
             userTaskService.save(userTask);
             model.addAttribute("success", true);
+            successful = true;
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
         }
 
-        if (doTransmit) {
+        if (doTransmit && successful) {
             return "redirect:/public/course/" + courseOptional.get().getId() + "/task/" + task.getId();
         }
 

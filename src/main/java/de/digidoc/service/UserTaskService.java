@@ -41,7 +41,7 @@ public class UserTaskService {
         return userTaskRepository.findByUserId(currentUser.getId());
     }
 
-    public List<UserTask> findTransmittedToUser() {
+    public List<UserTask> findTransmittedOfCurrentUser() {
         User currentUser = userService.findCurrentUser();
         List<UserTask> userTasks = userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.TRANSMITTED);
         userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
@@ -56,10 +56,17 @@ public class UserTaskService {
         return userTasks;
     }
 
-    public List<UserTask> findDoneToUser() {
+    public List<UserTask> findDoneOfCurrentUser() {
         User currentUser = userService.findCurrentUser();
         List<UserTask> userTasks = userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.DONE);
         userTasks.addAll(userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.REJECTED));
+        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+                Comparator.naturalOrder())));
+        return userTasks;
+    }
+
+    public List<UserTask> findAllDone() {
+        List<UserTask> userTasks = userTaskRepository.findByStatus(TaskStatus.DONE);
         userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
                 Comparator.naturalOrder())));
         return userTasks;
