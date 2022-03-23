@@ -26149,6 +26149,10 @@ legend {
   font-size: 2.5rem;
 }
 
+.large-icon {
+  font-size: 5rem;
+}
+
 .home-column-height {
   max-height: calc(100vh - 7.5rem);
 }
