@@ -15,6 +15,10 @@ public class CourseForm {
     @Size(max = 255, message = "Der Titel darf maximal 255 Zeichen lang sein.")
     protected String title;
 
+    protected String subTitle;
+
+    protected String externalImage;
+
     protected String icon;
 
     protected String description;

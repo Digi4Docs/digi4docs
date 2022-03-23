@@ -18,11 +18,32 @@
     </div>
 </div>
 <div class="row">
+    <div class="col-12 mb-3">
+        <label for="title" class="form-label">Untertitel</label>
+        <input type="text" maxlength="255" th:field="*{subTitle}" class="form-control"
+               th:classappend="${#fields.hasErrors('subTitle') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+               id="subTitle" name="subTitle"/>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('subTitle')}" th:errors="*{subTitle}"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 mb-3">
+        <label for="title" class="form-label">Externe Bild-URL</label>
+        <input type="text" maxlength="255" th:field="*{externalImage}" class="form-control"
+               th:classappend="${#fields.hasErrors('externalImage') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+               id="externalImage" name="externalImage"/>
+        <div class="d-block text-muted small">Die externe Bild-URL ist optional und wird auf der Startseite des
+            Zertifikats ausgegeben.
+        </div>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('externalImage')}" th:errors="*{externalImage}"></div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-6 mb-3 pe-md-3">
         <label for="icon" class="form-label">Icon</label>
         <input type="text" maxlength="255" th:field="*{icon}" class="form-control icon-picker"
                th:classappend="${#fields.hasErrors('icon') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-               id="icon" name="icon" autocomplete="off" />
+               id="icon" name="icon" autocomplete="off"/>
         <div class="invalid-feedback" th:if="${#fields.hasErrors('icon')}" th:errors="*{icon}"></div>
     </div>
     <div class="col-md-6 ps-md-3">

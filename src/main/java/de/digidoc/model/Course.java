@@ -23,10 +23,18 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     @NotEmpty(message = "Bitte geben Sie einen Titel für den Kurs an.")
     @Length(max = 255, message = "Der Titel darf maximal 255 Zeichen lang sein.")
     private String title;
+
+    @Column(name = "sub_title")
+    @Length(max = 255, message = "Der Untertitel darf maximal 255 Zeichen lang sein.")
+    private String subTitle;
+
+    @Column(name = "external_image")
+    @Length(max = 255, message = "Die externe Bild-URL maximal 255 Zeichen lang sein.")
+    private String externalImage;
 
     @Type(type = "text")
     private String description;

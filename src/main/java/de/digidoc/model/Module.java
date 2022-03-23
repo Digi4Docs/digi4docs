@@ -27,7 +27,7 @@ public class Module {
     @Length(max = 255, message = "Der Titel darf maximal 255 Zeichen lang sein.")
     private String title;
 
-    @Column(name = "sub_title", nullable = false, length = 255)
+    @Column(name = "sub_title", nullable = true, length = 255)
     @Length(max = 255, message = "Der Untertitel darf maximal 255 Zeichen lang sein.")
     private String subTitle;
 

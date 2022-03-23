@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Zertifikat - [[${course.title}]]</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script th:src="@{~/js/bootstrap.bundle.js}" type="text/javascript"></script>
+
+    <script th:src="@{~/js/main.js}" type="text/javascript"></script>
+    <link rel="stylesheet" th:href="@{~/css/main.css}">
+</head>
+<body sec:authorize="isAuthenticated()">
+<div th:replace="fragments/navbar"></div>
+<div th:if="${null != breadcrumbs}">
+    <div th:insert="fragments/breadcrumbs" class="d-print-none"></div>
+</div>
+<div class="bg-light p-3 d-print-p-none">
+    <div class="text-center d-block pt-5">
+        <h1 class="text-uppercase">[[${course.title}]]</h1>
+        <hr class="border border-2"/>
+        <h4 class="text-uppercase" th:if="${!#strings.isEmpty(course.subTitle)}">[[${course.subTitle}]]</h4>
+    </div>
+    <hr class="mb-3"/>
+    <div class="d-flex justify-content-between">
+        <div>
+            <span class="fw-bold">Name, Vorname: </span>
+            [[${user.fullname}]]
+        </div>
+        <div>
+            <span class="fw-bold">Klasse: </span>
+            [[${user.classNumber}]]
+            [[${user.classIdentifier}]]
+        </div>
+    </div>
+    <hr class="mb-3" th:if="${!#strings.isEmpty(course.description)}" />
+    <div class="mb-5" th:if="${!#strings.isEmpty(course.description)}">[(${course.description})]</div>
+    <hr class="mb-5"/>
+    <img th:if="${#strings.isEmpty(course.externalImage)}" th:src="@{~/img/main-title.jpg}" class="w-100"/>
+    <img th:unless="${#strings.isEmpty(course.externalImage)}" th:src="${course.externalImage}" class="w-100"/>
+    <div th:if="${#lists.size(course.modules) > 0}"
+         th:replace="certificate/modules(modules=${course.modules},outerloop=true)"></div>
+</div>
+</body>
+</html>

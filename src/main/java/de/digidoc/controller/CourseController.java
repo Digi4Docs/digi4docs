@@ -133,6 +133,8 @@ public class CourseController extends AbstractController {
         if (initFormData) {
             courseForm.setId(course.getId());
             courseForm.setTitle(course.getTitle());
+            courseForm.setSubTitle(course.getSubTitle());
+            courseForm.setExternalImage(course.getExternalImage());
             courseForm.setDescription(course.getDescription());
             courseForm.setIcon(course.getIcon());
             courseForm.setIsActive(course.getIsActive());
@@ -149,6 +151,8 @@ public class CourseController extends AbstractController {
 
     private Course mapFormToCourse(Course course, CourseForm courseForm) {
         course.setTitle(courseForm.getTitle());
+        course.setSubTitle(courseForm.getSubTitle());
+        course.setExternalImage(courseForm.getExternalImage());
         course.setDescription(courseForm.getDescription());
         course.setIcon(courseForm.getIcon());
         course.setIsActive(courseForm.getIsActive());

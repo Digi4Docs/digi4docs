@@ -33,7 +33,11 @@ public class UserTaskService {
 
     public List<UserTask> findByTasks(List<Integer> taskIds) {
         User currentUser = userService.findCurrentUser();
-        return userTaskRepository.findByTaskIdInAndUserId(taskIds, currentUser.getId());
+        return findByTasks(taskIds, currentUser);
+    }
+
+    public List<UserTask> findByTasks(List<Integer> taskIds, User user) {
+        return userTaskRepository.findByTaskIdInAndUserId(taskIds, user.getId());
     }
 
     public List<UserTask> findByUser() {

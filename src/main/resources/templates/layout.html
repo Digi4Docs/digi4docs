@@ -15,7 +15,7 @@
 <body sec:authorize="isAuthenticated()">
 <div th:replace="fragments/navbar"></div>
 <div th:if="${null != breadcrumbs}">
-    <div th:insert="fragments/breadcrumbs"></div>
+    <div th:insert="fragments/breadcrumbs" class="d-print-none"></div>
 </div>
 <div class="m-3 card shadow">
     <div layout:fragment="title-image"></div>

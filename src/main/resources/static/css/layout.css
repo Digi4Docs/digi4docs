@@ -45,6 +45,10 @@ legend {
 }
 
 .large-icon {
+  font-size: 3.5rem;
+}
+
+.xxl-icon {
   font-size: 5rem;
 }
 
@@ -72,6 +76,20 @@ legend {
   background-color: var(--bs-secondary);
   border-radius: 20px;
   border: 2px solid var(--bs-gray-200);
+}
+
+@media print {
+  div.avoid-break {
+    break-inside: avoid;
+  }
+
+  div.page-break-before {
+    page-break-before: always;
+  }
+
+  .d-print-p-none {
+    padding: 0 !important;
+  }
 }
 
 /*# sourceMappingURL=layout.css.map */
