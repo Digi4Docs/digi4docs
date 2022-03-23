@@ -93,6 +93,13 @@
                                 Fächer
                             </a>
                         </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/settings/config}"
+                               th:classappend="${#httpServletRequest.requestURI.startsWith('/settings/config') ? 'active' : ''}">
+                                <i class="bi bi-gear-fill"></i>
+                                Konfiguration
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

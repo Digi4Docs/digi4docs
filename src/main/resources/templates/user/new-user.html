@@ -11,7 +11,7 @@
     <form th:action="@{/user}" method="post" th:object="${userNewForm}" class="mt-4 border-top pt-4"
           autocomplete="off" novalidate>
 
-        <div th:insert="user/user-form"></div>
+        <div th:insert="user/user-form(showPasswordHint=false)"></div>
 
         <div class="row mt-4">
             <div class="col-12">

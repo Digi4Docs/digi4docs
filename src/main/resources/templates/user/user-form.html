@@ -32,7 +32,7 @@
             <label for="email" class="form-label">E-Mail</label>
             <input type="email" maxlength="255" th:field="*{email}" class="form-control"
                    th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                   id="email" name="email"/>
+                   id="email" name="email" autocomplete="off" />
             <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
         <div class="col-md-6 ps-md-3">
@@ -40,8 +40,8 @@
             <input type="password" maxlength="255" th:field="*{password}"
                    class="form-control"
                    th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                   id="password"
-                   name="password" autocomplete="new-password"/>
+                   id="password" name="password" autocomplete="off" />
+            <div class="text-muted small" th:if="${showPasswordHint}">Das Passwort wird nur geändert, wenn ein neuer Wert eingetragen wird.</div>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
         </div>
     </div>

@@ -5,6 +5,7 @@ import de.digidoc.repository.ConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -25,6 +26,14 @@ public class ConfigService {
 
     public Optional<Config> findByKey(String key) {
         return configRepository.findByConfigKey(key);
+    }
+
+    public List<Config> findAll() {
+        return configRepository.findAll();
+    }
+
+    public List<Config> saveAll(List<Config> configEntries) {
+        return configRepository.saveAll(configEntries);
     }
 
     public String getMailHost() {

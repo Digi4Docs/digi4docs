@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Einstellungen - Konfiguration bearbeiten</title>
+</head>
+<body>
+<div layout:fragment="title">Einstellungen - Konfiguration bearbeiten</div>
+
+<div layout:fragment="content">
+    <form th:action="@{'/settings/config/'}" method="post" th:object="${configForm}"
+          class="mt-4 border-top pt-4"
+          novalidate>
+
+        <div class="alert alert-success mb-3" th:if="${success}">Die Aufgabe wurde gespeichert.</div>
+        <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+        <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+            <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+        </div>
+
+        <fieldset class="border p-3">
+            <legend class="mb-4">Mail-Konfiguration</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="mailHost" class="form-label">SMTP-Host</label>
+                    <input type="text" maxlength="255" th:field="*{mailHost}" class="form-control"
+                           th:classappend="${#fields.hasErrors('mailHost') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="mailHost" name="mailHost"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('mailHost')}"
+                         th:errors="*{mailHost}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="mailPort" class="form-label">Port</label>
+                    <input type="number" th:field="*{mailPort}" class="form-control"
+                           th:classappend="${#fields.hasErrors('mailPort') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="mailPort" name="mailPort"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('mailPort')}"
+                         th:errors="*{mailPort}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="mailUser" class="form-label">Benutzer (E-Mail)</label>
+                    <input type="text" maxlength="255" th:field="*{mailUser}" class="form-control"
+                           th:classappend="${#fields.hasErrors('mailUser') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="mailUser" name="mailUser"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('mailUser')}"
+                         th:errors="*{mailUser}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="mailPassword" class="form-label">Passwort</label>
+                    <input type="password" maxlength="255" th:field="*{mailPassword}" class="form-control"
+                           th:classappend="${#fields.hasErrors('mailPassword') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="mailPassword" name="mailPassword"/>
+                    <div class="text-muted small">Das Passwort wird nur geändert, wenn ein neuer Wert eingetragen wird. Das aktuelle
+                    Passwort ist: <span class="fw-bold">[[${maskedPassword}]]</span> </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('mailPassword')}"
+                         th:errors="*{mailPassword}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="mailSender" class="form-label">Absender (E-Mail)</label>
+                    <input type="text" maxlength="255" th:field="*{mailSender}" class="form-control"
+                           th:classappend="${#fields.hasErrors('mailSender') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="mailSender" name="mailSender"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('mailSender')}"
+                         th:errors="*{mailSender}"></div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="mt-4 border p-3">
+            <legend class="mb-4">Allgemeine Angaben</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="baseUrl" class="form-label">Server Basis-URL</label>
+                    <input type="text" maxlength="255" th:field="*{baseUrl}" class="form-control"
+                           th:classappend="${#fields.hasErrors('baseUrl') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="baseUrl" name="baseUrl"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('baseUrl')}"
+                         th:errors="*{baseUrl}"></div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success text-white">
+                    <i class="bi bi-check"></i>
+                    Speichern
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
