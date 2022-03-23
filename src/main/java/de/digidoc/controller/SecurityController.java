@@ -6,6 +6,7 @@ import de.digidoc.model.PasswordForgotten;
 import de.digidoc.model.User;
 import de.digidoc.service.PasswordForgottenService;
 import de.digidoc.service.UserService;
+import de.digidoc.util.mail.MailProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -23,6 +24,10 @@ import java.util.Optional;
 @Controller
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SecurityController {
+
+    @Autowired
+    private MailProvider mailProvider;
+
     @Autowired
     private PasswordForgottenService passwordForgottenService;
 
@@ -52,7 +57,8 @@ public class SecurityController {
         passwordForgotten.setUser(user);
         passwordForgottenService.save(passwordForgotten);
 
-        // todo: send email
+        mailProvider.sendPasswordForgottenMail(passwordForgotten);
+        
         model.addAttribute("success", true);
         return "security/reset-password";
     }

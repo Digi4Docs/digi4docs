@@ -1,0 +1,24 @@
+package de.digidoc.model;
+
+import lombok.*;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "config")
+public class Config {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String configKey;
+
+    @Column(nullable = false)
+    private String configValue;
+}
