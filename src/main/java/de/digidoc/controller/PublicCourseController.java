@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -95,11 +92,18 @@ public class PublicCourseController extends AbstractController {
         model.addAttribute("course", course);
         model.addAttribute("module", module);
 
-        Map<Integer, Integer> personalModuleTaskCountMap = progressCountProvider.getPersonalModuleTaskCountMap(module.getModules());
+        List<Module> modulesToCount = new ArrayList<>();
+        modulesToCount.add(module);
+        if (null != module.getModules()) {
+            modulesToCount.addAll(module.getModules());
+        }
+
+        Map<Integer, Integer> personalModuleTaskCountMap = progressCountProvider.getPersonalModuleTaskCountMap(modulesToCount);
         model.addAttribute("personalModuleTaskTotal", personalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
         model.addAttribute("personalModuleTaskCounts", personalModuleTaskCountMap);
 
-        Map<Integer, Integer> generalModuleTaskCountMap = progressCountProvider.getGeneralModuleTaskCountMap(module.getModules());
+
+        Map<Integer, Integer> generalModuleTaskCountMap = progressCountProvider.getGeneralModuleTaskCountMap(modulesToCount);
         model.addAttribute("generalModuleTaskTotal", generalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
         model.addAttribute("generalModuleTaskCounts", generalModuleTaskCountMap);
 

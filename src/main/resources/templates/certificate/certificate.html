@@ -15,6 +15,12 @@
     <div th:insert="fragments/breadcrumbs" class="d-print-none"></div>
 </div>
 <div class="bg-light p-3 d-print-p-none">
+    <div sec:authorize="hasAuthority('ADMIN')" class="d-print-none w-100 text-end">
+        <button type="button" class="btn btn-primary" th:onclick="window.print()">
+            <i class="bi bi-printer-fill"></i>
+            Drucken
+        </button>
+    </div>
     <div class="text-center d-block pt-5">
         <h1 class="text-uppercase">[[${course.title}]]</h1>
         <hr class="border border-2"/>
@@ -32,7 +38,7 @@
             [[${user.classIdentifier}]]
         </div>
     </div>
-    <hr class="mb-3" th:if="${!#strings.isEmpty(course.description)}" />
+    <hr class="mb-3" th:if="${!#strings.isEmpty(course.description)}"/>
     <div class="mb-5" th:if="${!#strings.isEmpty(course.description)}">[(${course.description})]</div>
     <hr class="mb-5"/>
     <img th:if="${#strings.isEmpty(course.externalImage)}" th:src="@{~/img/main-title.jpg}" class="w-100"/>

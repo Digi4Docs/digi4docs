@@ -37,7 +37,7 @@
                         <tr th:each="course: ${courses}">
                             <td><i th:classappend="${course.icon}" class="me-3"></i>[[${course.title}]]</td>
                             <td>[[ ${#lists.size(course.modules) }]]</td>
-                            <td class="table-column-small text-end">
+                            <td class="text-end">
                                 <a th:href="@{'/public/certificate/' + ${course.id} + '/' + ${user.id}}"
                                    class="btn btn-secondary">
                                     <i class="bi bi-award-fill"></i>
