@@ -3,9 +3,13 @@ package de.digidoc.controller;
 import de.digidoc.form.UserEditForm;
 import de.digidoc.form.UserForm;
 import de.digidoc.form.UserNewForm;
+import de.digidoc.model.Role;
 import de.digidoc.model.User;
 import de.digidoc.model.UserRole;
+import de.digidoc.model.UserTask;
 import de.digidoc.service.UserService;
+import de.digidoc.service.UserTaskService;
+import de.digidoc.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,12 +22,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class UserController extends AbstractController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserTaskService userTaskService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
@@ -66,6 +74,13 @@ public class UserController extends AbstractController {
         }
 
         model.addAttribute("user", user);
+
+        boolean isStudent = userService.hasUserRole(user, Role.STUDENT);
+        model.addAttribute("isStudent", isStudent);
+        if (isStudent) {
+            List<UserTask> userTasks = userTaskService.findByUser(user.getId());
+            model.addAttribute("courses", RecursiveHandler.getCourses(userTasks));
+        }
 
         addBasicBreadcrumbs();
         getBreadcrumbs().put("/user/" + user.getId(), user.getLastname() + ", " + user.getFirstname());

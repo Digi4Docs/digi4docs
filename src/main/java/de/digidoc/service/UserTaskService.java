@@ -45,6 +45,10 @@ public class UserTaskService {
         return userTaskRepository.findByUserId(currentUser.getId());
     }
 
+    public List<UserTask> findByUser(int userId) {
+        return userTaskRepository.findByUserId(userId);
+    }
+
     public List<UserTask> findTransmittedOfCurrentUser() {
         User currentUser = userService.findCurrentUser();
         List<UserTask> userTasks = userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.TRANSMITTED);

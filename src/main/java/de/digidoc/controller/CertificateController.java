@@ -30,7 +30,7 @@ public class CertificateController extends AbstractController {
     @GetMapping("/public/certificate/{courseId}")
     public String certificate(@PathVariable int courseId, Model model) {
         User currentUser = userService.findCurrentUser();
-        return showPage(courseId, model, currentUser);
+        return showPage(courseId, model, currentUser, true);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -41,10 +41,10 @@ public class CertificateController extends AbstractController {
             return "redirect:/home";
         }
 
-        return showPage(courseId, model, userOptional.get());
+        return showPage(courseId, model, userOptional.get(), false);
     }
 
-    private String showPage(int courseId, Model model, User user) {
+    private String showPage(int courseId, Model model, User user, boolean isCurrentUserPage) {
         Optional<Course> courseOptional = courseService.findById(courseId);
 
         if (courseOptional.isEmpty()) {
@@ -69,7 +69,11 @@ public class CertificateController extends AbstractController {
         model.addAttribute("userTaskMap", userTaskMap);
 
 
-        getBreadcrumbs(true).put("/public/course/" + course.getId(), course.getTitle());
+        if (isCurrentUserPage) {
+            getBreadcrumbs(true).put("/public/course/" + course.getId(), course.getTitle());
+        } else {
+            getBreadcrumbs(true).put("/course/" + course.getId(), course.getTitle());
+        }
         getBreadcrumbs().put("/public/certificate/" + course.getId(), "Zertifikat");
         showBreadcrumbs(model);
 

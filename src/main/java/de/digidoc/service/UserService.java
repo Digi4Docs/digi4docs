@@ -57,7 +57,11 @@ public class UserService {
 
     public boolean hasCurrentUserRole(Role role) {
         User currentUser = findCurrentUser();
-        return 0 < currentUser.getRoles().stream().filter(userRole -> role.equals(userRole.getRole())).count();
+        return hasUserRole(currentUser, role);
+    }
+
+    public boolean hasUserRole(User user, Role role) {
+        return 0 < user.getRoles().stream().filter(userRole -> role.equals(userRole.getRole())).count();
     }
 
     public User add(User user) {
