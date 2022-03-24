@@ -59,7 +59,7 @@ public class Course {
     @Column(name = "edited_at")
     private LocalDateTime editedAt;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @Where(clause = "is_active = '1'")
     @OrderBy("title")
     private List<Module> modules;

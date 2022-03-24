@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Getter
 @Setter
@@ -48,4 +51,7 @@ public class Task {
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "module", referencedColumnName = "id")
     private Module module;
+
+    @OneToMany(mappedBy = "task", cascade = ALL, orphanRemoval = true)
+    private List<UserTask> userTasks;
 }

@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -61,8 +62,11 @@ public class User {
     @ManyToMany(mappedBy = "users")
     Set<Subject> subjects;
 
-    public String getFullname()
-    {
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    private List<UserTask> userTasks;
+
+
+    public String getFullname() {
         return (null != lastname ? lastname : "") + ", " + (null != firstname ? firstname : "");
     }
 }

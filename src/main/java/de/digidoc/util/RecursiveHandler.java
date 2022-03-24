@@ -2,11 +2,33 @@ package de.digidoc.util;
 
 import de.digidoc.model.Course;
 import de.digidoc.model.Module;
+import de.digidoc.model.Task;
 import de.digidoc.model.UserTask;
 
 import java.util.*;
 
 public class RecursiveHandler {
+
+    public static List<Task> getTasks(Module module) {
+        List<Task> tasks = new ArrayList<>();
+        if (null != module.getTasks() && !module.getTasks().isEmpty()) {
+            tasks.addAll(module.getTasks());
+        }
+        getNestedTasks(module.getModules(), tasks);
+
+        return tasks;
+    }
+
+    private static void getNestedTasks(List<Module> modules, List<Task> tasks) {
+        if (null != modules && !modules.isEmpty()) {
+            modules.forEach(module -> {
+                if (null != module.getTasks() && !module.getTasks().isEmpty()) {
+                    tasks.addAll(module.getTasks());
+                }
+                getNestedTasks(modules, tasks);
+            });
+        }
+    }
 
     public static List<Course> getCourses(List<UserTask> userTasks) {
         Map<Integer, Course> courseMap = new HashMap<>();

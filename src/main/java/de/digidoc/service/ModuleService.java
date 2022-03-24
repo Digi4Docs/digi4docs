@@ -1,25 +1,27 @@
 package de.digidoc.service;
 
 import de.digidoc.model.Module;
-import de.digidoc.model.*;
+import de.digidoc.model.Task;
+import de.digidoc.model.User;
 import de.digidoc.repository.ModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ModuleService {
     private final ModuleRepository moduleRepository;
     private final UserService userService;
-    private final UserTaskService userTaskService;
+    private final TaskService taskService;
 
     @Autowired
-    public ModuleService(ModuleRepository moduleRepository, UserService userService, UserTaskService userTaskService) {
+    public ModuleService(ModuleRepository moduleRepository, UserService userService, TaskService taskService) {
         this.moduleRepository = moduleRepository;
         this.userService = userService;
-        this.userTaskService = userTaskService;
+        this.taskService = taskService;
     }
 
     public Optional<Module> findById(int id) {

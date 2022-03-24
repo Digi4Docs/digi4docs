@@ -14,11 +14,13 @@ import java.util.Optional;
 public class CourseService {
     private CourseRepository courseRepository;
     private UserService userService;
+    private TaskService taskService;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserService userService) {
+    public CourseService(CourseRepository courseRepository, UserService userService, TaskService taskService) {
         this.courseRepository = courseRepository;
         this.userService = userService;
+        this.taskService = taskService;
     }
 
     public Optional<Course> findById(int id) {

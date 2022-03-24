@@ -62,12 +62,12 @@ public class Module {
     @JoinColumn(name = "course", referencedColumnName = "id")
     private Course course;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     @Where(clause = "is_active = '1'")
     @OrderBy("title")
     private List<Module> modules;
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
     @Where(clause = "is_active = '1'")
     private List<Task> tasks;
 }

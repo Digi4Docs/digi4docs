@@ -45,8 +45,10 @@ public class ProgressCountProvider {
             }
         });
 
-        List<Course> coursesArr = new ArrayList<>(courses.values());
-        coursesArr.sort(Comparator.comparing(Course::getTitle));
+        List<Course> coursesArr = new ArrayList<>(courses.values()).stream()
+                .filter(Course::getIsActive)
+                .sorted(Comparator.comparing(Course::getTitle))
+                .collect(Collectors.toList());
 
         HashMap<Course, Integer> courseTaskCountMap = new LinkedHashMap<>();
         coursesArr.forEach(course -> {

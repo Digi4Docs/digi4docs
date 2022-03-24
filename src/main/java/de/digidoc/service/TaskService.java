@@ -43,7 +43,7 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public void delete(Task module) {
-        taskRepository.delete(module);
+    public void delete(Task task) {
+        taskRepository.delete(task);
     }
 }
