@@ -1,5 +1,6 @@
 package de.digidoc.controller;
 
+import de.digidoc.form.ImportForm;
 import de.digidoc.form.UserEditForm;
 import de.digidoc.form.UserForm;
 import de.digidoc.form.UserNewForm;
@@ -9,6 +10,7 @@ import de.digidoc.model.UserRole;
 import de.digidoc.model.UserTask;
 import de.digidoc.service.UserService;
 import de.digidoc.service.UserTaskService;
+import de.digidoc.util.Importer;
 import de.digidoc.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,15 +20,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 public class UserController extends AbstractController {
+    @Autowired
+    private Importer importer;
+
     @Autowired
     private UserService userService;
 
@@ -42,6 +47,44 @@ public class UserController extends AbstractController {
         showBreadcrumbs(model);
 
         return "user/users";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/users/import")
+    public String importUser(ImportForm importForm, Model model) {
+        addBasicBreadcrumbs();
+        showBreadcrumbs(model);
+
+        return "user/import";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/users/import")
+    public String importUser(@RequestParam("file") MultipartFile file, @Valid ImportForm importForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return importUser(importForm, model);
+        }
+
+        String validationMessage = importer.validateFile(file);
+        if (null != validationMessage) {
+            model.addAttribute("error", validationMessage);
+            return importUser(importForm, model);
+        }
+
+        try {
+            List<List<String>> dataToImport = importer.readCsv(file);
+            Map<Integer, String> importErrors = importer.importData(dataToImport, importForm.getIsActive(), importForm.getRoles());
+            model.addAttribute("importErrors", importErrors);
+            model.addAttribute("importSuccess", dataToImport.size() - importErrors.size());
+        } catch (IOException e) {
+            model.addAttribute("error", "Datei kann nicht eingelesen werden. Fehlermeldung: " + e.getMessage());
+            return importUser(importForm, model);
+        }
+
+        addBasicBreadcrumbs();
+        showBreadcrumbs(model);
+
+        return "user/import";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

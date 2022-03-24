@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Benutzerverwaltung - Benutzer importieren</title>
+</head>
+<body>
+<div layout:fragment="title">Benutzerverwaltung - Benutzer importieren</div>
+<div layout:fragment="content">
+    <form th:action="@{'/users/import'}" method="post" th:object="${importForm}" class="mt-4 border-top py-4 px-2"
+          enctype="multipart/form-data" autocomplete="off" novalidate>
+        <div class="alert alert-success mb-3" th:if="${success}">Daten erfolgreich importiert.</div>
+        <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+        <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+            <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+        </div>
+
+        <div class="alert alert-light border border-2" th:if="${null != importSuccess}">
+            <div>
+                Es wurden <span class="text-success">[[${importSuccess}]] Datensätze</span>
+                erfolgreich importiert.
+            </div>
+            <div class="mt-2" th:if="${null != importErrors and #maps.size(importErrors) > 0}">
+                <span class="text-danger">[[${#maps.size(importErrors)}]] Datensätze</span> konnten nicht importiert
+                werden. Folgende Fehler sind aufgetreten:
+                <table class="mt-2 table table-sm">
+                    <thead>
+                    <tr>
+                        <th>Zeile</th>
+                        <th>Fehler</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="importError: ${importErrors}">
+                            <td>[[${importError.key}]]</td>
+                            <td>[[${importError.value}]]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="mb-2 fw-bold">Datei auswählen</label>
+                        <div class="d-block">
+                            <input type="file" name="file" class="form-control-file" accept="text/csv"/>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <label class="mb-2 fw-bold">Status</label>
+                        <div class="d-block">
+                            <input type="checkbox"
+                                   th:classappend="${#fields.hasErrors('isActive') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                   id="isActive"
+                                   name="isActive"
+                                   th:field="*{isActive}"
+                                   class="form-check-input ms-2"
+                                   checked="checked"
+                            />
+                            <label for="isActive" class="form-check-label">aktiv</label>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('isActive')}"
+                                 th:errors="*{isActive}"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <label class="mb-2 fw-bold">Rollen</label>
+                        <div class="d-block" th:each="roleOpt : ${T(de.digidoc.model.Role).values()}">
+                            <input
+                                    th:classappend="${#fields.hasErrors('roles') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                    name="roles"
+                                    type="checkbox"
+                                    class="form-check-input ms-2"
+                                    th:id="${roleOpt}"
+                                    th:value="${roleOpt}"
+                                    th:field="*{roles}"
+                            />
+                            <label th:for="${roleOpt}" th:text="${roleOpt.displayValue}"
+                                   class="form-check-label"></label>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('roles')}"
+                                 th:errors="*{roles}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div>
+                    <span class="fw-bold">Hinweise: </span>
+                    Um Benutzer zu importieren, lade bitte eine CSV-Datei mit den entsprechenden Benutzern hoch. Beachte
+                    dabei, dass die Datei keine Überschriftenzeile enthält. Die CSV-Datei muss die Benutzerinformationen
+                    durch Semikolons trennen. Die Benutzerinformationen sind in der folgenden Reihenfolge anzugeben:
+                    <table class="table table-bordered my-2">
+                        <tr>
+                            <th>Vorname</th>
+                            <th>Nachname</th>
+                            <th>E-Mail</th>
+                            <th>Jahrgang</th>
+                            <th>Klasse (Zahl)</th>
+                            <th>Klasse (Buchstabe)</th>
+                        </tr>
+                    </table>
+                    Die Angabe von Vorname, Nachname und E-Mail ist verpflichtend. Die übrigen Angaben sind optional.
+                    Existiert bereits ein Nutzer mit der angegebenen E-Mail im System, so wird dieser nicht erneut
+                    importiert.
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary text-white">
+                    <i class="bi bi-arrow-bar-down"></i>
+                    Benutzer importieren
+                </button>
+                <a th:href="@{/users}" class="btn btn-secondary ms-2">
+                    <i class="bi bi-table"></i>
+                    Zurück zur Liste
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
