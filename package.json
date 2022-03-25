@@ -1,5 +1,5 @@
 {
-  "name": "digidoc",
+  "name": "digi4docs",
   "version": "1.0.0",
   "description": "",
   "main": "npm run-script build",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/crunchy-amarillo/digidoc.git"
+    "url": "git+https://github.com/crunchy-amarillo/digi4docs.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/crunchy-amarillo/digidoc/issues"
+    "url": "https://github.com/crunchy-amarillo/digi4docs/issues"
   },
-  "homepage": "https://github.com/crunchy-amarillo/digidoc#readme",
+  "homepage": "https://github.com/crunchy-amarillo/digi4docs#readme",
   "dependencies": {
     "bootstrap": "^5.1.3",
     "sass": "^1.49.9"

@@ -113,7 +113,7 @@
                     <div class="card-text">
                         <div th:each="course, itStat: ${courses}" class="p-2">
                             <div class="d-flex">
-                                <div th:if="${!#strings.isEmpty(course.icon)}" class="bg-white">
+                                <div th:if="${!#strings.isEmpty(course.icon)}">
                                     <i th:classappend="${course.icon}" class="me-3 icon"></i>
                                 </div>
                                 <div class="flex-grow-1">
@@ -122,7 +122,7 @@
                                         Kurseinheiten
                                     </div>
                                 </div>
-                                <div class="bg-white">
+                                <div>
                                     <a th:href="@{'/public/course/' + ${course.id}}"
                                        class="btn btn-outline-secondary">
                                         <i class="bi bi-eye-fill"></i>

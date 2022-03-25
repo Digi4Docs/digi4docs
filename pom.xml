@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>de</groupId>
-    <artifactId>digidoc</artifactId>
+    <artifactId>digi4docs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>DigiDoc</name>
-    <description>DigiDoc - documentation for digital skills in schools</description>
+    <name>Digi4Docs</name>
+    <description>Digi4Docs - documentation for digital skills in schools</description>
     <properties>
         <java.version>11</java.version>
     </properties>

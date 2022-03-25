@@ -96,7 +96,7 @@
         </div>
         <div class="col-md-3 mb-3 ps-md-3">
             <label class="mb-2">Rollen</label>
-            <div class="d-block" th:each="roleOpt : ${T(de.digidoc.model.Role).values()}">
+            <div class="d-block" th:each="roleOpt : ${T(de.digi4docs.model.Role).values()}">
                 <input
                         th:classappend="${#fields.hasErrors('roles') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                         name="roles"

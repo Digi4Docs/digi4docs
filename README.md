@@ -1,4 +1,4 @@
-# digidoc
+# digi4docs
 
 # run java
 ./mvnw spring-boot:run
