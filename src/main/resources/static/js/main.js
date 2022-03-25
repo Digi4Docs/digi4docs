@@ -13,18 +13,48 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     // setup data tables
-    let tables = document.querySelectorAll("table.simple-datatables");
-    for (const table of tables) {
-        new simpleDatatables.DataTable(table, {
-            perPageSelect: [5, 10, 25, 50, 100],
-            labels: {
-                placeholder: "Suchen...",
-                perPage: "{select} Einträge pro Seite",
-                noRows: "Keine Einträge gefunden",
-                info: "Zeige {start} bis {end} von {rows} Einträgen",
-            }
-        });
-    }
+    $('table.datatables tfoot th').each(function () {
+        var title = $(this).text();
+        if ("" !== title) {
+            $(this).html('<input type="text" class="form-control" placeholder="Durchsuchen" />');
+        }
+    });
+
+    $('table.datatables').DataTable({
+        "dom": "<'row'<'col-sm-12 mb-2'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
+        stateSave: true,
+        language: {
+            paginate: {
+                first: "Erste",
+                last: "Letzte",
+                previous: "Vorherige",
+                next: "Nächste"
+            },
+            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+            "zeroRecords": "Keine Einträge gefunden",
+            "info": "Seite _PAGE_ von _PAGES_",
+            "infoEmpty": "Keine Einträge gefunden",
+            "infoFiltered": "(gefiltert von _MAX_ total Gesamteinträgen)"
+        },
+        initComplete: function () {
+            var tableRow = $($(this).find('tfoot tr'));
+            $($(this).find('thead')).append(tableRow);
+
+            // Apply the search
+            this.api().columns().every(function () {
+                var that = this;
+
+                $('input', this.footer()).on('keyup change clear', function () {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        }
+    });
 
     // ensure forms will not be resubmitted on page reload
     if (window.history.replaceState) {

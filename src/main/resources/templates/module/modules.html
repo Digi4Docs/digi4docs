@@ -47,7 +47,7 @@
                         </div>
                     </div>
 
-                    <table class="table table-striped table-hover simple-datatables border mt-2 mb-1" id="moduleList">
+                    <table class="table table-striped table-hover datatables border mt-2 mb-1" id="moduleList">
                         <thead>
                         <tr>
                             <th data-sortable="false" class="table-column-small">Icon</th>
@@ -69,7 +69,7 @@
                             <td>[[${module.subTitle}]]</td>
                             <td>
                                 <span th:if="${module.isActive}" class="badge bg-success">aktiv</span>
-                                <span th:unless="${module.isActive}" class="badge bg-danger">inaktiv</span>
+                                <span th:unless="${module.isActive}" class="badge bg-danger">gesperrt</span>
                             </td>
                             <td class="text-end">
                                 <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/' + ${module.id})}"
@@ -80,6 +80,15 @@
                         </tr>
 
                         </tbody>
+                        <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>Titel</th>
+                            <th>Untertitel</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

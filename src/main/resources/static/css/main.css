@@ -26161,6 +26161,10 @@ legend {
   max-height: calc(100vh - 7.5rem);
 }
 
+.dataTables_length {
+  margin-bottom: 1em;
+}
+
 /* Scrollbars */
 /* Works on Firefox */
 * {
