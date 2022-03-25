@@ -39,7 +39,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-4 mb-4 pe-4">
-                    <label for="subjectId" class="form-label">Fach</label>
+                    <label for="subjectId" class="form-label">In diesem Fach habe ich die Aufgabe bearbeitet:</label>
                     <select th:field="*{subjectId}"
                             th:classappend="${#fields.hasErrors('subjectId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                             class="form-control" name="subjectId" id="subjectId"
@@ -51,7 +51,7 @@
                          th:errors="*{subjectId}"></div>
                 </div>
                 <div class="col-12 col-md-4 mb-4 pe-4">
-                    <label for="teacherId" class="form-label">Lehrkraft</label>
+                    <label for="teacherId" class="form-label">Das war bei dieser Lehrkraft:</label>
                     <select th:field="*{teacherId}"
                             th:classappend="${#fields.hasErrors('teacherId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                             class="form-control" name="teacherId" id="teacherId"
@@ -66,7 +66,7 @@
                          th:errors="*{teacherId}"></div>
                 </div>
                 <div class="col-12 col-md-4 mb-4">
-                    <label for="date" class="form-label">Datum</label>
+                    <label for="date" class="form-label">Und an diesem Tag:</label>
                     <input type="date" th:field="*{date}" class="form-control"
                            th:classappend="${#fields.hasErrors('date') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                            id="date" name="date"
@@ -77,7 +77,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <label for="solution" class="form-label">Lernaufgabe / Projekt</label>
+                    <label for="solution" class="form-label">So habe ich die Lernaufgabe / das Projekt gelöst:</label>
                     <textarea th:field="*{solution}" class="form-control" rows="10"
                               th:classappend="${#fields.hasErrors('solution') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                               id="solution" name="solution"

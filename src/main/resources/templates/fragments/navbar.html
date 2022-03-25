@@ -55,12 +55,6 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item me-2" sec:authorize="hasAuthority('TEACHER') and !hasAuthority('ADMIN')">
-                    <a class="nav-link"
-                       th:classappend="${#httpServletRequest.requestURI.startsWith('/task') ? 'active' : ''}"
-                       th:href="@{/tasks}">
-                        <i class="bi bi-clipboard-check-fill"></i> Meine Aufgaben</a>
-                </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link"
                        th:classappend="${#httpServletRequest.requestURI.startsWith('/course') or #httpServletRequest.requestURI.startsWith('/module') ? 'active' : ''}"
