@@ -56,6 +56,9 @@ public class StatisticController extends AbstractController {
         List<Course> courses = courseService.findAll();
         model.addAttribute("courses", courses);
 
+        getBreadcrumbs(true).put("/statistic", "Statistik");
+        showBreadcrumbs(model);
+
         return "statistic/statistic";
     }
 }
