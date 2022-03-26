@@ -28,6 +28,8 @@ public interface UserTaskRepository extends JpaRepository<UserTask, Integer> {
 
     List<UserTask> findByStatus(TaskStatus taskStatus);
 
+    List<UserTask> findByUserIdAndStatus(int userId, TaskStatus taskStatus);
+
     @Query("SELECT COUNT(u.id) as total, u.classYear as year, ut.task.id as task FROM UserTask ut, User u, UserRole ur WHERE ut.user.id = u.id AND ur.user.id = u.id AND ut.task.id IN (:taskIds) AND ur.role = 'STUDENT' AND ut.status = 'DONE' AND ut.doneAt >= :start AND ut.doneAt <= :end AND u.classYear IS NOT NULL AND u.isActive = true GROUP BY u.classYear, ut.task")
     List<TaskDoneCountResult> findTaskCountGroupedByYear(List<Integer> taskIds, LocalDateTime start, LocalDateTime end);
 }

@@ -94,6 +94,14 @@ public class UserTaskService {
         return userTaskRepository.findTaskCountGroupedByYear(taskIds, localDateStart, localDateEnd);
     }
 
+    public List<UserTask> findRejectedOfCurrentUser() {
+        User currentUser = userService.findCurrentUser();
+        List<UserTask> userTasks = userTaskRepository.findByUserIdAndStatus(currentUser.getId(), TaskStatus.REJECTED);
+        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+                Comparator.naturalOrder())));
+        return userTasks;
+    }
+
     public UserTask save(UserTask userTask) {
         if (null == userTask.getUser()) {
             userTask.setUser(userService.findCurrentUser());

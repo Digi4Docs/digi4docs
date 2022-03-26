@@ -8,6 +8,7 @@ import de.digi4docs.service.CourseService;
 import de.digi4docs.service.UserService;
 import de.digi4docs.service.UserTaskService;
 import de.digi4docs.util.ProgressCountProvider;
+import de.digi4docs.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,10 @@ public class HomeController {
             Map<Course, Integer> coursePersonTaskCount = progressCountProvider.getPersonalCourseTaskCountMap();
             model.addAttribute("personalCourses", coursePersonTaskCount);
             model.addAttribute("courseTaskCounts", progressCountProvider.getGeneralCourseTaskCountMap(coursePersonTaskCount.keySet()));
+
+            List<UserTask> rejectedOfCurrentUser = userTaskService.findRejectedOfCurrentUser();
+            model.addAttribute("rejectedTasks", rejectedOfCurrentUser);
+            model.addAttribute("rejectTaskCourses", RecursiveHandler.getUserTaskCourseMap(rejectedOfCurrentUser));
         }
 
         boolean showTeacherTasks = userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.TEACHER);

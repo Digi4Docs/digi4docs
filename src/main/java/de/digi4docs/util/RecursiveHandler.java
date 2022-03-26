@@ -30,6 +30,20 @@ public class RecursiveHandler {
         }
     }
 
+    public static Map<Integer, Course> getUserTaskCourseMap(List<UserTask> userTasks) {
+        Map<Integer, Course> courseMap = new HashMap<>();
+        userTasks.forEach(userTask -> {
+            Module module = userTask.getTask().getModule();
+            while (null != module.getParent()) {
+                module = module.getParent();
+            }
+            if (null != module.getCourse() && !courseMap.containsKey(userTask.getId())) {
+                courseMap.put(userTask.getId(), module.getCourse());
+            }
+        });
+        return courseMap;
+    }
+
     public static List<Course> getCourses(List<UserTask> userTasks) {
         Map<Integer, Course> courseMap = new HashMap<>();
         userTasks.forEach(userTask -> {

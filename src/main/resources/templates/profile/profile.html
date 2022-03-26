@@ -68,7 +68,7 @@
             <div class="row">
                 <div class="col-md-6 mb-3 pe-md-3">
                     <label class="form-label">Jahrgang</label>
-                    <input type="number" class="form-control" name="classYear" disabled/>
+                    <input type="number" class="form-control" name="classYear" th:value="${user.classYear}" disabled/>
                 </div>
                 <div class="col-md-3 mb-3 ps-md-3">
                     <label for="classNumber" class="form-label">Klasse (Zahl)</label>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Klasse (Buchstabe)</label>
-                    <input type="text" class="form-control" name="classIdentifier" readonly/>
+                    <input type="text" class="form-control" name="classIdentifier" th:value="${user.classIdentifier}" readonly/>
                 </div>
             </div>
         </fieldset>
