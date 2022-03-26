@@ -1,5 +1,6 @@
 package de.digi4docs.service;
 
+import de.digi4docs.dto.StudentCountResult;
 import de.digi4docs.model.Role;
 import de.digi4docs.model.User;
 import de.digi4docs.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +55,10 @@ public class UserService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
         return userRepository.findByEmail(principal.getUsername());
+    }
+
+    public List<StudentCountResult> findStudentCountGroupedByYears() {
+        return userRepository.findStudentCountGroupedByYear();
     }
 
     public boolean hasCurrentUserRole(Role role) {

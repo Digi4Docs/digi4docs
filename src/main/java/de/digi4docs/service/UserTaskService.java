@@ -1,5 +1,6 @@
 package de.digi4docs.service;
 
+import de.digi4docs.dto.TaskDoneCountResult;
 import de.digi4docs.model.TaskStatus;
 import de.digi4docs.model.User;
 import de.digi4docs.model.UserTask;
@@ -7,9 +8,11 @@ import de.digi4docs.repository.UserTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class UserTaskService {
@@ -78,6 +81,13 @@ public class UserTaskService {
         userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
                 Comparator.naturalOrder())));
         return userTasks;
+    }
+
+    public List<TaskDoneCountResult> findDoneTaskCount(List<Integer> taskIds, String start, String end)
+    {
+        LocalDateTime localDateStart = LocalDate.parse(start).atStartOfDay();
+        LocalDateTime localDateEnd = LocalDate.parse(end).atTime(LocalTime.MAX);
+        return userTaskRepository.findTaskCountGroupedByYear(taskIds, localDateStart, localDateEnd);
     }
 
     public UserTask save(UserTask userTask) {

@@ -25,7 +25,7 @@ public class RecursiveHandler {
                 if (null != module.getTasks() && !module.getTasks().isEmpty()) {
                     tasks.addAll(module.getTasks());
                 }
-                getNestedTasks(modules, tasks);
+                getNestedTasks(module.getModules(), tasks);
             });
         }
     }

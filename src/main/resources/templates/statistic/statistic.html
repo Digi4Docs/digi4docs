@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<body>
+<head>
+    <title>Statistik</title>
+</head>
+<body>
+<div layout:fragment="title" class="mb-3">Statistik</div>
+
+<div layout:fragment="content">
+    <form th:action="@{/statistic}" method="post" th:object="${statisticForm}"
+          class="mt-4 border-top pt-4">
+
+        <div class="alert alert-success mb-3" th:if="${success}">Die Daten wurden exportiert. Öffne die CSV-Datei, um
+            Sie dir anzusehen.
+        </div>
+        <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+        <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+            <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+        </div>
+
+        <fieldset class="border p-3">
+            <legend class="mb-4">Export</legend>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <label for="courseId" class="form-label">Kurs:</label>
+                    <select th:field="*{courseId}" required
+                            th:classappend="${#fields.hasErrors('courseId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                            class="form-control" name="courseId" id="courseId">
+                        <option th:each="course: ${courses}" th:value="${course.id}" th:class="${course.isActive ? '' : 'inactive'}">
+                            [[ ${course.title} ]]
+                        </option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('courseId')}"
+                         th:errors="*{courseId}"></div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-6 col-md-3 mb-3 pe-md-3">
+                    <label for="startDate" class="form-label">Zeitraum von</label>
+                    <input type="date" th:field="*{startDate}" class="form-control" data-last-year="true" required
+                           th:classappend="${#fields.hasErrors('startDate') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="startDate" name="startDate"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}"
+                         th:errors="*{startDate}"></div>
+                </div>
+                <div class="col-6 col-md-3 ps-md-3">
+                    <label for="endDate" class="form-label">bis</label>
+                    <input type="date" th:field="*{endDate}" class="form-control" data-now="true" required
+                           th:classappend="${#fields.hasErrors('endDate') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="endDate" name="endDate"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}"
+                         th:errors="*{endDate}"></div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-download"></i>
+                        Export starten
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>

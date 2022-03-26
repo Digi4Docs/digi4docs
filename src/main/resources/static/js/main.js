@@ -12,6 +12,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
+    // setup initial dates in forms
+    let dateInputsLastYear = document.querySelectorAll("input[type='date'][data-last-year='true']");
+    for (const dateInput of dateInputsLastYear) {
+        if ("" === dateInput.value) {
+            dateInput.valueAsDate = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+        }
+    }
+    let dateInputsNow = document.querySelectorAll("input[type='date'][data-now='true']");
+    for (const dateInput of dateInputsNow) {
+        if ("" === dateInput.value) {
+            dateInput.valueAsDate = new Date();
+        }
+    }
+
     // setup data tables
     $('table.datatables tfoot th').each(function () {
         var title = $(this).text();

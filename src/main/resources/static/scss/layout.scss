@@ -60,6 +60,11 @@ legend {
   margin-bottom: 1em;
 }
 
+select option.inactive {
+  color: var(--bs-gray-4  00);
+  font-style: italic;
+}
+
 /* Scrollbars */
 /* Works on Firefox */
 * {

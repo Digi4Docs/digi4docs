@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,9 @@ public class CourseService {
     }
 
     public List<Course> findAll() {
-        return courseRepository.findAll();
+        List<Course> courses = courseRepository.findAll();
+        courses.sort(Comparator.comparing(Course::getTitle));
+        return courses;
     }
 
     public List<Course> findAllActive() {
