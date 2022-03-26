@@ -38,7 +38,7 @@ public class UserController extends AbstractController {
     @Autowired
     private UserTaskService userTaskService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @GetMapping("/users")
     public String users(Model model) {
         model.addAttribute("users", userService.findAll());
@@ -87,7 +87,7 @@ public class UserController extends AbstractController {
         return "user/import";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @GetMapping("/user/{id}")
     public String user(@PathVariable int id, UserEditForm userEditForm, Model model) {
         return showUserPage(id, userEditForm, model, true);
@@ -132,7 +132,7 @@ public class UserController extends AbstractController {
         return "user/user";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @GetMapping("/user/confirm-delete/{id}")
     public String confirmDeleteUser(@PathVariable int id, Model model) {
         Optional<User> userOptional = userService.findById(id);
@@ -152,7 +152,7 @@ public class UserController extends AbstractController {
         return "user/delete";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable int id) {
         Optional<User> userOptional = userService.findById(id);
@@ -166,7 +166,7 @@ public class UserController extends AbstractController {
         return "redirect:/users";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @GetMapping("/user")
     public String user(UserNewForm userNewForm, Model model) {
         addBasicBreadcrumbs();
@@ -176,7 +176,7 @@ public class UserController extends AbstractController {
         return "user/new-user";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @PostMapping("/user")
     public String addUser(@Valid UserNewForm userNewForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -197,7 +197,7 @@ public class UserController extends AbstractController {
         return "redirect:/users";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @PostMapping("/user/{id}")
     public String updateUser(@PathVariable int id, @Valid UserEditForm userEditForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {

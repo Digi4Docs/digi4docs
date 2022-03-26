@@ -123,12 +123,14 @@ public class TaskReviewController extends AbstractController {
         UserTask userTask = userTaskOptional.get();
 
         boolean isAdmin = userService.hasCurrentUserRole(Role.ADMIN);
-        if (!isAdmin) {
-            User currentUser = userService.findCurrentUser();
-            if (!userTask.getTeacher().getId().equals(currentUser.getId())) {
-                return "redirect:/tasks";
-            }
+        User currentUser = userService.findCurrentUser();
+        boolean isOwnTask = userTask.getTeacher().getId().equals(currentUser.getId());
+        model.addAttribute("isOwnTask", isOwnTask);
+
+        if (!isAdmin && !isOwnTask) {
+            return "redirect:/tasks";
         }
+
 
         if (initFormData) {
             taskReviewForm.setTeacherId(userTask.getTeacher().getId());

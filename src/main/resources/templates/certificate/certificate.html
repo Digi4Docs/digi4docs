@@ -15,7 +15,7 @@
     <div th:insert="fragments/breadcrumbs" class="d-print-none"></div>
 </div>
 <div class="bg-light p-3 d-print-p-none">
-    <div sec:authorize="hasAuthority('ADMIN')" class="d-print-none w-100 text-end">
+    <div sec:authorize="hasAuthority('ADMIN') or  hasAuthority('USERS')" class="d-print-none w-100 text-end">
         <button type="button" class="btn btn-primary" th:onclick="window.print()">
             <i class="bi bi-printer-fill"></i>
             Drucken

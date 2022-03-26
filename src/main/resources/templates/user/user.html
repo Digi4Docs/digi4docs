@@ -16,7 +16,7 @@
 
         <div th:insert="user/user-form(showPasswordHint=true)"></div>
 
-        <fieldset class="border rounded p-3 mt-4" th:if="${isStudent}" sec:authorize="hasAuthority('ADMIN')">
+        <fieldset class="border rounded p-3 mt-4" th:if="${isStudent}" sec:authorize="hasAuthority('ADMIN') or hasAuthority('USERS')">
             <legend>Aktive Kurse</legend>
             <div class="row" th:unless="${#lists.size(courses) > 0}">
                 <div class="col-12">

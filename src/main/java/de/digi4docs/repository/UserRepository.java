@@ -20,6 +20,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     List<User> findDistinctByRolesRoleOrRolesRoleAndIsActiveTrueOrderByLastnameAscFirstnameAsc(Role teacherRole, Role adminRole);
 
-    @Query("SELECT COUNT(u.id) as total, u.classYear as year FROM User u, UserRole ur WHERE ur.user.id = u.id AND ur.role = 'STUDENT' AND u.classYear IS NOT NULL GROUP BY u.classYear")
+    @Query("SELECT COUNT(u.id) as total, u.classYear as year FROM User u, UserRole ur WHERE ur.user.id = u.id AND ur.role = 'STUDENT' AND u.isActive = true AND u.classYear IS NOT NULL GROUP BY u.classYear")
     List<StudentCountResult> findStudentCountGroupedByYear();
 }

@@ -33,7 +33,7 @@ public class CertificateController extends AbstractController {
         return showPage(courseId, model, currentUser, true);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or  hasAuthority('USERS')")
     @GetMapping("/public/certificate/{courseId}/{userId}")
     public String certificate(@PathVariable int courseId, @PathVariable int userId, Model model) {
         Optional<User> userOptional = userService.findById(userId);

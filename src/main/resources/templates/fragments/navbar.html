@@ -61,7 +61,7 @@
                        th:href="@{/courses}">
                         <i class="bi bi-collection-fill"></i> Kurse</a>
                 </li>
-                <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
+                <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN') or hasAuthority('USERS')">
                     <a class="nav-link"
                        th:classappend="${#httpServletRequest.requestURI.startsWith('/user') ? 'active' : ''}"
                        th:href="@{/users}">

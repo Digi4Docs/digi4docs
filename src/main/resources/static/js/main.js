@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $('table.datatables').DataTable({
         "dom": "<'row'<'col-sm-12 mb-2'tr>>" +
             "<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
-        stateSave: true,
+        //stateSave: true,
         language: {
             paginate: {
                 first: "Erste",
