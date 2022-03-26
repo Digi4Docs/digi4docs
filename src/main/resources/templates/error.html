@@ -15,6 +15,11 @@
         <h5 class="card-title mb-4">
             Ohje, etwas ist schiefgegangen.
         </h5>
+        <div class="row mb-4">
+            <div class="col-12">Vielleicht kannst du ja mit dieser Fehlermeldung etwas anfangen:
+                <div class="text-danger">[[${error}]]</div>
+            </div>
+        </div>
         <div>
             <a onclick="window.history.back()" class="btn btn-primary me-2">Einen Schritt zurück</a>
             <a th:href="${'/home'}" class="btn btn-secondary">Zur Startseite</a>

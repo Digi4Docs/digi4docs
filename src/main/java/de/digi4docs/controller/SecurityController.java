@@ -4,6 +4,7 @@ import de.digi4docs.form.NewPasswordForm;
 import de.digi4docs.form.PasswordForgottenForm;
 import de.digi4docs.model.PasswordForgotten;
 import de.digi4docs.model.User;
+import de.digi4docs.service.ConfigService;
 import de.digi4docs.service.PasswordForgottenService;
 import de.digi4docs.service.UserService;
 import de.digi4docs.util.mail.MailProvider;
@@ -24,6 +25,8 @@ import java.util.Optional;
 @Controller
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SecurityController {
+    @Autowired
+    private ConfigService configService;
 
     @Autowired
     private MailProvider mailProvider;
@@ -35,12 +38,14 @@ public class SecurityController {
     private UserService userService;
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        addConfigInfo(model);
         return "security/login";
     }
 
     @GetMapping("/reset-password")
-    public String resetPassword(PasswordForgottenForm form) {
+    public String resetPassword(PasswordForgottenForm form, Model model) {
+        addConfigInfo(model);
         return "security/reset-password";
     }
 
@@ -48,7 +53,7 @@ public class SecurityController {
     @PostMapping("/reset-password")
     public String resetPasswordSubmit(@Valid PasswordForgottenForm form, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return resetPassword(form);
+            return resetPassword(form, model);
         }
 
         User user = userService.findActiveUserByEmail(form.getEmail()).get();
@@ -58,7 +63,8 @@ public class SecurityController {
         passwordForgottenService.save(passwordForgotten);
 
         mailProvider.sendPasswordForgottenMail(passwordForgotten);
-        
+
+        addConfigInfo(model);
         model.addAttribute("success", true);
         return "security/reset-password";
     }
@@ -67,6 +73,7 @@ public class SecurityController {
     public String newPassword(@PathVariable String hash, NewPasswordForm form, Model model) {
         validateHash(hash, model);
         model.addAttribute("hash", hash);
+        addConfigInfo(model);
 
         return "security/new-password";
     }
@@ -84,6 +91,7 @@ public class SecurityController {
         passwordForgottenService.delete(passwordForgotten);
         model.addAttribute("hash", hash);
         model.addAttribute("success", true);
+        addConfigInfo(model);
 
         return "security/new-password";
     }
@@ -102,5 +110,10 @@ public class SecurityController {
         }
 
         return passwordForgotten;
+    }
+
+    private void addConfigInfo(Model model) {
+        model.addAttribute("imprintUrl", configService.getImprintUrl());
+        model.addAttribute("imprintInstitution", configService.getImprintInstitution());
     }
 }

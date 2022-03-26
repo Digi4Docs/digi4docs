@@ -36,5 +36,11 @@ public class ConfigForm {
     @Size(max = 255, message = "Der Wert darf maximal 255 Zeichen lang sein.")
     protected String baseUrl;
 
+    @NotEmpty(message = "Der Wert für die Instititution für das Impressums darf nicht leer sein.")
+    @Size(max = 255, message = "Der Wert darf maximal 255 Zeichen lang sein.")
+    protected String imprintInstitution;
 
+    @NotEmpty(message = "Der Wert für die Verlinkung des Impressums darf nicht leer sein.")
+    @Size(max = 255, message = "Der Wert darf maximal 255 Zeichen lang sein.")
+    protected String imprintUrl;
 }
