@@ -16,6 +16,8 @@ public class ConfigService {
     public static String KEY_MAIL_PASSWORD = "mail.password";
     public static String KEY_MAIL_SENDER = "mail.sender";
     public static String KEY_SERVER_BASE_URL = "base.url";
+    public static String KEY_IMPRINT_URL = "imprint.url";
+    public static String KEY_IMPRINT_INSTITUTION = "imprint.institution";
 
     private final ConfigRepository configRepository;
 
@@ -59,6 +61,14 @@ public class ConfigService {
 
     public String getServerBaseUrl() {
         return getStringValue(KEY_SERVER_BASE_URL, "Server base url");
+    }
+
+    public String getImprintUrl() {
+        return getStringValue(KEY_IMPRINT_URL, "Imprint url");
+    }
+
+    public String getImprintInstitution() {
+        return getStringValue(KEY_IMPRINT_INSTITUTION, "Imprint institution");
     }
 
     private String getStringValue(String key, String exceptionIdentifier) {

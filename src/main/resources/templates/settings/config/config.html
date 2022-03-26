@@ -82,8 +82,36 @@
                     <input type="text" maxlength="255" th:field="*{baseUrl}" class="form-control"
                            th:classappend="${#fields.hasErrors('baseUrl') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                            id="baseUrl" name="baseUrl"/>
+                    <div class="text-muted small">
+                        Die URL wird für die Passwort-vergessen-Funktion benötigt. Sie wird in der E-Mail, welche dafür
+                        verschickt wird genutzt. Sie sollte die Basis-URL der Webseite sein - also die URL bis zum ".de".
+                    </div>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('baseUrl')}"
                          th:errors="*{baseUrl}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="imprintInstitution" class="form-label">Institution für das Impressum</label>
+                    <input type="text" maxlength="255" th:field="*{imprintInstitution}" class="form-control"
+                           th:classappend="${#fields.hasErrors('imprintInstitution') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="imprintInstitution" name="imprintInstitution"/>
+                    <div class="text-muted small">
+                        Das Impressum wird auf der Login-Seite verlinkt, da es sich dabei um ein öffentliche Seite handelt.
+                        Es sollte auf ein externes Impressum bspw. das der Homepage der schulischen Einrichtung verweisen.
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('imprintInstitution')}"
+                         th:errors="*{imprintInstitution}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 pe-md-3">
+                    <label for="imprintUrl" class="form-label">Verlinkung zum Impressum</label>
+                    <input type="text" maxlength="255" th:field="*{imprintUrl}" class="form-control"
+                           th:classappend="${#fields.hasErrors('imprintUrl') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="imprintUrl" name="imprintUrl"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('imprintUrl')}"
+                         th:errors="*{imprintUrl}"></div>
                 </div>
             </div>
         </fieldset>
