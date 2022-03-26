@@ -22,7 +22,7 @@ public class TaskController extends AbstractModuleController {
     private TaskService taskService;
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{id}/tasks")
     public String tasks(@PathVariable int id, Model model) {
         Module parentModule = moduleService.findById(id).get();
@@ -37,7 +37,7 @@ public class TaskController extends AbstractModuleController {
         return "task/tasks";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{id}/task")
     public String task(@PathVariable int id, TaskForm taskForm, Model model) {
         Module module = moduleService.findById(id).get();
@@ -48,7 +48,7 @@ public class TaskController extends AbstractModuleController {
         return "task/new-task";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/module/{id}/task")
     public String add(@PathVariable int id, @Valid TaskForm taskForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -69,13 +69,13 @@ public class TaskController extends AbstractModuleController {
         return "redirect:/module/" + parentModule.getId() + "/tasks";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{parentId}/task/{id}")
     public String task(@PathVariable int parentId, @PathVariable int id, TaskForm taskForm, Model model) {
         return showDetailPage(parentId, id, taskForm, model, true);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/module/{parentId}/task/{id}")
     public String update(@PathVariable int parentId, @PathVariable int id, @Valid TaskForm taskForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -99,7 +99,7 @@ public class TaskController extends AbstractModuleController {
         return showDetailPage(parentId, id, taskForm, model, false);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{parentId}/task/confirm-delete/{id}")
     public String confirmDelete(@PathVariable int parentId, @PathVariable int id, Model model) {
         Optional<Task> taskOptional = taskService.findById(id);
@@ -119,7 +119,7 @@ public class TaskController extends AbstractModuleController {
         return "task/delete";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{parentId}/task/delete/{id}")
     public String delete(@PathVariable int parentId, @PathVariable int id) {
         Optional<Task> taskOptional = taskService.findById(id);

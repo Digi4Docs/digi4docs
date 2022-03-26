@@ -55,7 +55,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
+                <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN') or hasAuthority('COURSES')">
                     <a class="nav-link"
                        th:classappend="${#httpServletRequest.requestURI.startsWith('/course') or #httpServletRequest.requestURI.startsWith('/module') ? 'active' : ''}"
                        th:href="@{/courses}">

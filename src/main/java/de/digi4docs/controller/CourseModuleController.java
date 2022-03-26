@@ -21,7 +21,7 @@ public class CourseModuleController extends AbstractModuleController {
     @Autowired
     private CourseService courseService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/{id}/modules")
     public String modules(@PathVariable int id, Model model) {
         Course course = courseService.findById(id).get();
@@ -33,7 +33,7 @@ public class CourseModuleController extends AbstractModuleController {
         return "module/modules";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/{id}/module")
     public String module(@PathVariable int id, ModuleForm moduleForm, Model model) {
         Course course = courseService.findById(id).get();
@@ -46,7 +46,7 @@ public class CourseModuleController extends AbstractModuleController {
         return "module/new-module";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/course/{id}/module")
     public String add(@PathVariable int id, @Valid ModuleForm moduleForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -68,13 +68,13 @@ public class CourseModuleController extends AbstractModuleController {
         return "redirect:/course/" + course.getId() + "/modules";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/{courseId}/module/{id}")
     public String course(@PathVariable int courseId, @PathVariable int id, ModuleForm moduleForm, Model model) {
         return showDetailPage(courseId, id, moduleForm, model, true);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/course/{courseId}/module/{id}")
     public String update(@PathVariable int courseId, @PathVariable int id, @Valid ModuleForm moduleForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -98,7 +98,7 @@ public class CourseModuleController extends AbstractModuleController {
         return showDetailPage(courseId, id, moduleForm, model, false);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/{courseId}/module/confirm-delete/{id}")
     public String confirmDelete(@PathVariable int courseId, @PathVariable int id, Model model) {
         Optional<Module> moduleOptional = moduleService.findById(id);
@@ -117,7 +117,7 @@ public class CourseModuleController extends AbstractModuleController {
         return "module/delete";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/{courseId}/module/delete/{id}")
     public String delete(@PathVariable int courseId, @PathVariable int id) {
         Optional<Module> moduleOptional = moduleService.findById(id);

@@ -1,11 +1,11 @@
 package de.digi4docs.model;
 
 public enum Role {
-    ADMIN("Administrator"),
+    STUDENT("Schüler*in"),
     TEACHER("Lehrkraft"),
+    ADMIN("Administrator"),
     COURSES("Kurs-Organisation"),
-    USERS("Benutzerverwaltung"),
-    STUDENT("Schüler*in");
+    USERS("Benutzerverwaltung");
 
     private final String displayValue;
 

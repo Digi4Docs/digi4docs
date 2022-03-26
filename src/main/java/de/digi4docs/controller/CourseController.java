@@ -20,7 +20,7 @@ public class CourseController extends AbstractController {
     @Autowired
     private CourseService courseService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/courses")
     public String courses(Model model) {
         model.addAttribute("courses", courseService.findAll());
@@ -31,7 +31,7 @@ public class CourseController extends AbstractController {
         return "course/courses";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course")
     public String course(CourseForm courseForm, Model model) {
         getBreadcrumbs(true).put("/courses", "Kurse");
@@ -41,7 +41,7 @@ public class CourseController extends AbstractController {
         return "course/new-course";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/course")
     public String add(@Valid CourseForm courseForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -60,13 +60,13 @@ public class CourseController extends AbstractController {
         return "redirect:/courses";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/{id}")
     public String course(@PathVariable int id, CourseForm courseForm, Model model) {
         return showDetailPage(id, courseForm, model, true);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/course/{id}")
     public String update(@PathVariable int id, @Valid CourseForm courseForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -90,7 +90,7 @@ public class CourseController extends AbstractController {
         return showDetailPage(id, courseForm, model, false);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/confirm-delete/{id}")
     public String confirmDelete(@PathVariable int id, Model model) {
         Optional<Course> courseOptional = courseService.findById(id);
@@ -109,7 +109,7 @@ public class CourseController extends AbstractController {
         return "course/delete";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/delete/{id}")
     public String delete(@PathVariable int id) {
         Optional<Course> courseOptional = courseService.findById(id);
