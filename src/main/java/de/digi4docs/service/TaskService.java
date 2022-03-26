@@ -5,6 +5,7 @@ import de.digi4docs.model.User;
 import de.digi4docs.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,15 +27,69 @@ public class TaskService {
     }
 
     public List<Task> findAllByModule(Integer moduleId) {
-        return taskRepository.findAllByModuleIdOrderByTitle(moduleId);
+        return taskRepository.findAllByModuleIdOrderByOrderPositionAscTitleAsc(moduleId);
     }
 
+    public Integer findNextOrder(Integer moduleId) {
+        Optional<Task> task = taskRepository.findFirstByModuleIdOrderByOrderPositionDesc(moduleId);
+        if (task.isEmpty() || null == task.get().getOrderPosition()) {
+            return 1;
+        }
+
+        return task.get().getOrderPosition() + 1;
+    }
+
+    public void orderDown(Task task) {
+        if (null == task.getOrderPosition()) {
+            save(task);
+            return;
+        }
+
+        int currentOrderPosition = task.getOrderPosition();
+        Optional<Task> optionalNextTask = taskRepository.findFirstByModuleIdAndOrderPositionGreaterThan(task.getModule().getId(), currentOrderPosition);
+
+        if (optionalNextTask.isPresent()) {
+            int newOrderPosition = optionalNextTask.get().getOrderPosition();
+            optionalNextTask.get().setOrderPosition(null);
+            taskRepository.save(optionalNextTask.get());
+            task.setOrderPosition(newOrderPosition);
+            taskRepository.save(task);
+            optionalNextTask.get().setOrderPosition(currentOrderPosition);
+            taskRepository.save(optionalNextTask.get());
+        }
+    }
+
+    public void orderUp(Task task) {
+        if (null == task.getOrderPosition()) {
+            save(task);
+            return;
+        }
+
+        int currentOrderPosition = task.getOrderPosition();
+        Optional<Task> optionalNextTask = taskRepository.findFirstByModuleIdAndOrderPositionLessThan(task.getModule().getId(), currentOrderPosition);
+
+        if (optionalNextTask.isPresent()) {
+            int newOrderPosition = optionalNextTask.get().getOrderPosition();
+            optionalNextTask.get().setOrderPosition(null);
+            taskRepository.save(optionalNextTask.get());
+            task.setOrderPosition(newOrderPosition);
+            taskRepository.save(task);
+            optionalNextTask.get().setOrderPosition(currentOrderPosition);
+            taskRepository.save(optionalNextTask.get());
+        }
+    }
+
+    @Transactional
     public Task save(Task task) {
         User currentUser = userService.findCurrentUser();
 
         if (null == task.getCreatedBy()) {
             task.setCreatedBy(currentUser);
             task.setCreatedAt(LocalDateTime.now());
+        }
+
+        if (null == task.getOrderPosition()) {
+            task.setOrderPosition(findNextOrder(task.getModule().getId()));
         }
 
         task.setEditedBy(currentUser);

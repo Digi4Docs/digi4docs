@@ -69,5 +69,6 @@ public class Module {
 
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
     @Where(clause = "is_active = '1'")
+    @OrderBy("orderPosition, title")
     private List<Task> tasks;
 }

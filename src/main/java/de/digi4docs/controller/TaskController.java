@@ -133,6 +133,34 @@ public class TaskController extends AbstractModuleController {
         return "redirect:/module/" + parentId + "/tasks";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
+    @GetMapping("/module/{parentId}/task/up/{id}")
+    public String orderUp(@PathVariable int parentId, @PathVariable int id) {
+        Optional<Task> taskOptional = taskService.findById(id);
+        if (taskOptional.isEmpty()) {
+            return "redirect:/module/" + parentId + "/tasks";
+        }
+
+        Task task = taskOptional.get();
+        taskService.orderUp(task);
+
+        return "redirect:/module/" + parentId + "/tasks";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
+    @GetMapping("/module/{parentId}/task/down/{id}")
+    public String orderDown(@PathVariable int parentId, @PathVariable int id) {
+        Optional<Task> taskOptional = taskService.findById(id);
+        if (taskOptional.isEmpty()) {
+            return "redirect:/module/" + parentId + "/tasks";
+        }
+
+        Task task = taskOptional.get();
+        taskService.orderDown(task);
+
+        return "redirect:/module/" + parentId + "/tasks";
+    }
+
     private String showDetailPage(int parentId, int id, TaskForm taskForm, Model model, boolean initFormData) {
 
         Optional<Task> taskOptional = taskService.findById(id);

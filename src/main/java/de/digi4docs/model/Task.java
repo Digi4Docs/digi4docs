@@ -17,11 +17,15 @@ import static javax.persistence.CascadeType.ALL;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "task")
+@Table(name = "task", uniqueConstraints={
+    @UniqueConstraint(columnNames = {"module", "orderPosition"})
+})
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private Integer orderPosition;
 
     @Column(nullable = false, length = 255)
     @NotEmpty(message = "Bitte geben Sie einen Titel für die Aufgabe an.")
