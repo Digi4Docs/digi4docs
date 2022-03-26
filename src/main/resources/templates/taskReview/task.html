@@ -13,7 +13,7 @@
 <div layout:fragment="content">
     <form th:action="@{'/tasks/task/' + ${userTask.id}}"
           method="post" th:object="${taskReviewForm}" novalidate>
-        <div class="alert alert-warning" th:unless="${isOwnTask}">
+        <div class="alert alert-warning" th:unless="${isOwnTask or userTask.status.toString() == 'DONE'}">
             Diese Aufgabe ist dir nicht zugewiesen. Du schaust sie nur als Administrator an.
             Du kannst deshalb zwar die Informationen in der Aufgabe ändern und bspw. eine
             andere Lehrkraft zuordnen, du kannst die Aufgabe aber nicht erledigen.

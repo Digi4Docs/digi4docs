@@ -20,6 +20,8 @@ public interface UserTaskRepository extends JpaRepository<UserTask, Integer> {
 
     List<UserTask> findByTaskIdInAndUserId(List<Integer> taskIds, int userId);
 
+    List<UserTask> findByIdIn(List<Integer> userTaskIds);
+
     List<UserTask> findByUserId(int userId);
 
     List<UserTask> findByTeacherIdAndStatus(int teacherId, TaskStatus taskStatus);

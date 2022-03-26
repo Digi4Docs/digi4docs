@@ -74,4 +74,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
+
+    // add check all functionality to lists
+    let toogleCheckboxes = document.getElementById("toogleCheckboxes");
+    if (null !== toogleCheckboxes) {
+        toogleCheckboxes.addEventListener("click", (event) => {
+            let checkboxes = event.currentTarget.closest("table").querySelectorAll("input[type='checkbox']");
+            for (const checkbox of checkboxes) {
+                checkbox.checked = !checkbox.checked;
+            }
+        });
+    }
 });

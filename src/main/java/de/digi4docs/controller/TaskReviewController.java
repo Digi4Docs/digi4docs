@@ -1,6 +1,7 @@
 package de.digi4docs.controller;
 
 import de.digi4docs.form.TaskReviewForm;
+import de.digi4docs.form.TasksReviewMultipleForm;
 import de.digi4docs.model.Role;
 import de.digi4docs.model.TaskStatus;
 import de.digi4docs.model.User;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -40,7 +42,7 @@ public class TaskReviewController extends AbstractController {
 
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     @GetMapping("/tasks")
-    public String tasks(Model model) {
+    public String tasks(Model model, TasksReviewMultipleForm tasksReviewMultipleForm) {
         model.addAttribute("userTasks", userTaskService.findTransmittedOfCurrentUser());
         model.addAttribute("showAll", false);
         model.addAttribute("showDone", false);
@@ -49,6 +51,24 @@ public class TaskReviewController extends AbstractController {
         showBreadcrumbs(model);
 
         return "taskReview/tasks";
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
+    @GetMapping("/tasks/edit")
+    public String tasksEdit(Model model, TasksReviewMultipleForm tasksReviewMultipleForm) {
+        model.addAttribute("editTasks", true);
+        return tasks(model, tasksReviewMultipleForm);
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
+    @PostMapping("/tasks/edit")
+    public String tasksEditSubmit(TasksReviewMultipleForm tasksReviewMultipleForm) {
+        List<UserTask> userTasks = userTaskService.findByIds(tasksReviewMultipleForm.getUserTaskIds());
+        if (null != userTasks && !userTasks.isEmpty()) {
+            userTaskService.setAllDone(userTasks);
+        }
+
+        return "redirect:/tasks";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

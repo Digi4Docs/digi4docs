@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserTaskService {
@@ -41,6 +42,10 @@ public class UserTaskService {
 
     public List<UserTask> findByTasks(List<Integer> taskIds, User user) {
         return userTaskRepository.findByTaskIdInAndUserId(taskIds, user.getId());
+    }
+
+    public List<UserTask> findByIds(List<Integer> userTaskIds) {
+        return userTaskRepository.findByIdIn(userTaskIds);
     }
 
     public List<UserTask> findByUser() {
@@ -83,8 +88,7 @@ public class UserTaskService {
         return userTasks;
     }
 
-    public List<TaskDoneCountResult> findDoneTaskCount(List<Integer> taskIds, String start, String end)
-    {
+    public List<TaskDoneCountResult> findDoneTaskCount(List<Integer> taskIds, String start, String end) {
         LocalDateTime localDateStart = LocalDate.parse(start).atStartOfDay();
         LocalDateTime localDateEnd = LocalDate.parse(end).atTime(LocalTime.MAX);
         return userTaskRepository.findTaskCountGroupedByYear(taskIds, localDateStart, localDateEnd);
@@ -99,5 +103,13 @@ public class UserTaskService {
         }
 
         return userTaskRepository.save(userTask);
+    }
+
+    public List<UserTask> setAllDone(List<UserTask> userTasks) {
+        for (UserTask userTask : userTasks) {
+            userTask.setStatus(TaskStatus.DONE);
+            userTask.setDoneAt(LocalDateTime.now());
+        }
+        return userTaskRepository.saveAll(userTasks);
     }
 }
