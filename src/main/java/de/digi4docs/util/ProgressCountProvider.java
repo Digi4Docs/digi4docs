@@ -90,16 +90,6 @@ public class ProgressCountProvider {
         for (UserTask userTask : userTasks) {
             Module module = userTask.getTask().getModule();
 
-            // todo: schön machen (duplicate von Zeile 107)
-            if (moduleMap.containsKey(module.getId())) {
-                int currentTaskCount = TaskStatus.DONE.equals(userTask.getStatus()) ? 1 : 0;
-                if (!moduleTaskCounts.containsKey(module.getId())) {
-                    moduleTaskCounts.put(module.getId(), currentTaskCount);
-                } else {
-                    moduleTaskCounts.put(module.getId(), moduleTaskCounts.get(module.getId()) + currentTaskCount);
-                }
-            }
-
             while (null != module.getParent()) {
                 module = module.getParent();
             }
