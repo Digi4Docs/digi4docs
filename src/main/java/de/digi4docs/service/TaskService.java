@@ -46,7 +46,7 @@ public class TaskService {
         }
 
         int currentOrderPosition = task.getOrderPosition();
-        Optional<Task> optionalNextTask = taskRepository.findFirstByModuleIdAndOrderPositionGreaterThan(task.getModule().getId(), currentOrderPosition);
+        Optional<Task> optionalNextTask = taskRepository.findFirstByModuleIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(task.getModule().getId(), currentOrderPosition);
 
         if (optionalNextTask.isPresent()) {
             int newOrderPosition = optionalNextTask.get().getOrderPosition();
@@ -66,7 +66,7 @@ public class TaskService {
         }
 
         int currentOrderPosition = task.getOrderPosition();
-        Optional<Task> optionalNextTask = taskRepository.findFirstByModuleIdAndOrderPositionLessThan(task.getModule().getId(), currentOrderPosition);
+        Optional<Task> optionalNextTask = taskRepository.findFirstByModuleIdAndOrderPositionLessThanOrderByOrderPositionDesc(task.getModule().getId(), currentOrderPosition);
 
         if (optionalNextTask.isPresent()) {
             int newOrderPosition = optionalNextTask.get().getOrderPosition();

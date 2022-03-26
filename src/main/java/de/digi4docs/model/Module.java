@@ -16,11 +16,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "module")
+@Table(name = "module", uniqueConstraints={
+        @UniqueConstraint(columnNames = {"parent_modul", "orderPosition"})
+})
 public class Module {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private Integer orderPosition;
 
     @Column(nullable = false, length = 255)
     @NotEmpty(message = "Bitte geben Sie einen Titel für das Modul an.")
@@ -64,7 +68,7 @@ public class Module {
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     @Where(clause = "is_active = '1'")
-    @OrderBy("title")
+    @OrderBy("orderPosition, title")
     private List<Module> modules;
 
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)

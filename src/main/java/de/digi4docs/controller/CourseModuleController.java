@@ -131,6 +131,34 @@ public class CourseModuleController extends AbstractModuleController {
         return "redirect:/course/" + courseId + "/modules";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
+    @GetMapping("/course/{courseId}/module/up/{id}")
+    public String up(@PathVariable int courseId, @PathVariable int id) {
+        Optional<Module> moduleOptional = moduleService.findById(id);
+        if (moduleOptional.isEmpty()) {
+            return "redirect:/course/" + courseId + "/modules";
+        }
+
+        Module module = moduleOptional.get();
+        moduleService.orderUp(module);
+
+        return "redirect:/course/" + courseId + "/modules";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
+    @GetMapping("/course/{courseId}/module/down/{id}")
+    public String down(@PathVariable int courseId, @PathVariable int id) {
+        Optional<Module> moduleOptional = moduleService.findById(id);
+        if (moduleOptional.isEmpty()) {
+            return "redirect:/course/" + courseId + "/modules";
+        }
+
+        Module module = moduleOptional.get();
+        moduleService.orderDown(module);
+
+        return "redirect:/course/" + courseId + "/modules";
+    }
+
     private String showDetailPage(int courseId, int id, ModuleForm moduleForm, Model model, boolean initFormData) {
         return showDetailPage(courseId, id, moduleForm, model, initFormData, "/course/" + courseId + "/modules", true, false);
     }

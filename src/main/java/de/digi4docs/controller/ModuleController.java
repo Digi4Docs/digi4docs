@@ -127,6 +127,34 @@ public class ModuleController extends AbstractModuleController {
         return "redirect:/module/" + parentId + "/modules";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
+    @GetMapping("/module/{parentId}/module/up/{id}")
+    public String up(@PathVariable int parentId, @PathVariable int id) {
+        Optional<Module> moduleOptional = moduleService.findById(id);
+        if (moduleOptional.isEmpty()) {
+            return "redirect:/module/" + parentId + "/modules";
+        }
+
+        Module module = moduleOptional.get();
+        moduleService.orderUp(module);
+
+        return "redirect:/module/" + parentId + "/modules";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
+    @GetMapping("/module/{parentId}/module/down/{id}")
+    public String down(@PathVariable int parentId, @PathVariable int id) {
+        Optional<Module> moduleOptional = moduleService.findById(id);
+        if (moduleOptional.isEmpty()) {
+            return "redirect:/module/" + parentId + "/modules";
+        }
+
+        Module module = moduleOptional.get();
+        moduleService.orderDown(module);
+
+        return "redirect:/module/" + parentId + "/modules";
+    }
+
     private String showDetailPage(int parentId, int id, ModuleForm moduleForm, Model model, boolean initFormData) {
         return showDetailPage(parentId, id, moduleForm, model, initFormData, "/module/" + parentId + "/modules", false, true);
     }

@@ -60,6 +60,6 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @Where(clause = "is_active = '1'")
-    @OrderBy("title")
+    @OrderBy("orderPosition, title")
     private List<Module> modules;
 }

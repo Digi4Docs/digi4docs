@@ -14,7 +14,7 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     Optional<Task> findFirstByModuleIdOrderByOrderPositionDesc(Integer moduleId);
 
-    Optional<Task> findFirstByModuleIdAndOrderPositionGreaterThan(Integer moduleId, Integer orderPosition);
+    Optional<Task> findFirstByModuleIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer moduleId, Integer orderPosition);
 
-    Optional<Task> findFirstByModuleIdAndOrderPositionLessThan(Integer moduleId, Integer orderPosition);
+    Optional<Task> findFirstByModuleIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer moduleId, Integer orderPosition);
 }

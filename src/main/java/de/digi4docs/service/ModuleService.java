@@ -28,11 +28,70 @@ public class ModuleService {
     }
 
     public List<Module> findAllByCourse(Integer courseId) {
-        return moduleRepository.findAllByCourseIdOrderByTitle(courseId);
+        return moduleRepository.findAllByCourseIdOrderByOrderPositionAscTitleAsc(courseId);
     }
 
     public List<Module> findAllByParentModule(Integer moduleId) {
-        return moduleRepository.findAllByParentIdOrderByTitle(moduleId);
+        return moduleRepository.findAllByParentIdOrderByOrderPositionAscTitleAsc(moduleId);
+    }
+
+    public Integer findNextOrder(Module module) {
+        Optional<Module> optionalModule;
+        if (null == module.getParent()) {
+            optionalModule = moduleRepository.findFirstByCourseIdOrderByOrderPositionDesc(module.getCourse().getId());
+        } else {
+            optionalModule = moduleRepository.findFirstByParentIdOrderByOrderPositionDesc(module.getParent().getId());
+        }
+
+        if (optionalModule.isEmpty() || null == optionalModule.get().getOrderPosition()) {
+            return 1;
+        }
+
+        return optionalModule.get().getOrderPosition() + 1;
+    }
+
+    public void orderDown(Module module) {
+        if (null == module.getOrderPosition()) {
+            save(module);
+            return;
+        }
+
+        int currentOrderPosition = module.getOrderPosition();
+        Optional<Module> optionalNextModule;
+        if (null == module.getParent()) {
+            optionalNextModule = moduleRepository.findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(module.getCourse().getId(), currentOrderPosition);
+        } else {
+            optionalNextModule = moduleRepository.findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(module.getParent().getId(), currentOrderPosition);
+        }
+
+        optionalNextModule.ifPresent(value -> changeOrderPositions(module, value, currentOrderPosition));
+    }
+
+    public void orderUp(Module module) {
+        if (null == module.getOrderPosition()) {
+            save(module);
+            return;
+        }
+
+        int currentOrderPosition = module.getOrderPosition();
+        Optional<Module> optionalNextModule;
+        if (null == module.getParent()) {
+            optionalNextModule = moduleRepository.findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(module.getCourse().getId(), currentOrderPosition);
+        } else {
+            optionalNextModule = moduleRepository.findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(module.getParent().getId(), currentOrderPosition);
+        }
+
+        optionalNextModule.ifPresent(value -> changeOrderPositions(module, value, currentOrderPosition));
+    }
+
+    private void changeOrderPositions(Module currentModule, Module changeModule, int currentOrderPosition) {
+        int newOrderPosition = changeModule.getOrderPosition();
+        changeModule.setOrderPosition(null);
+        moduleRepository.save(changeModule);
+        currentModule.setOrderPosition(newOrderPosition);
+        moduleRepository.save(currentModule);
+        changeModule.setOrderPosition(currentOrderPosition);
+        moduleRepository.save(changeModule);
     }
 
     public Module save(Module module) {
@@ -41,6 +100,10 @@ public class ModuleService {
         if (null == module.getCreatedBy()) {
             module.setCreatedBy(currentUser);
             module.setCreatedAt(LocalDateTime.now());
+        }
+
+        if (null == module.getOrderPosition()) {
+            module.setOrderPosition(findNextOrder(module));
         }
 
         module.setEditedBy(currentUser);

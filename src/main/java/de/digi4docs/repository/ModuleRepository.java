@@ -5,11 +5,24 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ModuleRepository extends JpaRepository<Module, Integer> {
 
-    List<Module> findAllByCourseIdOrderByTitle(Integer courseId);
+    List<Module> findAllByCourseIdOrderByOrderPositionAscTitleAsc(Integer courseId);
 
-    List<Module> findAllByParentIdOrderByTitle(Integer moduleId);
+    List<Module> findAllByParentIdOrderByOrderPositionAscTitleAsc(Integer moduleId);
+
+    Optional<Module> findFirstByParentIdOrderByOrderPositionDesc(Integer parentId);
+
+    Optional<Module> findFirstByCourseIdOrderByOrderPositionDesc(Integer courseId);
+
+    Optional<Module> findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer parentId, Integer orderPosition);
+
+    Optional<Module> findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer courseId, Integer orderPosition);
+
+    Optional<Module> findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer parentId, Integer orderPosition);
+
+    Optional<Module> findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer courseId, Integer orderPosition);
 }
