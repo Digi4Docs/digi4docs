@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-md-3 mb-3 ps-md-3">
                     <label for="classNumber" class="form-label">Klasse (Zahl)</label>
-                    <input type="number" min="1" step="1" th:field="*{classNumber}" class="form-control"
+                    <input type="number" min="1" max="13" step="1" th:field="*{classNumber}" class="form-control"
                            th:classappend="${#fields.hasErrors('classNumber') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                            id="classNumber"
                            name="classNumber"/>
