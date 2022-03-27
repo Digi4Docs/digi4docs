@@ -98,6 +98,21 @@ Digi4Docs is a prototype, which was implemented as a simple application in Sprin
 1. Install a local database 
 2. Setup the database information in `src/main/resources/application.properties`
 3. Run spring boot in terminal: `./mvnw spring-boot:run`
+   * Database will be automatically setup on first run
+4. Add config entries to database table `config` for:
+   * mail.host (e.g. `smtp.gmail.com`)
+   * mail.port (e.g. `587`)
+   * mail.sender (e.g. `test@example.com`)
+   * mail.user (e.g. `test@example.com`)
+   * mail.password (e.g. `12345`)
+5. Add an initial user to database table `user` with at least the following information: 
+   * `INSERT INTO digi4docs.user (email, firstname, lastname, is_active) VALUES ('test@example.com', 'Jan', 'Doe', TRUE)`
+
+6. Open the project in your browser: `localhost:8080`
+7. Use the option to send a new password by `password forgotten`
+8. Add a admin role to the database table `user_role` for the new user:
+   * `INSERT INTO digi4docs.user_role (role, user) VALUES('ADMIN', 1)`
+9. Re-login with your user: now you should see all available menu items
 
 ### Adjust the styling
 The program uses SASS to compile style files. To translate the edited SASS files into CSS, run the following command in the console:

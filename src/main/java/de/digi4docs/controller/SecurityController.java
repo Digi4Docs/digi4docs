@@ -8,6 +8,7 @@ import de.digi4docs.service.ConfigService;
 import de.digi4docs.service.PasswordForgottenService;
 import de.digi4docs.service.UserService;
 import de.digi4docs.util.mail.MailProvider;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.logging.Level;
 
+@Log
 @Controller
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SecurityController {
@@ -117,7 +120,11 @@ public class SecurityController {
     }
 
     private void addConfigInfo(Model model) {
-        model.addAttribute("imprintUrl", configService.getImprintUrl());
-        model.addAttribute("imprintInstitution", configService.getImprintInstitution());
+        try {
+            model.addAttribute("imprintUrl", configService.getImprintUrl());
+            model.addAttribute("imprintInstitution", configService.getImprintInstitution());
+        } catch(Exception e) {
+            log.log(Level.WARNING, "Imprint information is not available");
+        }
     }
 }
