@@ -50,6 +50,9 @@
     <img th:unless="${#strings.isEmpty(course.externalImage)}" th:src="${course.externalImage}" class="w-100"/>
     <div th:if="${#lists.size(course.modules) > 0}"
          th:replace="certificate/modules(modules=${course.modules},outerloop=true)"></div>
+    <div class="d-none d-print-block w-100 me-4" style="margin-top: 300px;">
+        <div class="text-end border-top float-end">[[${institution}]], [[${#dates.format(#dates.createNow(),'dd.MM.YYYY')}]]</div>
+    </div>
 </div>
 </body>
 </html>

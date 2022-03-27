@@ -2,6 +2,7 @@ package de.digi4docs.controller;
 
 import de.digi4docs.model.Module;
 import de.digi4docs.model.*;
+import de.digi4docs.service.ConfigService;
 import de.digi4docs.service.CourseService;
 import de.digi4docs.service.UserService;
 import de.digi4docs.service.UserTaskService;
@@ -17,6 +18,9 @@ import java.util.stream.Collectors;
 
 @Controller
 public class CertificateController extends AbstractController {
+    @Autowired
+    private ConfigService configService;
+
     @Autowired
     private CourseService courseService;
 
@@ -54,6 +58,8 @@ public class CertificateController extends AbstractController {
         Course course = courseOptional.get();
         model.addAttribute("course", course);
         model.addAttribute("user", user);
+        model.addAttribute("institution", configService.getImprintInstitution());
+
 
         LinkedList<Module> courseModules = getCourseModules(course);
 
