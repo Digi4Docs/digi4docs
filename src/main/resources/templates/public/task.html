@@ -29,7 +29,7 @@
         </div>
 
         <form th:action="@{'/public/course/' + ${course.id} + '/task/' + ${task.id}}"
-              method="post" th:object="${publicTaskForm}" novalidate>
+              method="post" th:object="${publicTaskForm}" enctype="multipart/form-data" novalidate>
 
             <div class="alert alert-success mb-3" th:if="${success}">Die Aufgabe wurde gespeichert.</div>
             <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
@@ -84,6 +84,36 @@
                               th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}"></textarea>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('solution')}"
                          th:errors="*{solution}"></div>
+                </div>
+            </div>
+            <div class="row my-4" th:if="${null != userTask && null != userTask.file}">
+                <div class="col-12 mb-2">
+                    <label class="form-label">Hochgeladene Datei:</label>
+                    <div class="d-block fw-bold">[[${userTask.file.name}]]</div>
+                </div>
+                <div class="col-12">
+                    <a th:href="@{'/public/file/' + ${userTask.file.id}}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-download"></i>
+                        Herunterladen
+                    </a>
+                    <a th:href="@{'/public/course/' + ${course.id} + '/task/' + ${userTask.task.id} + '/file/delete'}"
+                       class="btn btn-outline-danger btn-sm ms-2"
+                       th:if="${taskStatus.toString() == 'OPEN' or taskStatus.toString() == 'REJECTED' or null == taskStatus}">
+                        <i class="bi bi-trash"></i>
+                        Löschen
+                    </a>
+                </div>
+            </div>
+            <div class="row my-4" th:classappend="${null == userTask || null == userTask.file ? '' : 'd-none'}"
+                 th:if="${taskStatus.toString() == 'OPEN' or taskStatus.toString() == 'REJECTED' or null == taskStatus}">
+                <div class="col-12">
+                    <label for="file" class="form-label">
+                        Hier kannst du eine beliebige Datei hochladen, wenn dies in der Aufgabenstellung gefordert ist.
+                        Achte darauf, dass die Datei nicht größer als <span class="text-danger">2MB</span> ist.
+                    </label>
+                    <div class="d-block">
+                        <input type="file" name="file" id="file" class="form-control-file"/>
+                    </div>
                 </div>
             </div>
             <div class="row mt-4" th:if="${taskStatus.toString() == 'REJECTED'}">

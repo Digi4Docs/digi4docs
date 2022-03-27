@@ -109,7 +109,6 @@
                            id="date" name="date"
                            th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-
                 </div>
             </div>
             <div class="row">
@@ -122,6 +121,18 @@
                     </textarea>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('solution')}"
                          th:errors="*{solution}"></div>
+                </div>
+            </div>
+            <div class="row my-4" th:if="${null != userTask && null != userTask.file}">
+                <div class="col-12 mb-2">
+                    <label class="form-label">Hochgeladene Datei:</label>
+                    <div class="d-block fw-bold">[[${userTask.file.name}]]</div>
+                </div>
+                <div class="col-12">
+                    <a th:href="@{'/public/file/' + ${userTask.file.id}}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-download"></i>
+                        Herunterladen
+                    </a>
                 </div>
             </div>
         </fieldset>

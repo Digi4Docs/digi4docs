@@ -15,7 +15,7 @@
     <img th:src="@{~/img/home-title.jpg}" class="card-img-top rounded-0"/>
 </div>
 <div layout:fragment="content">
-    <div class="row" sec:authorize="hasAuthority('STUDENT')">
+    <div class="row">
         <div class="col-md-6">
             <div class="card bg-light home-column-height overflow-auto mb-4"
                  th:if="${showTeacherTasks}">
@@ -68,13 +68,13 @@
                 </div>
             </div>
 
-            <div class="card bg-light home-column-height overflow-auto">
+            <div class="card bg-light home-column-height overflow-auto" sec:authorize="hasAuthority('STUDENT')">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Meine Kurse</h5>
                     <div class="card-text">
-                        <div th:each="course, itStat: ${personalCourses.keySet()}">
-                            <div class="p-2 border rounded-0 rounded-top d-flex flex-column bg-white"
-                                 th:classappend="${!itStat.last ? 'mb-2' : ''}">
+                        <div th:each="course, itStat: ${personalCourses.keySet()}"
+                             th:classappend="${!itStat.last ? 'mb-2' : ''}">
+                            <div class="p-2 border rounded-0 rounded-top d-flex flex-column bg-white">
                                 <div class="d-flex flew-row">
                                     <div th:if="${!#strings.isEmpty(course.icon)}">
                                         <i th:classappend="${course.icon}" class="me-3 icon"></i>
@@ -106,7 +106,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 mt-3 mt-md-0">
+        <div class="col-md-6 mt-3 mt-md-0" sec:authorize="hasAuthority('STUDENT')">
             <div class="card bg-light border-danger home-column-height overflow-auto mb-4"
                  th:if="${null != rejectedTasks and !rejectedTasks.empty}">
                 <div class="card-body">
@@ -156,7 +156,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card bg-light home-column-height overflow-auto">
+            <div class="card bg-light home-column-height overflow-auto" sec:authorize="hasAuthority('STUDENT')">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Alle Kurse</h5>
                     <div class="card-text">

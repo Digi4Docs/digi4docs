@@ -5,6 +5,7 @@ import de.digi4docs.model.Module;
 import de.digi4docs.model.*;
 import de.digi4docs.service.*;
 import de.digi4docs.util.ProgressCountProvider;
+import de.digi4docs.util.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -24,6 +27,9 @@ import java.util.stream.Collectors;
 public class PublicCourseController extends AbstractController {
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private FileService fileService;
 
     @Autowired
     private ModuleService moduleService;
@@ -156,19 +162,22 @@ public class PublicCourseController extends AbstractController {
 
     @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping(value = "/public/course/{id}/task/{taskId}", params = "transmit")
-    public String transmitTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm,
+    public String transmitTask(@PathVariable int id, @PathVariable int taskId, @RequestParam("file") MultipartFile file,
+            @Valid PublicTaskForm publicTaskForm,
             BindingResult bindingResult, Model model) {
-        return saveTask(id, taskId, publicTaskForm, bindingResult, model, true);
+        return saveTask(id, taskId, file, publicTaskForm, bindingResult, model, true);
     }
 
     @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping(value = "/public/course/{id}/task/{taskId}", params = "save")
-    public String saveTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm,
+    public String saveTask(@PathVariable int id, @PathVariable int taskId, @RequestParam("file") MultipartFile file,
+            @Valid PublicTaskForm publicTaskForm,
             BindingResult bindingResult, Model model) {
-        return saveTask(id, taskId, publicTaskForm, bindingResult, model, false);
+        return saveTask(id, taskId, file, publicTaskForm, bindingResult, model, false);
     }
 
-    private String saveTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm,
+    private String saveTask(@PathVariable int id, @PathVariable int taskId, MultipartFile formFile,
+            @Valid PublicTaskForm publicTaskForm,
             BindingResult bindingResult, Model model, boolean doTransmit) {
         if (bindingResult.hasErrors()) {
             return task(id, taskId, publicTaskForm, model);
@@ -206,6 +215,22 @@ public class PublicCourseController extends AbstractController {
                                           .get());
         userTask.setSolution(publicTaskForm.getSolution());
 
+        if (null == userTask.getStatus() || TaskStatus.OPEN.equals(userTask.getStatus()) || TaskStatus.REJECTED.equals(
+                userTask.getStatus())) {
+            if (null != formFile && 0 != formFile.getSize()) {
+                if (null == userTask.getFile()) {
+                    userTask.setFile(new File());
+                }
+
+                boolean successfulFileInit = UploadUtils.addUploadData(userTask.getFile(), formFile);
+                if (!successfulFileInit) {
+                    model.addAttribute("error",
+                            "Deine Datei kann nicht hochgeladen werden. Beachte, dass die Datei maximal 2MB groß sein darf.");
+                    return showTaskPage(id, taskId, model, publicTaskForm, false);
+                }
+            }
+        }
+
         if (doTransmit) {
             userTask.setStatus(TaskStatus.TRANSMITTED);
             userTask.setTransmittedAt(LocalDateTime.now());
@@ -226,6 +251,18 @@ public class PublicCourseController extends AbstractController {
         }
 
         return showTaskPage(id, taskId, model, publicTaskForm, false);
+    }
+
+    @PreAuthorize("hasAuthority('STUDENT')")
+    @GetMapping("/public/course/{id}/task/{taskId}/file/delete")
+    public String deleteFile(@PathVariable int id, @PathVariable int taskId) {
+        Optional<UserTask> userTaskOptional = userTaskService.findByTask(taskId);
+        if (userTaskOptional.isPresent()) {
+            UserTask userTask = userTaskOptional.get();
+            userTask.setFile(null);
+            userTaskService.save(userTask);
+        }
+        return "redirect:/public/course/" + id + "/task/" + taskId;
     }
 
     private String showTaskPage(int courseId, int taskId, Model model, PublicTaskForm publicTaskForm,

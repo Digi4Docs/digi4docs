@@ -26,6 +26,29 @@ const PublicScripts = {
         } else {
             teacherId.disabled = true;
         }
+    },
+
+    printWithoutImages: function () {
+        let elements = document.querySelectorAll('.certificate .print-on-demand');
+        for (const element of elements) {
+            if(!element.classList.contains("d-print-none")) {
+                element.classList.add("d-print-none");
+            }
+        }
+
+        window.print();
+    },
+
+    printWithImages: function () {
+        let elements = document.querySelectorAll('.certificate .print-on-demand');
+        for (const element of elements) {
+            if(element.classList.contains("d-print-none")) {
+                element.classList.remove("d-print-none");
+            }
+        }
+
+        window.print();
+
     }
 };
 

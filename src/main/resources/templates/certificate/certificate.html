@@ -7,6 +7,7 @@
     <script th:src="@{~/js/bootstrap.bundle.js}" type="text/javascript"></script>
 
     <script th:src="@{~/js/main.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/public.js}" type="text/javascript"></script>
     <link rel="stylesheet" th:href="@{~/css/main.css}">
 </head>
 <body sec:authorize="isAuthenticated()">
@@ -14,11 +15,15 @@
 <div th:if="${null != breadcrumbs}">
     <div th:insert="fragments/breadcrumbs" class="d-print-none"></div>
 </div>
-<div class="bg-light p-3 d-print-p-none">
+<div class="bg-light p-3 d-print-p-none certificate">
     <div sec:authorize="hasAuthority('ADMIN') or  hasAuthority('USERS')" class="d-print-none w-100 text-end">
-        <button type="button" class="btn btn-primary" th:onclick="window.print()">
+        <button type="button" class="btn btn-primary me-2" th:onclick="PublicScripts.printWithImages()">
             <i class="bi bi-printer-fill"></i>
             Drucken
+        </button>
+        <button type="button" class="btn btn-secondary" th:onclick="PublicScripts.printWithoutImages()">
+            <i class="bi bi-printer-fill"></i>
+            Drucken (ohne Bilder)
         </button>
     </div>
     <div class="text-center d-block pt-5">

@@ -56,4 +56,8 @@ public class UserTask {
 
     @Column(name = "done_at")
     private LocalDateTime doneAt;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "file", referencedColumnName = "id")
+    private File file;
 }
