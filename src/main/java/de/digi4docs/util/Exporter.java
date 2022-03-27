@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,9 +44,9 @@ public class Exporter {
                 ".csv";
         InputStreamResource file = new InputStreamResource(createCsv(course, form.getStartDate(), form.getEndDate()));
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.parseMediaType("application/csv"))
-                .body(file);
+                             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                             .contentType(MediaType.parseMediaType("application/csv"))
+                             .body(file);
     }
 
     private ByteArrayInputStream createCsv(Course course, String start, String end) {
@@ -55,10 +54,16 @@ public class Exporter {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         CSVPrinter csvPrinter = null;
         try {
-            csvPrinter = new CSVPrinter(new PrintWriter(out, false, StandardCharsets.ISO_8859_1), CSVFormat.EXCEL.builder().setDelimiter(";").build());
+            csvPrinter = new CSVPrinter(new PrintWriter(out, false, StandardCharsets.ISO_8859_1),
+                    CSVFormat.EXCEL.builder()
+                                   .setDelimiter(";")
+                                   .build());
 
             List<StudentCountResult> studentCountGroupedByYears = userService.findStudentCountGroupedByYears();
-            Map<Integer, Integer> studentCountResults = studentCountGroupedByYears.stream().collect(Collectors.toMap(StudentCountResult::getYear, StudentCountResult::getTotal));
+            Map<Integer, Integer> studentCountResults = studentCountGroupedByYears.stream()
+                                                                                  .collect(Collectors.toMap(
+                                                                                          StudentCountResult::getYear,
+                                                                                          StudentCountResult::getTotal));
             List<Integer> studentYears = new ArrayList<>(studentCountResults.keySet());
             studentYears.sort(Collections.reverseOrder());
 
@@ -81,29 +86,42 @@ public class Exporter {
                 for (Module module : modules) {
                     List<Task> tasks = RecursiveHandler.getTasks(module);
                     List<TaskDoneCountResult> taskDoneCountResult = userTaskService.findDoneTaskCount(
-                            tasks.stream().map(Task::getId).collect(Collectors.toList()),
+                            tasks.stream()
+                                 .map(Task::getId)
+                                 .collect(Collectors.toList()),
                             start, end
                     );
 
                     for (Task task : tasks) {
-                        Map<Integer, Integer> yearlyCounts = taskDoneCountResult.stream().filter(result -> result.getTask().equals(task.getId())).collect(Collectors.toMap(TaskDoneCountResult::getYear, TaskDoneCountResult::getTotal));
+                        Map<Integer, Integer> yearlyCounts = taskDoneCountResult.stream()
+                                                                                .filter(result -> result.getTask()
+                                                                                                        .equals(task.getId()))
+                                                                                .collect(Collectors.toMap(
+                                                                                        TaskDoneCountResult::getYear,
+                                                                                        TaskDoneCountResult::getTotal));
                         List<String> data = new ArrayList<>();
                         data.add(firstModuleRow ? module.getTitle() : "");
-                        data.add(previousSubModuleTitle.equals(task.getModule().getTitle()) ? "" : task.getModule().getTitle());
+                        data.add(previousSubModuleTitle.equals(task.getModule()
+                                                                   .getTitle()) ? "" : task.getModule()
+                                                                                           .getTitle());
                         data.add(task.getTitle());
                         studentYears.forEach(year -> {
-                            int doneCount = Optional.ofNullable(yearlyCounts.get(year)).orElse(0);
+                            int doneCount = Optional.ofNullable(yearlyCounts.get(year))
+                                                    .orElse(0);
                             data.add(String.valueOf(doneCount));
 
-                            int totalCount = Optional.ofNullable(studentCountResults.get(year)).orElse(0);
+                            int totalCount = Optional.ofNullable(studentCountResults.get(year))
+                                                     .orElse(0);
                             data.add(String.valueOf(totalCount));
 
-                            String percentage = (doneCount > 0 && totalCount > 0) ? String.format("%.2f", ((float) doneCount * 100) / (float) totalCount) : "0";
+                            String percentage = (doneCount > 0 && totalCount > 0) ?
+                                    String.format("%.2f", ((float) doneCount * 100) / (float) totalCount) : "0";
                             data.add(percentage);
                         });
 
                         rows.add(data);
-                        previousSubModuleTitle = task.getModule().getTitle();
+                        previousSubModuleTitle = task.getModule()
+                                                     .getTitle();
                         firstModuleRow = false;
                     }
                     firstModuleRow = true;

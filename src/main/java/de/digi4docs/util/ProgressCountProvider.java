@@ -29,26 +29,32 @@ public class ProgressCountProvider {
         Map<Integer, Integer> courseTaskCounts = new HashMap<>();
 
         userTasks.forEach(userTask -> {
-            Module module = userTask.getTask().getModule();
+            Module module = userTask.getTask()
+                                    .getModule();
             while (null != module.getParent()) {
                 module = module.getParent();
             }
 
             if (null != module.getCourse()) {
                 int currentTaskCount = TaskStatus.DONE.equals(userTask.getStatus()) ? 1 : 0;
-                if (!courses.containsKey(module.getCourse().getId())) {
-                    courses.put(module.getCourse().getId(), module.getCourse());
-                    courseTaskCounts.put(module.getCourse().getId(), currentTaskCount);
+                if (!courses.containsKey(module.getCourse()
+                                               .getId())) {
+                    courses.put(module.getCourse()
+                                      .getId(), module.getCourse());
+                    courseTaskCounts.put(module.getCourse()
+                                               .getId(), currentTaskCount);
                 } else {
-                    courseTaskCounts.put(module.getCourse().getId(), courseTaskCounts.get(module.getCourse().getId()) + currentTaskCount);
+                    courseTaskCounts.put(module.getCourse()
+                                               .getId(), courseTaskCounts.get(module.getCourse()
+                                                                                    .getId()) + currentTaskCount);
                 }
             }
         });
 
         List<Course> coursesArr = new ArrayList<>(courses.values()).stream()
-                .filter(Course::getIsActive)
-                .sorted(Comparator.comparing(Course::getTitle))
-                .collect(Collectors.toList());
+                                                                   .filter(Course::getIsActive)
+                                                                   .sorted(Comparator.comparing(Course::getTitle))
+                                                                   .collect(Collectors.toList());
 
         HashMap<Course, Integer> courseTaskCountMap = new LinkedHashMap<>();
         coursesArr.forEach(course -> {
@@ -66,7 +72,10 @@ public class ProgressCountProvider {
             if (null != modules && !modules.isEmpty()) {
                 for (Module module : modules) {
                     if (module.getIsActive()) {
-                        taskCount += module.getTasks().stream().filter(Task::getIsActive).count();
+                        taskCount += module.getTasks()
+                                           .stream()
+                                           .filter(Task::getIsActive)
+                                           .count();
                         taskCount = countTasks(module, taskCount);
                     }
                 }
@@ -85,10 +94,12 @@ public class ProgressCountProvider {
         }
 
         Map<Integer, Integer> moduleTaskCounts = new HashMap<>();
-        Map<Integer, Module> moduleMap = modules.stream().collect(Collectors.toMap(Module::getId, module -> module));
+        Map<Integer, Module> moduleMap = modules.stream()
+                                                .collect(Collectors.toMap(Module::getId, module -> module));
 
         for (UserTask userTask : userTasks) {
-            Module module = userTask.getTask().getModule();
+            Module module = userTask.getTask()
+                                    .getModule();
 
             while (null != module.getParent()) {
                 module = module.getParent();
@@ -114,7 +125,10 @@ public class ProgressCountProvider {
             for (Module module : modules) {
                 int taskCount = 0;
                 if (module.getIsActive()) {
-                    taskCount += module.getTasks().stream().filter(Task::getIsActive).count();
+                    taskCount += module.getTasks()
+                                       .stream()
+                                       .filter(Task::getIsActive)
+                                       .count();
                     taskCount = countTasks(module, taskCount);
                 }
                 taskCounts.put(module.getId(), taskCount);
@@ -125,10 +139,14 @@ public class ProgressCountProvider {
     }
 
     private int countTasks(Module module, int taskCount) {
-        if (null != module.getModules() && !module.getModules().isEmpty()) {
+        if (null != module.getModules() && !module.getModules()
+                                                  .isEmpty()) {
             for (Module subModule : module.getModules()) {
                 if (subModule.getIsActive()) {
-                    taskCount += subModule.getTasks().stream().filter(Task::getIsActive).count();
+                    taskCount += subModule.getTasks()
+                                          .stream()
+                                          .filter(Task::getIsActive)
+                                          .count();
                     taskCount = countTasks(subModule, taskCount);
                 }
             }

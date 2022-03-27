@@ -48,18 +48,25 @@ public class PublicCourseController extends AbstractController {
     public String course(@PathVariable int id, Model model) {
         Optional<Course> courseOptional = courseService.findById(id);
 
-        if (!courseOptional.isPresent() || !courseOptional.get().getIsActive()) {
+        if (!courseOptional.isPresent() || !courseOptional.get()
+                                                          .getIsActive()) {
             return "redirect:/home";
         }
 
         Course course = courseOptional.get();
         model.addAttribute("course", course);
-        Map<Integer, Integer> personalModuleTaskCountMap = progressCountProvider.getPersonalModuleTaskCountMap(course.getModules());
-        model.addAttribute("personalModuleTaskTotal", personalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
+        Map<Integer, Integer> personalModuleTaskCountMap =
+                progressCountProvider.getPersonalModuleTaskCountMap(course.getModules());
+        model.addAttribute("personalModuleTaskTotal", personalModuleTaskCountMap.values()
+                                                                                .stream()
+                                                                                .reduce(0, Integer::sum));
         model.addAttribute("personalModuleTaskCounts", personalModuleTaskCountMap);
 
-        Map<Integer, Integer> generalModuleTaskCountMap = progressCountProvider.getGeneralModuleTaskCountMap(course.getModules());
-        model.addAttribute("generalModuleTaskTotal", generalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
+        Map<Integer, Integer> generalModuleTaskCountMap =
+                progressCountProvider.getGeneralModuleTaskCountMap(course.getModules());
+        model.addAttribute("generalModuleTaskTotal", generalModuleTaskCountMap.values()
+                                                                              .stream()
+                                                                              .reduce(0, Integer::sum));
         model.addAttribute("generalModuleTaskCounts", generalModuleTaskCountMap);
 
         showBreadcrumbs(course, null, model);
@@ -72,7 +79,8 @@ public class PublicCourseController extends AbstractController {
     public String module(@PathVariable int id, @PathVariable int moduleId, Model model) {
         Optional<Course> courseOptional = courseService.findById(id);
 
-        if (!courseOptional.isPresent() || !courseOptional.get().getIsActive()) {
+        if (!courseOptional.isPresent() || !courseOptional.get()
+                                                          .getIsActive()) {
             return "redirect:/home";
         }
 
@@ -80,9 +88,13 @@ public class PublicCourseController extends AbstractController {
 
         Optional<Module> moduleOptional = moduleService.findById(moduleId);
 
-        if (!moduleOptional.isPresent() || !moduleOptional.get().getIsActive()) {
-            if (null != moduleOptional.get().getParent()) {
-                return "redirect:/public/course/" + course.getId() + "/module/" + moduleOptional.get().getParent().getId();
+        if (!moduleOptional.isPresent() || !moduleOptional.get()
+                                                          .getIsActive()) {
+            if (null != moduleOptional.get()
+                                      .getParent()) {
+                return "redirect:/public/course/" + course.getId() + "/module/" + moduleOptional.get()
+                                                                                                .getParent()
+                                                                                                .getId();
             }
             return "redirect:/public/course/" + course.getId();
         }
@@ -98,19 +110,37 @@ public class PublicCourseController extends AbstractController {
             modulesToCount.addAll(module.getModules());
         }
 
-        Map<Integer, Integer> personalModuleTaskCountMap = progressCountProvider.getPersonalModuleTaskCountMap(modulesToCount);
-        model.addAttribute("personalModuleTaskTotal", personalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
+        Map<Integer, Integer> personalModuleTaskCountMap =
+                progressCountProvider.getPersonalModuleTaskCountMap(modulesToCount);
+        model.addAttribute("personalModuleTaskTotal", personalModuleTaskCountMap.values()
+                                                                                .stream()
+                                                                                .reduce(0, Integer::sum));
         model.addAttribute("personalModuleTaskCounts", personalModuleTaskCountMap);
 
 
-        Map<Integer, Integer> generalModuleTaskCountMap = progressCountProvider.getGeneralModuleTaskCountMap(modulesToCount);
-        model.addAttribute("generalModuleTaskTotal", generalModuleTaskCountMap.values().stream().reduce(0, Integer::sum));
+        Map<Integer, Integer> generalModuleTaskCountMap =
+                progressCountProvider.getGeneralModuleTaskCountMap(modulesToCount);
+        model.addAttribute("generalModuleTaskTotal", generalModuleTaskCountMap.values()
+                                                                              .stream()
+                                                                              .reduce(0, Integer::sum));
         model.addAttribute("generalModuleTaskCounts", generalModuleTaskCountMap);
 
-        if (!module.getTasks().isEmpty()) {
-            Map<Integer, UserTask> userTasks = userTaskService.findByTasks(module.getTasks().stream().map(Task::getId).collect(Collectors.toList())).stream().collect(Collectors.toMap(userTask -> userTask.getTask().getId(), userTask -> userTask));
+        if (!module.getTasks()
+                   .isEmpty()) {
+            Map<Integer, UserTask> userTasks = userTaskService.findByTasks(module.getTasks()
+                                                                                 .stream()
+                                                                                 .map(Task::getId)
+                                                                                 .collect(Collectors.toList()))
+                                                              .stream()
+                                                              .collect(Collectors.toMap(userTask -> userTask.getTask()
+                                                                                                            .getId(),
+                                                                      userTask -> userTask));
             model.addAttribute("userTasks", userTasks);
-            model.addAttribute("userTasksDone", userTasks.values().stream().filter(userTask -> TaskStatus.DONE.equals(userTask.getStatus())).count());
+            model.addAttribute("userTasksDone", userTasks.values()
+                                                         .stream()
+                                                         .filter(userTask -> TaskStatus.DONE.equals(
+                                                                 userTask.getStatus()))
+                                                         .count());
         }
 
         showBreadcrumbs(course, module, model);
@@ -126,28 +156,33 @@ public class PublicCourseController extends AbstractController {
 
     @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping(value = "/public/course/{id}/task/{taskId}", params = "transmit")
-    public String transmitTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm, BindingResult bindingResult, Model model) {
+    public String transmitTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm,
+            BindingResult bindingResult, Model model) {
         return saveTask(id, taskId, publicTaskForm, bindingResult, model, true);
     }
 
     @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping(value = "/public/course/{id}/task/{taskId}", params = "save")
-    public String saveTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm, BindingResult bindingResult, Model model) {
+    public String saveTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm,
+            BindingResult bindingResult, Model model) {
         return saveTask(id, taskId, publicTaskForm, bindingResult, model, false);
     }
 
-    private String saveTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm, BindingResult bindingResult, Model model, boolean doTransmit) {
+    private String saveTask(@PathVariable int id, @PathVariable int taskId, @Valid PublicTaskForm publicTaskForm,
+            BindingResult bindingResult, Model model, boolean doTransmit) {
         if (bindingResult.hasErrors()) {
             return task(id, taskId, publicTaskForm, model);
         }
 
         Optional<Course> courseOptional = courseService.findById(id);
-        if (!courseOptional.isPresent() || !courseOptional.get().getIsActive()) {
+        if (!courseOptional.isPresent() || !courseOptional.get()
+                                                          .getIsActive()) {
             return "redirect:/home";
         }
 
         Optional<Task> taskOptional = taskService.findById(taskId);
-        if (!taskOptional.isPresent() || !taskOptional.get().getIsActive()) {
+        if (!taskOptional.isPresent() || !taskOptional.get()
+                                                      .getIsActive()) {
             return "redirect:/home";
         }
 
@@ -165,8 +200,10 @@ public class PublicCourseController extends AbstractController {
         }
 
         userTask.setDate(LocalDate.parse(publicTaskForm.getDate()));
-        userTask.setTeacher(userService.findById(publicTaskForm.getTeacherId()).get());
-        userTask.setSubject(subjectService.findById(publicTaskForm.getSubjectId()).get());
+        userTask.setTeacher(userService.findById(publicTaskForm.getTeacherId())
+                                       .get());
+        userTask.setSubject(subjectService.findById(publicTaskForm.getSubjectId())
+                                          .get());
         userTask.setSolution(publicTaskForm.getSolution());
 
         if (doTransmit) {
@@ -184,20 +221,24 @@ public class PublicCourseController extends AbstractController {
         }
 
         if (doTransmit && successful) {
-            return "redirect:/public/course/" + courseOptional.get().getId() + "/task/" + task.getId();
+            return "redirect:/public/course/" + courseOptional.get()
+                                                              .getId() + "/task/" + task.getId();
         }
 
         return showTaskPage(id, taskId, model, publicTaskForm, false);
     }
 
-    private String showTaskPage(int courseId, int taskId, Model model, PublicTaskForm publicTaskForm, boolean initFormData) {
+    private String showTaskPage(int courseId, int taskId, Model model, PublicTaskForm publicTaskForm,
+            boolean initFormData) {
         Optional<Course> courseOptional = courseService.findById(courseId);
-        if (!courseOptional.isPresent() || !courseOptional.get().getIsActive()) {
+        if (!courseOptional.isPresent() || !courseOptional.get()
+                                                          .getIsActive()) {
             return "redirect:/home";
         }
 
         Optional<Task> taskOptional = taskService.findById(taskId);
-        if (!taskOptional.isPresent() || !taskOptional.get().getIsActive()) {
+        if (!taskOptional.isPresent() || !taskOptional.get()
+                                                      .getIsActive()) {
             return "redirect:/home";
         }
 
@@ -210,15 +251,19 @@ public class PublicCourseController extends AbstractController {
         }
 
         Optional<UserTask> userTaskOptional = userTaskService.findByTask(taskId);
-        model.addAttribute("taskStatus", userTaskOptional.isPresent() ? userTaskOptional.get().getStatus() : TaskStatus.OPEN);
+        model.addAttribute("taskStatus", userTaskOptional.isPresent() ? userTaskOptional.get()
+                                                                                        .getStatus() : TaskStatus.OPEN);
         model.addAttribute("userTask", userTaskOptional.orElse(null));
 
         if (initFormData) {
             if (userTaskOptional.isPresent()) {
                 UserTask userTask = userTaskOptional.get();
-                publicTaskForm.setDate(userTask.getDate().toString());
-                publicTaskForm.setSubjectId(userTask.getSubject().getId());
-                publicTaskForm.setTeacherId(userTask.getTeacher().getId());
+                publicTaskForm.setDate(userTask.getDate()
+                                               .toString());
+                publicTaskForm.setSubjectId(userTask.getSubject()
+                                                    .getId());
+                publicTaskForm.setTeacherId(userTask.getTeacher()
+                                                    .getId());
                 publicTaskForm.setSolution(userTask.getSolution());
             }
         }
@@ -248,11 +293,13 @@ public class PublicCourseController extends AbstractController {
 
         if (null != module) {
             while (null != module.getParent()) {
-                breadcrumbsReversed.put("/public/course/" + course.getId() + "/module/" + module.getId(), module.getTitle());
+                breadcrumbsReversed.put("/public/course/" + course.getId() + "/module/" + module.getId(),
+                        module.getTitle());
                 module = module.getParent();
             }
 
-            breadcrumbsReversed.put("/public/course/" + course.getId() + "/module/" + module.getId(), module.getTitle());
+            breadcrumbsReversed.put("/public/course/" + course.getId() + "/module/" + module.getId(),
+                    module.getTitle());
         }
 
         breadcrumbsReversed.put("/public/course/" + course.getId(), course.getTitle());

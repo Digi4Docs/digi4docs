@@ -81,7 +81,8 @@ public class SubjectController extends AbstractController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/settings/subject/{id}")
-    public String update(@PathVariable int id, @Valid SubjectForm subjectForm, BindingResult bindingResult, Model model) {
+    public String update(@PathVariable int id, @Valid SubjectForm subjectForm, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return showDetailPage(id, subjectForm, model, false);
         }
@@ -149,9 +150,11 @@ public class SubjectController extends AbstractController {
             subjectForm.setIsActive(subject.getIsActive());
             subjectForm.setTeachers(new ArrayList<>());
 
-            subject.getUsers().forEach(user -> {
-                subjectForm.getTeachers().add(user.getId());
-            });
+            subject.getUsers()
+                   .forEach(user -> {
+                       subjectForm.getTeachers()
+                                  .add(user.getId());
+                   });
         }
 
         model.addAttribute("subject", subject);
@@ -172,15 +175,20 @@ public class SubjectController extends AbstractController {
             subject.setUsers(new HashSet<>());
         }
 
-        subject.getUsers().clear();
+        subject.getUsers()
+               .clear();
         if (!CollectionUtils.isEmpty(subjectForm.getTeachers())) {
-            Map<Integer, User> teachers = userService.findAllTeachers().stream().collect(Collectors.toMap(User::getId, teacher -> teacher));
-            subjectForm.getTeachers().forEach(userId -> {
-                if (teachers.containsKey(userId)) {
-                    subject.getUsers().add(teachers.get(userId));
-                }
-                ;
-            });
+            Map<Integer, User> teachers = userService.findAllTeachers()
+                                                     .stream()
+                                                     .collect(Collectors.toMap(User::getId, teacher -> teacher));
+            subjectForm.getTeachers()
+                       .forEach(userId -> {
+                           if (teachers.containsKey(userId)) {
+                               subject.getUsers()
+                                      .add(teachers.get(userId));
+                           }
+                           ;
+                       });
         }
 
         return subject;

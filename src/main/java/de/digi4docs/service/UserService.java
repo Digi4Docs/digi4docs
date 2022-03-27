@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +21,7 @@ public class UserService {
 
     @Autowired
     public UserService(UserRepository userRepository,
-                       BCryptPasswordEncoder bCryptPasswordEncoder) {
+            BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -44,16 +43,20 @@ public class UserService {
     }
 
     public List<User> findAllTeachers() {
-        return userRepository.findDistinctByRolesRoleOrRolesRoleOrderByLastnameAscFirstnameAsc(Role.TEACHER, Role.ADMIN);
+        return userRepository.findDistinctByRolesRoleOrRolesRoleOrderByLastnameAscFirstnameAsc(Role.TEACHER,
+                Role.ADMIN);
     }
 
     public List<User> findAllActiveTeachers() {
-        return userRepository.findDistinctByRolesRoleOrRolesRoleAndIsActiveTrueOrderByLastnameAscFirstnameAsc(Role.TEACHER, Role.ADMIN);
+        return userRepository.findDistinctByRolesRoleOrRolesRoleAndIsActiveTrueOrderByLastnameAscFirstnameAsc(
+                Role.TEACHER, Role.ADMIN);
     }
 
     public User findCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        Authentication auth = SecurityContextHolder.getContext()
+                                                   .getAuthentication();
+        org.springframework.security.core.userdetails.User principal =
+                (org.springframework.security.core.userdetails.User) auth.getPrincipal();
         return userRepository.findByEmail(principal.getUsername());
     }
 
@@ -67,7 +70,10 @@ public class UserService {
     }
 
     public boolean hasUserRole(User user, Role role) {
-        return 0 < user.getRoles().stream().filter(userRole -> role.equals(userRole.getRole())).count();
+        return 0 < user.getRoles()
+                       .stream()
+                       .filter(userRole -> role.equals(userRole.getRole()))
+                       .count();
     }
 
     public User add(User user) {
@@ -83,7 +89,9 @@ public class UserService {
     }
 
     public void delete(User user) {
-        user.getSubjects().forEach(subject -> subject.getUsers().remove(user));
+        user.getSubjects()
+            .forEach(subject -> subject.getUsers()
+                                       .remove(user));
         userRepository.delete(user);
     }
 }

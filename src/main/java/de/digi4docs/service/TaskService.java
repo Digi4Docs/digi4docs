@@ -32,11 +32,13 @@ public class TaskService {
 
     public Integer findNextOrder(Integer moduleId) {
         Optional<Task> task = taskRepository.findFirstByModuleIdOrderByOrderPositionDesc(moduleId);
-        if (task.isEmpty() || null == task.get().getOrderPosition()) {
+        if (task.isEmpty() || null == task.get()
+                                          .getOrderPosition()) {
             return 1;
         }
 
-        return task.get().getOrderPosition() + 1;
+        return task.get()
+                   .getOrderPosition() + 1;
     }
 
     public void orderDown(Task task) {
@@ -46,15 +48,21 @@ public class TaskService {
         }
 
         int currentOrderPosition = task.getOrderPosition();
-        Optional<Task> optionalNextTask = taskRepository.findFirstByModuleIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(task.getModule().getId(), currentOrderPosition);
+        Optional<Task> optionalNextTask =
+                taskRepository.findFirstByModuleIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(task.getModule()
+                                                                                                         .getId(),
+                        currentOrderPosition);
 
         if (optionalNextTask.isPresent()) {
-            int newOrderPosition = optionalNextTask.get().getOrderPosition();
-            optionalNextTask.get().setOrderPosition(null);
+            int newOrderPosition = optionalNextTask.get()
+                                                   .getOrderPosition();
+            optionalNextTask.get()
+                            .setOrderPosition(null);
             taskRepository.save(optionalNextTask.get());
             task.setOrderPosition(newOrderPosition);
             taskRepository.save(task);
-            optionalNextTask.get().setOrderPosition(currentOrderPosition);
+            optionalNextTask.get()
+                            .setOrderPosition(currentOrderPosition);
             taskRepository.save(optionalNextTask.get());
         }
     }
@@ -66,15 +74,21 @@ public class TaskService {
         }
 
         int currentOrderPosition = task.getOrderPosition();
-        Optional<Task> optionalNextTask = taskRepository.findFirstByModuleIdAndOrderPositionLessThanOrderByOrderPositionDesc(task.getModule().getId(), currentOrderPosition);
+        Optional<Task> optionalNextTask =
+                taskRepository.findFirstByModuleIdAndOrderPositionLessThanOrderByOrderPositionDesc(task.getModule()
+                                                                                                       .getId(),
+                        currentOrderPosition);
 
         if (optionalNextTask.isPresent()) {
-            int newOrderPosition = optionalNextTask.get().getOrderPosition();
-            optionalNextTask.get().setOrderPosition(null);
+            int newOrderPosition = optionalNextTask.get()
+                                                   .getOrderPosition();
+            optionalNextTask.get()
+                            .setOrderPosition(null);
             taskRepository.save(optionalNextTask.get());
             task.setOrderPosition(newOrderPosition);
             taskRepository.save(task);
-            optionalNextTask.get().setOrderPosition(currentOrderPosition);
+            optionalNextTask.get()
+                            .setOrderPosition(currentOrderPosition);
             taskRepository.save(optionalNextTask.get());
         }
     }
@@ -89,7 +103,8 @@ public class TaskService {
         }
 
         if (null == task.getOrderPosition()) {
-            task.setOrderPosition(findNextOrder(task.getModule().getId()));
+            task.setOrderPosition(findNextOrder(task.getModule()
+                                                    .getId()));
         }
 
         task.setEditedBy(currentUser);

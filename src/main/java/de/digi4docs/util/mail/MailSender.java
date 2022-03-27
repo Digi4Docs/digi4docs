@@ -17,8 +17,7 @@ public class MailSender {
         this.configService = configService;
     }
 
-    public JavaMailSender getMailSender()
-    {
+    public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(configService.getMailHost());
         mailSender.setPort(configService.getMailPort());

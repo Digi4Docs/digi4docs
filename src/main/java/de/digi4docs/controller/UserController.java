@@ -60,7 +60,8 @@ public class UserController extends AbstractController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/users/import")
-    public String importUser(@RequestParam("file") MultipartFile file, @Valid ImportForm importForm, BindingResult bindingResult, Model model) {
+    public String importUser(@RequestParam("file") MultipartFile file, @Valid ImportForm importForm,
+            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return importUser(importForm, model);
         }
@@ -73,7 +74,8 @@ public class UserController extends AbstractController {
 
         try {
             List<List<String>> dataToImport = importer.readCsv(file);
-            Map<Integer, String> importErrors = importer.importData(dataToImport, importForm.getIsActive(), importForm.getRoles());
+            Map<Integer, String> importErrors =
+                    importer.importData(dataToImport, importForm.getIsActive(), importForm.getRoles());
             model.addAttribute("importErrors", importErrors);
             model.addAttribute("importSuccess", dataToImport.size() - importErrors.size());
         } catch (IOException e) {
@@ -111,9 +113,11 @@ public class UserController extends AbstractController {
             userEditForm.setIsActive(user.getIsActive());
             userEditForm.setRoles(new ArrayList<>());
 
-            user.getRoles().forEach(userRole -> {
-                userEditForm.getRoles().add(userRole.getRole());
-            });
+            user.getRoles()
+                .forEach(userRole -> {
+                    userEditForm.getRoles()
+                                .add(userRole.getRole());
+                });
         }
 
         model.addAttribute("user", user);
@@ -199,7 +203,8 @@ public class UserController extends AbstractController {
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @PostMapping("/user/{id}")
-    public String updateUser(@PathVariable int id, @Valid UserEditForm userEditForm, BindingResult bindingResult, Model model) {
+    public String updateUser(@PathVariable int id, @Valid UserEditForm userEditForm, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return showUserPage(id, userEditForm, model, false);
         }
@@ -210,7 +215,8 @@ public class UserController extends AbstractController {
         }
 
         User user = mapFormToUser(userOptional.get(), userEditForm);
-        boolean changePassword = (null != userEditForm.getPassword() && !userEditForm.getPassword().isEmpty());
+        boolean changePassword = (null != userEditForm.getPassword() && !userEditForm.getPassword()
+                                                                                     .isEmpty());
         if (changePassword) {
             user.setPassword(userEditForm.getPassword());
         }
@@ -238,10 +244,13 @@ public class UserController extends AbstractController {
             user.setRoles(new HashSet<>());
         }
 
-        user.getRoles().clear();
-        userForm.getRoles().forEach(role -> {
-            user.getRoles().add(new UserRole(null, user, role));
-        });
+        user.getRoles()
+            .clear();
+        userForm.getRoles()
+                .forEach(role -> {
+                    user.getRoles()
+                        .add(new UserRole(null, user, role));
+                });
 
         return user;
     }

@@ -15,7 +15,8 @@ public class PasswordForgottenService {
     private HashGenerator hashGenerator;
 
     @Autowired
-    public PasswordForgottenService(PasswordForgottenRepository passwordForgottenRepository, HashGenerator hashGenerator) {
+    public PasswordForgottenService(PasswordForgottenRepository passwordForgottenRepository,
+            HashGenerator hashGenerator) {
         this.passwordForgottenRepository = passwordForgottenRepository;
         this.hashGenerator = hashGenerator;
     }
@@ -29,7 +30,8 @@ public class PasswordForgottenService {
     }
 
     public PasswordForgotten save(PasswordForgotten passwordForgotten) {
-        passwordForgotten.setExpirationAt(LocalDateTime.now().plusHours(1));
+        passwordForgotten.setExpirationAt(LocalDateTime.now()
+                                                       .plusHours(1));
         passwordForgotten.setHash(hashGenerator.generateRandomHash());
         return passwordForgottenRepository.save(passwordForgotten);
     }

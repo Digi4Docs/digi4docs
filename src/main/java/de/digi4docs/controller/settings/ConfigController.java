@@ -38,7 +38,10 @@ public class ConfigController extends AbstractController {
             return showConfigPage(model, configForm, false);
         }
 
-        Map<String, Config> configEntries = configService.findAll().stream().collect(Collectors.toMap(Config::getConfigKey, config -> config));
+        Map<String, Config> configEntries = configService.findAll()
+                                                         .stream()
+                                                         .collect(Collectors.toMap(Config::getConfigKey,
+                                                                 config -> config));
         List<Config> configsToSave = new ArrayList<>();
 
         Config configBaseUrl = getByConfigKey(configEntries, ConfigService.KEY_SERVER_BASE_URL);
@@ -65,7 +68,8 @@ public class ConfigController extends AbstractController {
         configMailUser.setConfigValue(configForm.getMailUser());
         configsToSave.add(configMailUser);
 
-        if (null != configForm.getMailPassword() && !configForm.getMailPassword().isEmpty()) {
+        if (null != configForm.getMailPassword() && !configForm.getMailPassword()
+                                                               .isEmpty()) {
             Config configMailPassword = getByConfigKey(configEntries, ConfigService.KEY_MAIL_PASSWORD);
             configMailPassword.setConfigValue(configForm.getMailPassword());
             configsToSave.add(configMailPassword);
@@ -86,13 +90,17 @@ public class ConfigController extends AbstractController {
     }
 
     private Config getByConfigKey(Map<String, Config> configEntries, String configKey) {
-        Config config = Optional.ofNullable(configEntries.get(configKey)).orElse(new Config());
+        Config config = Optional.ofNullable(configEntries.get(configKey))
+                                .orElse(new Config());
         config.setConfigKey(configKey);
         return config;
     }
 
     private String showConfigPage(Model model, ConfigForm configForm, boolean initFormData) {
-        Map<String, String> configMap = configService.findAll().stream().collect(Collectors.toMap(Config::getConfigKey, Config::getConfigValue));
+        Map<String, String> configMap = configService.findAll()
+                                                     .stream()
+                                                     .collect(Collectors.toMap(Config::getConfigKey,
+                                                             Config::getConfigValue));
         String passwordValue = configMap.get(ConfigService.KEY_MAIL_PASSWORD);
         if (initFormData) {
             configForm.setBaseUrl(configMap.get(ConfigService.KEY_SERVER_BASE_URL));

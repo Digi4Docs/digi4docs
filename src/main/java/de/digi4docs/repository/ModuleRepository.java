@@ -18,11 +18,15 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
 
     Optional<Module> findFirstByCourseIdOrderByOrderPositionDesc(Integer courseId);
 
-    Optional<Module> findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer parentId, Integer orderPosition);
+    Optional<Module> findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer parentId,
+            Integer orderPosition);
 
-    Optional<Module> findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer courseId, Integer orderPosition);
+    Optional<Module> findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer courseId,
+            Integer orderPosition);
 
-    Optional<Module> findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer parentId, Integer orderPosition);
+    Optional<Module> findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer parentId,
+            Integer orderPosition);
 
-    Optional<Module> findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer courseId, Integer orderPosition);
+    Optional<Module> findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer courseId,
+            Integer orderPosition);
 }

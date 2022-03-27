@@ -38,16 +38,20 @@ public class ModuleService {
     public Integer findNextOrder(Module module) {
         Optional<Module> optionalModule;
         if (null == module.getParent()) {
-            optionalModule = moduleRepository.findFirstByCourseIdOrderByOrderPositionDesc(module.getCourse().getId());
+            optionalModule = moduleRepository.findFirstByCourseIdOrderByOrderPositionDesc(module.getCourse()
+                                                                                                .getId());
         } else {
-            optionalModule = moduleRepository.findFirstByParentIdOrderByOrderPositionDesc(module.getParent().getId());
+            optionalModule = moduleRepository.findFirstByParentIdOrderByOrderPositionDesc(module.getParent()
+                                                                                                .getId());
         }
 
-        if (optionalModule.isEmpty() || null == optionalModule.get().getOrderPosition()) {
+        if (optionalModule.isEmpty() || null == optionalModule.get()
+                                                              .getOrderPosition()) {
             return 1;
         }
 
-        return optionalModule.get().getOrderPosition() + 1;
+        return optionalModule.get()
+                             .getOrderPosition() + 1;
     }
 
     public void orderDown(Module module) {
@@ -59,9 +63,13 @@ public class ModuleService {
         int currentOrderPosition = module.getOrderPosition();
         Optional<Module> optionalNextModule;
         if (null == module.getParent()) {
-            optionalNextModule = moduleRepository.findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(module.getCourse().getId(), currentOrderPosition);
+            optionalNextModule = moduleRepository.findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(
+                    module.getCourse()
+                          .getId(), currentOrderPosition);
         } else {
-            optionalNextModule = moduleRepository.findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(module.getParent().getId(), currentOrderPosition);
+            optionalNextModule = moduleRepository.findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(
+                    module.getParent()
+                          .getId(), currentOrderPosition);
         }
 
         optionalNextModule.ifPresent(value -> changeOrderPositions(module, value, currentOrderPosition));
@@ -76,9 +84,13 @@ public class ModuleService {
         int currentOrderPosition = module.getOrderPosition();
         Optional<Module> optionalNextModule;
         if (null == module.getParent()) {
-            optionalNextModule = moduleRepository.findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(module.getCourse().getId(), currentOrderPosition);
+            optionalNextModule = moduleRepository.findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(
+                    module.getCourse()
+                          .getId(), currentOrderPosition);
         } else {
-            optionalNextModule = moduleRepository.findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(module.getParent().getId(), currentOrderPosition);
+            optionalNextModule = moduleRepository.findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(
+                    module.getParent()
+                          .getId(), currentOrderPosition);
         }
 
         optionalNextModule.ifPresent(value -> changeOrderPositions(module, value, currentOrderPosition));

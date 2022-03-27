@@ -118,19 +118,22 @@ public class TaskReviewController extends AbstractController {
 
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     @PostMapping(value = "/tasks/task/{id}", params = "save")
-    public String saveTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult, Model model) {
+    public String saveTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
+            Model model) {
         return saveTask(id, taskReviewForm, bindingResult, model, FORM_ACTION_SAVE);
     }
 
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     @PostMapping(value = "/tasks/task/{id}", params = "done")
-    public String doneTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult, Model model) {
+    public String doneTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
+            Model model) {
         return saveTask(id, taskReviewForm, bindingResult, model, FORM_ACTION_DONE);
     }
 
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     @PostMapping(value = "/tasks/task/{id}", params = "reject")
-    public String rejectTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult, Model model) {
+    public String rejectTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
+            Model model) {
         return saveTask(id, taskReviewForm, bindingResult, model, FORM_ACTION_REJECT);
     }
 
@@ -144,7 +147,9 @@ public class TaskReviewController extends AbstractController {
 
         boolean isAdmin = userService.hasCurrentUserRole(Role.ADMIN);
         User currentUser = userService.findCurrentUser();
-        boolean isOwnTask = userTask.getTeacher().getId().equals(currentUser.getId());
+        boolean isOwnTask = userTask.getTeacher()
+                                    .getId()
+                                    .equals(currentUser.getId());
         model.addAttribute("isOwnTask", isOwnTask);
 
         if (!isAdmin && !isOwnTask) {
@@ -153,10 +158,13 @@ public class TaskReviewController extends AbstractController {
 
 
         if (initFormData) {
-            taskReviewForm.setTeacherId(userTask.getTeacher().getId());
-            taskReviewForm.setSubjectId(userTask.getSubject().getId());
+            taskReviewForm.setTeacherId(userTask.getTeacher()
+                                                .getId());
+            taskReviewForm.setSubjectId(userTask.getSubject()
+                                                .getId());
             taskReviewForm.setSolution(userTask.getSolution());
-            taskReviewForm.setDate(userTask.getDate().toString());
+            taskReviewForm.setDate(userTask.getDate()
+                                           .toString());
             taskReviewForm.setComment(userTask.getComment());
         }
 
@@ -168,7 +176,8 @@ public class TaskReviewController extends AbstractController {
         return "taskReview/task";
     }
 
-    private String saveTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult, Model model, int formAction) {
+    private String saveTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
+            Model model, int formAction) {
         if (bindingResult.hasErrors()) {
             return task(id, taskReviewForm, model);
         }
@@ -182,8 +191,10 @@ public class TaskReviewController extends AbstractController {
         userTask.setComment(taskReviewForm.getComment());
         if (userService.hasCurrentUserRole(Role.ADMIN)) {
             userTask.setDate(LocalDate.parse(taskReviewForm.getDate()));
-            userTask.setTeacher(userService.findById(taskReviewForm.getTeacherId()).get());
-            userTask.setSubject(subjectService.findById(taskReviewForm.getSubjectId()).get());
+            userTask.setTeacher(userService.findById(taskReviewForm.getTeacherId())
+                                           .get());
+            userTask.setSubject(subjectService.findById(taskReviewForm.getSubjectId())
+                                              .get());
             userTask.setSolution(taskReviewForm.getSolution());
         }
 

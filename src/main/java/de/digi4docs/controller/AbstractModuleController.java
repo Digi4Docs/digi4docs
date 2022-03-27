@@ -27,8 +27,8 @@ public abstract class AbstractModuleController extends AbstractController {
     }
 
     protected String showDetailPage(int parentId, int id, ModuleForm moduleForm, Model model,
-                                    boolean initFormData, String missingModuleRedirect,
-                                    boolean addCourseToModel, boolean addParentToModel) {
+            boolean initFormData, String missingModuleRedirect,
+            boolean addCourseToModel, boolean addParentToModel) {
 
         Optional<Module> moduleOptional = moduleService.findById(id);
 
@@ -74,14 +74,18 @@ public abstract class AbstractModuleController extends AbstractController {
         Map<String, String> breadcrumbsReversed = new LinkedHashMap<>();
 
         while (null != module.getParent()) {
-            breadcrumbsReversed.put("/module/" + module.getParent().getId() + "/module/" + module.getId(), module.getTitle());
+            breadcrumbsReversed.put("/module/" + module.getParent()
+                                                       .getId() + "/module/" + module.getId(), module.getTitle());
             module = module.getParent();
         }
 
 
         if (null != module.getCourse()) {
-            breadcrumbsReversed.put("/course/" + module.getCourse().getId() + "/module/" + module.getId(), module.getTitle());
-            breadcrumbsReversed.put("/course/" + module.getCourse().getId(), module.getCourse().getTitle());
+            breadcrumbsReversed.put("/course/" + module.getCourse()
+                                                       .getId() + "/module/" + module.getId(), module.getTitle());
+            breadcrumbsReversed.put("/course/" + module.getCourse()
+                                                       .getId(), module.getCourse()
+                                                                       .getTitle());
         }
 
         breadcrumbsReversed.put("/courses", "Kurse");

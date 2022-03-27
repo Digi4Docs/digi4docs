@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "module", uniqueConstraints={
+@Table(name = "module", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"parent_modul", "orderPosition"})
 })
 public class Module {

@@ -77,6 +77,7 @@ public class ConfigService {
             throw new RuntimeException(exceptionIdentifier + " not configured");
         }
 
-        return config.get().getConfigValue();
+        return config.get()
+                     .getConfigValue();
     }
 }

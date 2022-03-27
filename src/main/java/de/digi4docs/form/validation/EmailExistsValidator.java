@@ -16,6 +16,7 @@ public class EmailExistsValidator implements ConstraintValidator<EmailExists, St
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
-        return userService.findActiveUserByEmail(email).isPresent();
+        return userService.findActiveUserByEmail(email)
+                          .isPresent();
     }
 }

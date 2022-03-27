@@ -59,7 +59,8 @@ public class UserTaskService {
 
     public List<UserTask> findTransmittedOfCurrentUser() {
         User currentUser = userService.findCurrentUser();
-        List<UserTask> userTasks = userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.TRANSMITTED);
+        List<UserTask> userTasks =
+                userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.TRANSMITTED);
         userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
                 Comparator.naturalOrder())));
         return userTasks;
@@ -89,8 +90,10 @@ public class UserTaskService {
     }
 
     public List<TaskDoneCountResult> findDoneTaskCount(List<Integer> taskIds, String start, String end) {
-        LocalDateTime localDateStart = LocalDate.parse(start).atStartOfDay();
-        LocalDateTime localDateEnd = LocalDate.parse(end).atTime(LocalTime.MAX);
+        LocalDateTime localDateStart = LocalDate.parse(start)
+                                                .atStartOfDay();
+        LocalDateTime localDateEnd = LocalDate.parse(end)
+                                              .atTime(LocalTime.MAX);
         return userTaskRepository.findTaskCountGroupedByYear(taskIds, localDateStart, localDateEnd);
     }
 

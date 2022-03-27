@@ -17,8 +17,8 @@ import static javax.persistence.CascadeType.ALL;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "task", uniqueConstraints={
-    @UniqueConstraint(columnNames = {"module", "orderPosition"})
+@Table(name = "task", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"module", "orderPosition"})
 })
 public class Task {
     @Id

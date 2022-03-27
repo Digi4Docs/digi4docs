@@ -19,6 +19,7 @@ public class UniqueEmailFormConstraintValidator extends AbstractAnyFieldValidato
         String emailValue = (String) getFieldValue(form, "email");
         Object idValue = getFieldValue(form, "id");
         User user = userService.findUserByEmail(emailValue);
-        return (null == user || user.getId().equals(idValue));
+        return (null == user || user.getId()
+                                    .equals(idValue));
     }
 }

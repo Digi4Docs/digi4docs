@@ -38,7 +38,8 @@ public class UserDetailsCustomService implements UserDetailsService {
     private List<GrantedAuthority> getUserAuthority(Set<UserRole> userRoles) {
         Set<GrantedAuthority> roles = new HashSet<>();
         for (UserRole userRole : userRoles) {
-            roles.add(new SimpleGrantedAuthority(userRole.getRole().name()));
+            roles.add(new SimpleGrantedAuthority(userRole.getRole()
+                                                         .name()));
         }
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
         return grantedAuthorities;

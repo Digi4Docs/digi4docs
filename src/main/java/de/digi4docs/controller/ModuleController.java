@@ -19,7 +19,8 @@ public class ModuleController extends AbstractModuleController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{id}/modules")
     public String modules(@PathVariable int id, Model model) {
-        Module parentModule = moduleService.findById(id).get();
+        Module parentModule = moduleService.findById(id)
+                                           .get();
         model.addAttribute("modules", moduleService.findAllByParentModule(parentModule.getId()));
         model.addAttribute("parentModule", parentModule);
 
@@ -35,7 +36,8 @@ public class ModuleController extends AbstractModuleController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{id}/module")
     public String module(@PathVariable int id, ModuleForm moduleForm, Model model) {
-        Module module = moduleService.findById(id).get();
+        Module module = moduleService.findById(id)
+                                     .get();
         model.addAttribute("module", module);
 
         initBreadcrumbModuleEntries(module).showBreadcrumbs(model);
@@ -50,7 +52,8 @@ public class ModuleController extends AbstractModuleController {
             return module(id, moduleForm, model);
         }
 
-        Module parentModule = moduleService.findById(id).get();
+        Module parentModule = moduleService.findById(id)
+                                           .get();
         Module module = mapFormToModule(new Module(), moduleForm);
         module.setParent(parentModule);
 
@@ -72,7 +75,8 @@ public class ModuleController extends AbstractModuleController {
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/module/{parentId}/module/{id}")
-    public String update(@PathVariable int parentId, @PathVariable int id, @Valid ModuleForm moduleForm, BindingResult bindingResult, Model model) {
+    public String update(@PathVariable int parentId, @PathVariable int id, @Valid ModuleForm moduleForm,
+            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return showDetailPage(parentId, id, moduleForm, model, false);
         }
@@ -104,7 +108,8 @@ public class ModuleController extends AbstractModuleController {
 
         Module module = moduleOptional.get();
         model.addAttribute("module", module);
-        model.addAttribute("parentModule", moduleService.findById(parentId).get());
+        model.addAttribute("parentModule", moduleService.findById(parentId)
+                                                        .get());
 
         initBreadcrumbModuleEntries(module);
         getBreadcrumbs().put("/module/" + parentId + "/module/confirm-delete/" + id, "Modul löschen");
@@ -156,6 +161,7 @@ public class ModuleController extends AbstractModuleController {
     }
 
     private String showDetailPage(int parentId, int id, ModuleForm moduleForm, Model model, boolean initFormData) {
-        return showDetailPage(parentId, id, moduleForm, model, initFormData, "/module/" + parentId + "/modules", false, true);
+        return showDetailPage(parentId, id, moduleForm, model, initFormData, "/module/" + parentId + "/modules", false,
+                true);
     }
 }

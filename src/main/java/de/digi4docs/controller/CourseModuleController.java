@@ -24,7 +24,8 @@ public class CourseModuleController extends AbstractModuleController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/{id}/modules")
     public String modules(@PathVariable int id, Model model) {
-        Course course = courseService.findById(id).get();
+        Course course = courseService.findById(id)
+                                     .get();
         model.addAttribute("course", course);
         model.addAttribute("modules", moduleService.findAllByCourse(id));
 
@@ -36,7 +37,8 @@ public class CourseModuleController extends AbstractModuleController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/course/{id}/module")
     public String module(@PathVariable int id, ModuleForm moduleForm, Model model) {
-        Course course = courseService.findById(id).get();
+        Course course = courseService.findById(id)
+                                     .get();
         model.addAttribute("course", course);
 
         initBreadcrumbCourseEntries(course);
@@ -53,7 +55,8 @@ public class CourseModuleController extends AbstractModuleController {
             return module(id, moduleForm, model);
         }
 
-        Course course = courseService.findById(id).get();
+        Course course = courseService.findById(id)
+                                     .get();
 
         Module module = mapFormToModule(new Module(), moduleForm);
         module.setCourse(course);
@@ -76,7 +79,8 @@ public class CourseModuleController extends AbstractModuleController {
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/course/{courseId}/module/{id}")
-    public String update(@PathVariable int courseId, @PathVariable int id, @Valid ModuleForm moduleForm, BindingResult bindingResult, Model model) {
+    public String update(@PathVariable int courseId, @PathVariable int id, @Valid ModuleForm moduleForm,
+            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return showDetailPage(courseId, id, moduleForm, model, false);
         }
@@ -108,7 +112,8 @@ public class CourseModuleController extends AbstractModuleController {
 
         Module module = moduleOptional.get();
         model.addAttribute("module", module);
-        model.addAttribute("course", courseService.findById(courseId).get());
+        model.addAttribute("course", courseService.findById(courseId)
+                                                  .get());
 
         initBreadcrumbModuleEntries(module);
         getBreadcrumbs().put("/course/" + courseId + "/module/confirm-delete/" + id, "Modul löschen");
@@ -160,6 +165,7 @@ public class CourseModuleController extends AbstractModuleController {
     }
 
     private String showDetailPage(int courseId, int id, ModuleForm moduleForm, Model model, boolean initFormData) {
-        return showDetailPage(courseId, id, moduleForm, model, initFormData, "/course/" + courseId + "/modules", true, false);
+        return showDetailPage(courseId, id, moduleForm, model, initFormData, "/course/" + courseId + "/modules", true,
+                false);
     }
 }

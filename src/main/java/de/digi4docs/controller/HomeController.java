@@ -41,14 +41,16 @@ public class HomeController {
             model.addAttribute("courses", courseService.findAllActive());
             Map<Course, Integer> coursePersonTaskCount = progressCountProvider.getPersonalCourseTaskCountMap();
             model.addAttribute("personalCourses", coursePersonTaskCount);
-            model.addAttribute("courseTaskCounts", progressCountProvider.getGeneralCourseTaskCountMap(coursePersonTaskCount.keySet()));
+            model.addAttribute("courseTaskCounts",
+                    progressCountProvider.getGeneralCourseTaskCountMap(coursePersonTaskCount.keySet()));
 
             List<UserTask> rejectedOfCurrentUser = userTaskService.findRejectedOfCurrentUser();
             model.addAttribute("rejectedTasks", rejectedOfCurrentUser);
             model.addAttribute("rejectTaskCourses", RecursiveHandler.getUserTaskCourseMap(rejectedOfCurrentUser));
         }
 
-        boolean showTeacherTasks = userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.TEACHER);
+        boolean showTeacherTasks =
+                userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.TEACHER);
         model.addAttribute("showTeacherTasks", showTeacherTasks);
         if (showTeacherTasks) {
             List<UserTask> teacherTasks = userTaskService.findTransmittedOfCurrentUser();

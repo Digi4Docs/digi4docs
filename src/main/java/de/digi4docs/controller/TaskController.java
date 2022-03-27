@@ -25,7 +25,8 @@ public class TaskController extends AbstractModuleController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{id}/tasks")
     public String tasks(@PathVariable int id, Model model) {
-        Module parentModule = moduleService.findById(id).get();
+        Module parentModule = moduleService.findById(id)
+                                           .get();
         model.addAttribute("parentModule", parentModule);
         model.addAttribute("tasks", taskService.findAllByModule(parentModule.getId()));
         model.addAttribute("course", parentModule.getCourse());
@@ -40,7 +41,8 @@ public class TaskController extends AbstractModuleController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/module/{id}/task")
     public String task(@PathVariable int id, TaskForm taskForm, Model model) {
-        Module module = moduleService.findById(id).get();
+        Module module = moduleService.findById(id)
+                                     .get();
         model.addAttribute("parentModule", module);
 
         initBreadcrumbModuleEntries(module).showBreadcrumbs(model);
@@ -55,7 +57,8 @@ public class TaskController extends AbstractModuleController {
             return task(id, taskForm, model);
         }
 
-        Module parentModule = moduleService.findById(id).get();
+        Module parentModule = moduleService.findById(id)
+                                           .get();
         Task task = mapFormToTask(new Task(), taskForm);
         task.setModule(parentModule);
 
@@ -77,7 +80,8 @@ public class TaskController extends AbstractModuleController {
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @PostMapping("/module/{parentId}/task/{id}")
-    public String update(@PathVariable int parentId, @PathVariable int id, @Valid TaskForm taskForm, BindingResult bindingResult, Model model) {
+    public String update(@PathVariable int parentId, @PathVariable int id, @Valid TaskForm taskForm,
+            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return showDetailPage(parentId, id, taskForm, model, false);
         }
@@ -109,10 +113,12 @@ public class TaskController extends AbstractModuleController {
 
         Task task = taskOptional.get();
         model.addAttribute("task", task);
-        model.addAttribute("parentModule", moduleService.findById(parentId).get());
+        model.addAttribute("parentModule", moduleService.findById(parentId)
+                                                        .get());
 
         initBreadcrumbModuleEntries(task.getModule());
-        getBreadcrumbs().put("/module/" + task.getModule().getId() + "/task/" + task.getId(), task.getTitle());
+        getBreadcrumbs().put("/module/" + task.getModule()
+                                              .getId() + "/task/" + task.getId(), task.getTitle());
         getBreadcrumbs().put("/module/" + parentId + "/task/confirm-delete/" + id, "Modul löschen");
         showBreadcrumbs(model);
 
@@ -180,10 +186,12 @@ public class TaskController extends AbstractModuleController {
 
         model.addAttribute("task", task);
         model.addAttribute("parentModule", task.getModule());
-        model.addAttribute("course", task.getModule().getCourse());
+        model.addAttribute("course", task.getModule()
+                                         .getCourse());
 
         initBreadcrumbModuleEntries(task.getModule());
-        getBreadcrumbs().put("/module/" + task.getModule().getId() + "/task/" + task.getId(), task.getTitle());
+        getBreadcrumbs().put("/module/" + task.getModule()
+                                              .getId() + "/task/" + task.getId(), task.getTitle());
         showBreadcrumbs(model);
 
         return "task/task";

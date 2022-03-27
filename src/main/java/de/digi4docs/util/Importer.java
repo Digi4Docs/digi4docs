@@ -28,7 +28,8 @@ public class Importer {
 
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (!"csv".equals(extension)) {
-            return "Deine Datei ist im '" + extension + "'-Format. Das ist nicht zulässig. Bitte lade nur CSV-Dateien hoch.";
+            return "Deine Datei ist im '" + extension + "'-Format. Das ist nicht zulässig. Bitte lade nur CSV-Dateien" +
+                    " hoch.";
         }
 
         return null;
@@ -83,7 +84,8 @@ public class Importer {
                 user.setRoles(new HashSet<>());
 
                 roles.forEach(role -> {
-                    user.getRoles().add(new UserRole(null, user, role));
+                    user.getRoles()
+                        .add(new UserRole(null, user, role));
                 });
 
                 userService.add(user);

@@ -72,7 +72,8 @@ public class ProfileController extends AbstractController {
         }
 
         User user = loadUser();
-        boolean passwordMatches = bCryptPasswordEncoder.matches(changePasswordForm.getOldPassword(), user.getPassword());
+        boolean passwordMatches =
+                bCryptPasswordEncoder.matches(changePasswordForm.getOldPassword(), user.getPassword());
         if (!passwordMatches) {
             model.addAttribute("error", "Das bisherige Passwort ist nicht korrekt");
             return changePassword(changePasswordForm, model);
@@ -95,7 +96,11 @@ public class ProfileController extends AbstractController {
 
         model.addAttribute("user", user);
         model.addAttribute("isStudent",
-                user.getRoles().stream().filter(userRole -> userRole.getRole().equals(Role.STUDENT)).count() > 0);
+                user.getRoles()
+                    .stream()
+                    .filter(userRole -> userRole.getRole()
+                                                .equals(Role.STUDENT))
+                    .count() > 0);
 
 
         getBreadcrumbs(true).put("/profile", "Mein Profil");
@@ -105,8 +110,10 @@ public class ProfileController extends AbstractController {
     }
 
     private User loadUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+        Authentication auth = SecurityContextHolder.getContext()
+                                                   .getAuthentication();
+        org.springframework.security.core.userdetails.User principal =
+                (org.springframework.security.core.userdetails.User) auth.getPrincipal();
         return userService.findUserByEmail(principal.getUsername());
     }
 }

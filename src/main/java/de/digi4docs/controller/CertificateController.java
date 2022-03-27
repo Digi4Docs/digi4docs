@@ -58,14 +58,16 @@ public class CertificateController extends AbstractController {
         LinkedList<Module> courseModules = getCourseModules(course);
 
         List<Integer> taskIds = courseModules.stream()
-                .map(Module::getTasks)
-                .flatMap(Collection::stream)
-                .map(Task::getId)
-                .collect(Collectors.toList());
+                                             .map(Module::getTasks)
+                                             .flatMap(Collection::stream)
+                                             .map(Task::getId)
+                                             .collect(Collectors.toList());
 
         Map<Integer, UserTask> userTaskMap = userTaskService.findByTasks(taskIds, user)
-                .stream()
-                .collect(Collectors.toMap(userTask -> userTask.getTask().getId(), userTask -> userTask));
+                                                            .stream()
+                                                            .collect(Collectors.toMap(userTask -> userTask.getTask()
+                                                                                                          .getId(),
+                                                                    userTask -> userTask));
         model.addAttribute("userTaskMap", userTaskMap);
 
 
@@ -91,7 +93,8 @@ public class CertificateController extends AbstractController {
     private void addModules(List<Module> modules, LinkedList<Module> courseModules) {
         for (Module module : modules) {
             courseModules.add(module);
-            if (!module.getModules().isEmpty()) {
+            if (!module.getModules()
+                       .isEmpty()) {
                 addModules(module.getModules(), courseModules);
             }
         }

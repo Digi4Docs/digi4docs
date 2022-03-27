@@ -56,7 +56,8 @@ public class SecurityController {
             return resetPassword(form, model);
         }
 
-        User user = userService.findActiveUserByEmail(form.getEmail()).get();
+        User user = userService.findActiveUserByEmail(form.getEmail())
+                               .get();
         Optional<PasswordForgotten> optionalPasswordForgotten = passwordForgottenService.findByUserId(user.getId());
         PasswordForgotten passwordForgotten = optionalPasswordForgotten.orElseGet(PasswordForgotten::new);
         passwordForgotten.setUser(user);
@@ -79,13 +80,15 @@ public class SecurityController {
     }
 
     @PostMapping("/new-password/{hash}")
-    public String saveNewPassword(@PathVariable String hash, @Valid NewPasswordForm form, BindingResult bindingResult, Model model) {
+    public String saveNewPassword(@PathVariable String hash, @Valid NewPasswordForm form, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return newPassword(hash, form, model);
         }
 
         PasswordForgotten passwordForgotten = validateHash(hash, model);
-        passwordForgotten.getUser().setPassword(form.getNewPassword());
+        passwordForgotten.getUser()
+                         .setPassword(form.getNewPassword());
         userService.save(passwordForgotten.getUser(), true);
 
         passwordForgottenService.delete(passwordForgotten);
@@ -104,7 +107,8 @@ public class SecurityController {
         }
 
         PasswordForgotten passwordForgotten = optionalHash.get();
-        if (LocalDateTime.now().isAfter(passwordForgotten.getExpirationAt())) {
+        if (LocalDateTime.now()
+                         .isAfter(passwordForgotten.getExpirationAt())) {
             model.addAttribute("error", "Der aufgerufene Code ist abgelaufen.");
             return null;
         }
