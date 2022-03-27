@@ -1,5 +1,5 @@
 const PublicScripts = {
-    adjustTeacherSelect: function (selectedSubject, resetTeacherValue) {
+    adjustTeacherSelect: function (subjectId, teacherId, selectedSubject, resetTeacherValue) {
         // reset value
         if (resetTeacherValue) {
             teacherId.value = "";
@@ -12,6 +12,7 @@ const PublicScripts = {
         });
 
         if ("" !== selectedSubject) {
+            teacherId.disabled = subjectId.disabled || false;
             Array.from(teacherId.options).forEach(function (optionElement) {
                 selectedSubject = parseInt(selectedSubject);
                 const teacherSubjectsString = optionElement.dataset.subjects;
@@ -22,6 +23,8 @@ const PublicScripts = {
                     }
                 }
             });
+        } else {
+            teacherId.disabled = true;
         }
     }
 };
@@ -33,8 +36,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const teacherId = document.getElementById('teacherId');
     if (null != subjectId && null != teacherId) {
         subjectId.addEventListener("change", (event) => PublicScripts.adjustTeacherSelect(
-            event.currentTarget.value, true));
-        PublicScripts.adjustTeacherSelect(subjectId.value, false);
+            subjectId, teacherId, event.currentTarget.value, true));
+        PublicScripts.adjustTeacherSelect(subjectId, teacherId, subjectId.value, false);
     }
 
     // init progress circles
