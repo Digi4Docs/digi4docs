@@ -36,3 +36,6 @@ build/
 lib/
 node_modules/
 .mvn/
+
+application-dev.properties
+application-prod.properties

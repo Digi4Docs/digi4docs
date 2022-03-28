@@ -96,7 +96,7 @@ Digi4Docs is a prototype, which was implemented as a simple application in Sprin
 
 ### Run the application
 1. Install a local database 
-2. Setup the database information in `src/main/resources/application.properties`
+2. Setup the database information in `src/main/resources/application.properties` (or create a application-dev.properties file)
 3. Run spring boot in terminal: `./mvnw spring-boot:run`
    * Database will be automatically setup on first run
 4. Add config entries to database table `config` for:
@@ -119,6 +119,13 @@ The program uses SASS to compile style files. To translate the edited SASS files
 
 * For development environment: `npm run sass-dev`
 * For production environment: `npm run sass-prod`
+
+### Deploy
+
+* Create `src/main/resources/application-prod.properties` with specific settings
+* Run `.\mvnw clean install -Denv=prod`
+* Run `.\mvnw package`
+* Add as ROOT.war to webapps folder of Tomcat
 
 ## Credits
 Digi4Docs uses some freely available resources and libraries. Thanks for this go to:
