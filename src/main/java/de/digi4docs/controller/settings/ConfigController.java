@@ -104,6 +104,7 @@ public class ConfigController extends AbstractController {
         String passwordValue = configMap.get(ConfigService.KEY_MAIL_PASSWORD);
         if (initFormData) {
             configForm.setBaseUrl(configMap.get(ConfigService.KEY_SERVER_BASE_URL));
+            configForm.setImprintInstitution(configMap.get(ConfigService.KEY_IMPRINT_INSTITUTION));
             configForm.setImprintUrl(configMap.get(ConfigService.KEY_IMPRINT_URL));
             configForm.setMailHost(configMap.get(ConfigService.KEY_MAIL_HOST));
             configForm.setMailPort(Integer.valueOf(configMap.get(ConfigService.KEY_MAIL_PORT)));
