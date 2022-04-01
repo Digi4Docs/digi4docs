@@ -61,8 +61,18 @@ legend {
 }
 
 select option.inactive {
-  color: var(--bs-gray-4  00);
+  color: var(--bs-gray-400);
   font-style: italic;
+}
+
+.web-certificate {
+  padding: 3rem .5rem;
+}
+
+@media (min-width: 992px) {
+  .web-certificate {
+    padding: 3rem 20vw;
+  }
 }
 
 /* Scrollbars */
@@ -97,6 +107,6 @@ select option.inactive {
   }
 
   .d-print-p-none {
-    padding: 0!important;
+    padding: 0 !important;
   }
 }

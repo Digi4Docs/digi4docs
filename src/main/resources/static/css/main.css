@@ -26166,10 +26166,19 @@ legend {
 }
 
 select option.inactive {
-  color: var(--bs-gray-4 0);
+  color: var(--bs-gray-400);
   font-style: italic;
 }
 
+.web-certificate {
+  padding: 3rem 0.5rem;
+}
+
+@media (min-width: 992px) {
+  .web-certificate {
+    padding: 3rem 20vw;
+  }
+}
 /* Scrollbars */
 /* Works on Firefox */
 * {

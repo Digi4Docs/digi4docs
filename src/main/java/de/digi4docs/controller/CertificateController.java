@@ -58,7 +58,7 @@ public class CertificateController extends AbstractController {
         Course course = courseOptional.get();
         model.addAttribute("course", course);
         model.addAttribute("user", user);
-        model.addAttribute("institution", configService.getImprintInstitution());
+        model.addAttribute("certificateFooter", configService.getCertificateFooter());
 
 
         LinkedList<Module> courseModules = getCourseModules(course);

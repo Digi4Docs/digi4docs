@@ -4,6 +4,14 @@
       layout:decorate="~{./layout}">
 <head>
     <title>Einstellungen - Konfiguration bearbeiten</title>
+
+    <script th:src="@{~/js/tinymce/tinymce.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/image/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/link/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/lists/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/media/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/tinymce/plugins/table/plugin.min.js}" type="text/javascript"></script>
+    <script th:src="@{~/js/wysiwig.js}" type="text/javascript"></script>
 </head>
 <body>
 <div layout:fragment="title">Einstellungen - Konfiguration bearbeiten</div>
@@ -57,8 +65,9 @@
                     <input type="password" maxlength="255" th:field="*{mailPassword}" class="form-control"
                            th:classappend="${#fields.hasErrors('mailPassword') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                            id="mailPassword" name="mailPassword"/>
-                    <div class="text-muted small">Das Passwort wird nur geändert, wenn ein neuer Wert eingetragen wird. Das aktuelle
-                    Passwort ist: <span class="fw-bold">[[${maskedPassword}]]</span> </div>
+                    <div class="text-muted small">Das Passwort wird nur geändert, wenn ein neuer Wert eingetragen wird.
+                        Das aktuelle
+                        Passwort ist: <span class="fw-bold">[[${maskedPassword}]]</span></div>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('mailPassword')}"
                          th:errors="*{mailPassword}"></div>
                 </div>
@@ -84,7 +93,8 @@
                            id="baseUrl" name="baseUrl"/>
                     <div class="text-muted small">
                         Die URL wird für die Passwort-vergessen-Funktion benötigt. Sie wird in der E-Mail, welche dafür
-                        verschickt wird genutzt. Sie sollte die Basis-URL der Webseite sein - also die URL bis zum ".de".
+                        verschickt wird genutzt. Sie sollte die Basis-URL der Webseite sein - also die URL bis zum
+                        ".de".
                     </div>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('baseUrl')}"
                          th:errors="*{baseUrl}"></div>
@@ -97,8 +107,10 @@
                            th:classappend="${#fields.hasErrors('imprintInstitution') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                            id="imprintInstitution" name="imprintInstitution"/>
                     <div class="text-muted small">
-                        Das Impressum wird auf der Login-Seite verlinkt, da es sich dabei um ein öffentliche Seite handelt.
-                        Es sollte auf ein externes Impressum bspw. das der Homepage der schulischen Einrichtung verweisen.
+                        Das Impressum wird auf der Login-Seite verlinkt, da es sich dabei um ein öffentliche Seite
+                        handelt.
+                        Es sollte auf ein externes Impressum bspw. das der Homepage der schulischen Einrichtung
+                        verweisen.
                     </div>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('imprintInstitution')}"
                          th:errors="*{imprintInstitution}"></div>
@@ -112,6 +124,21 @@
                            id="imprintUrl" name="imprintUrl"/>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('imprintUrl')}"
                          th:errors="*{imprintUrl}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-3 pe-md-3">
+                    <label for="certificateFooter" class="form-label">Footer für Zertifikate</label>
+                    <textarea th:field="*{certificateFooter}" class="form-control wysiwyg-editor"
+                              th:classappend="${#fields.hasErrors('certificateFooter') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                              id="certificateFooter"
+                              name="certificateFooter"></textarea>
+                    <div class="text-muted small">
+                        Dieser Text wird am Ende eines jeden Zertifikats eingeblendet. Hier kann bspw. die Anschrift
+                        der Schule stehen.
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('certificateFooter')}"
+                         th:errors="*{certificateFooter}"></div>
                 </div>
             </div>
         </fieldset>

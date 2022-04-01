@@ -79,6 +79,10 @@ public class ConfigController extends AbstractController {
         configMailSender.setConfigValue(configForm.getMailSender());
         configsToSave.add(configMailSender);
 
+        Config configCertificateFooter = getByConfigKey(configEntries, ConfigService.KEY_CERTIFICATE_FOOTER);
+        configCertificateFooter.setConfigValue(configForm.getCertificateFooter());
+        configsToSave.add(configCertificateFooter);
+
         try {
             configService.saveAll(configsToSave);
             model.addAttribute("success", true);
@@ -111,6 +115,7 @@ public class ConfigController extends AbstractController {
             configForm.setMailUser(configMap.get(ConfigService.KEY_MAIL_USER));
             configForm.setMailPassword(passwordValue);
             configForm.setMailSender(configMap.get(ConfigService.KEY_MAIL_SENDER));
+            configForm.setCertificateFooter(configMap.get(ConfigService.KEY_CERTIFICATE_FOOTER));
         }
 
         String maskedPassword = "";

@@ -1,6 +1,7 @@
 package de.digi4docs.model;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -19,6 +20,6 @@ public class Config {
     @Column(nullable = false, unique = true)
     private String configKey;
 
-    @Column(nullable = false)
+    @Type(type = "text")
     private String configValue;
 }

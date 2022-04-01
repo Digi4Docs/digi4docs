@@ -43,4 +43,6 @@ public class ConfigForm {
     @NotEmpty(message = "Der Wert für die Verlinkung des Impressums darf nicht leer sein.")
     @Size(max = 255, message = "Der Wert darf maximal 255 Zeichen lang sein.")
     protected String imprintUrl;
+
+    protected String certificateFooter;
 }

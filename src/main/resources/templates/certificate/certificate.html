@@ -15,7 +15,7 @@
 <div th:if="${null != breadcrumbs}">
     <div th:insert="fragments/breadcrumbs" class="d-print-none"></div>
 </div>
-<div class="bg-light p-3 d-print-p-none certificate">
+<div class="bg-light web-certificate d-print-p-none certificate">
     <div sec:authorize="hasAuthority('ADMIN') or  hasAuthority('USERS')" class="d-print-none w-100 text-end">
         <button type="button" class="btn btn-primary me-2" th:onclick="PublicScripts.printWithImages()">
             <i class="bi bi-printer-fill"></i>
@@ -50,8 +50,12 @@
     <img th:unless="${#strings.isEmpty(course.externalImage)}" th:src="${course.externalImage}" class="w-100"/>
     <div th:if="${#lists.size(course.modules) > 0}"
          th:replace="certificate/modules(modules=${course.modules},outerloop=true)"></div>
-    <div class="d-none d-print-block w-100 me-4 page-break-before" style="margin-top: 400px;">
-        <div class="text-end border-top float-end">[[${institution}]], [[${#dates.format(#dates.createNow(),'dd.MM.YYYY')}]]</div>
+    <div class="d-none d-print-block w-100 me-4 page-break-before">
+        <div class="mt-4">&nbsp;</div>
+        [(${certificateFooter})]
+        <div class="mt-4 text-center">
+            Stand vom: [[${#dates.format(#dates.createNow(),'dd.MM.YYYY')}]]
+        </div>
     </div>
 </div>
 </body>

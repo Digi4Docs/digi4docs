@@ -21,6 +21,7 @@ public class ConfigService {
     public static String KEY_SERVER_BASE_URL = "base.url";
     public static String KEY_IMPRINT_URL = "imprint.url";
     public static String KEY_IMPRINT_INSTITUTION = "imprint.institution";
+    public static String KEY_CERTIFICATE_FOOTER = "certificate.footer";
 
     private final ConfigRepository configRepository;
 
@@ -75,6 +76,15 @@ public class ConfigService {
             return getStringValue(KEY_IMPRINT_INSTITUTION, "Imprint institution");
         } catch (Exception e) {
             log.log(Level.WARNING, "Missing imprint institution", e);
+        }
+        return "";
+    }
+
+    public String getCertificateFooter() {
+        try {
+            return getStringValue(KEY_CERTIFICATE_FOOTER, "Certificate footer");
+        } catch (Exception e) {
+            log.log(Level.WARNING, "Missing certificate footer", e);
         }
         return "";
     }
