@@ -149,12 +149,12 @@
         </div>
         <div class="row mt-4">
             <div class="col-12">
-                <button type="submit" name="done" class="btn btn-success text-white me-1"
+                <button type="submit" name="done" class="btn btn-success text-white me-1 mb-4 mb-md-0"
                         th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
                     <i class="bi bi-check-circle-fill"></i>
                     Aufgabe als "erledigt" markieren
                 </button>
-                <button type="submit" name="reject" class="btn btn-danger text-white"
+                <button type="submit" name="reject" class="btn btn-danger text-white mb-4 mb-md-0"
                         th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
                     <i class="bi bi-x-circle-fill"></i>
                     Aufgabe zurückgeben

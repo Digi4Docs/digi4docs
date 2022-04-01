@@ -178,23 +178,23 @@
                             </div>
                         </div>
                         <div th:classappend="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED' ? 'd-flex flex-column justify-content-center' : ''}">
-                            <button type="submit" name="save" class="btn btn-success text-white"
+                            <button type="submit" name="save" class="btn btn-success text-white mb-4 mb-md-0"
                                     th:if="${taskStatus.toString() == 'OPEN' || taskStatus.toString() == 'REJECTED'}">
                                 <i class="bi bi-check"></i>
                                 Speichern
                             </button>
-                            <button type="submit" name="save" class="btn btn-danger ms-2"
+                            <button type="submit" name="save" class="btn btn-danger ms-2 mb-4 mb-md-0"
                                     th:if="${taskStatus.toString() == 'REJECTED'}">
                                 <i class="bi bi-trash"></i>
                                 Löschen
                             </button>
                             <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}"
-                               class="btn btn-secondary ms-2"
+                               class="btn btn-secondary ms-2 mb-4 mb-md-0"
                                th:classappend="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED' ? 'float-end' : ''}">
                                 <i class="bi bi-list"></i>
                                 Zurück zur Aufgabenliste
                             </a>
-                            <button type="submit" name="transmit" class="btn btn-primary text-white float-end"
+                            <button type="submit" name="transmit" class="btn btn-primary text-white float-end mb-4 mb-md-0"
                                     th:if="${taskStatus.toString() == 'OPEN' || taskStatus.toString() == 'REJECTED'}">
                                 <i class="bi bi-envelope"></i>
                                 An Lehrkraft senden

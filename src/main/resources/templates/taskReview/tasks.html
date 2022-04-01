@@ -19,82 +19,85 @@
           method="post" th:object="${tasksReviewMultipleForm}" novalidate>
         <div class="row">
             <div class="col-12 text-end mb-4">
-                <a th:href="@{/tasks/edit}" class="btn btn-sm btn-secondary"
+                <a th:href="@{/tasks/edit}" class="btn btn-sm btn-secondary mb-2 mb-md-0"
                    th:if="${true != editTasks and !showDone and !showAll and !userTasks.empty}">
                     <i class="bi bi-check-all"></i>
                     Mehrere bearbeiten
                 </a>
-                <button type="submit" class="btn btn-sm btn-success text-white me-2" th:if="${true == editTasks}">
+                <button type="submit" class="btn btn-sm btn-success text-white me-2 mb-2 mb-md-0" th:if="${true == editTasks}">
                     <i class="bi bi-check-all"></i>
                     Auswahl als erledigt markieren
                 </button>
-                <a th:href="@{/tasks}" class="btn btn-sm btn-secondary" th:if="${true == editTasks}">
+                <a th:href="@{/tasks}" class="btn btn-sm btn-secondary mb-2 mb-md-0" th:if="${true == editTasks}">
                     <i class="bi bi-x-circle-fill"></i>
                     Bearbeitungsmodus schließen
                 </a>
             </div>
         </div>
-        <table class="table table-striped table-hover datatables border mt-2 mb-1" id="taskList">
-            <thead>
-            <tr>
-                <th>Modul</th>
-                <th>Titel</th>
-                <th>Schüler*in</th>
-                <th>Jahrgang</th>
-                <th>Klasse</th>
-                <th th:if="${showAll}">Lehkraft</th>
-                <th th:if="${showAll}">Status</th>
-                <th data-sortable="false">
-                    <button class="btn btn-sm btn-secondary" type="button" th:if="${true == editTasks}"
-                            id="toogleCheckboxes" title="Auswahl umkehren">
-                        <i class="bi bi-check2-square"></i>
-                    </button>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${userTasks.empty}">
-                <td th:if="${showDone}" th:colspan="${showAll ? '8' : '6'}">Keine Aufgaben gefunden.</td>
-                <td th:unless="${showDone}" th:colspan="${showAll ? '8' : '6'}"> Alle Aufgaben erledigt - hier gibt es
-                    im
-                    Moment nichts zu tun.
-                </td>
-            </tr>
-            <tr th:each="userTask : ${userTasks}">
-                <td>[[${userTask.task.module.title}]]</td>
-                <td>[[${userTask.task.title}]]</td>
-                <td>[[${userTask.user.fullname}]]</td>
-                <td>[[${userTask.user.classYear}]]</td>
-                <td>[[${userTask.user.classIdentifier}]]</td>
-                <td th:if="${showAll}">[[${userTask.teacher.fullname}]]</td>
-                <td th:if="${showAll}">
-                    <span th:replace="fragments/taskStatus(userTask=${userTask})"></span>
-                </td>
-                <td class="text-center">
-                    <a th:href="@{'/tasks/task/' + ${userTask.id}}"
-                       class="btn btn-outline-primary text-nowrap" th:unless="${true == editTasks}">
-                        <span th:if="${!showDone}"><i class="bi bi-pencil-fill me-1"></i>Bearbeiten</span>
-                        <span th:if="${showDone}"><i class="bi bi-eye-fill me-1"></i>Ansehen</span>
-                    </a>
-                    <input th:if="${true == editTasks}" type="checkbox" th:value="${userTask.id}"
-                           th:field="*{userTaskIds}" name="userTaskIds"/>
-                </td>
-            </tr>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover datatables border mt-2 mb-1" id="taskList">
+                <thead>
+                <tr>
+                    <th>Modul</th>
+                    <th>Titel</th>
+                    <th>Schüler*in</th>
+                    <th>Jahrgang</th>
+                    <th>Klasse</th>
+                    <th th:if="${showAll}">Lehkraft</th>
+                    <th th:if="${showAll}">Status</th>
+                    <th data-sortable="false">
+                        <button class="btn btn-sm btn-secondary" type="button" th:if="${true == editTasks}"
+                                id="toogleCheckboxes" title="Auswahl umkehren">
+                            <i class="bi bi-check2-square"></i>
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${userTasks.empty}">
+                    <td th:if="${showDone}" th:colspan="${showAll ? '8' : '6'}">Keine Aufgaben gefunden.</td>
+                    <td th:unless="${showDone}" th:colspan="${showAll ? '8' : '6'}"> Alle Aufgaben erledigt - hier gibt
+                        es
+                        im
+                        Moment nichts zu tun.
+                    </td>
+                </tr>
+                <tr th:each="userTask : ${userTasks}">
+                    <td>[[${userTask.task.module.title}]]</td>
+                    <td>[[${userTask.task.title}]]</td>
+                    <td>[[${userTask.user.fullname}]]</td>
+                    <td>[[${userTask.user.classYear}]]</td>
+                    <td>[[${userTask.user.classIdentifier}]]</td>
+                    <td th:if="${showAll}">[[${userTask.teacher.fullname}]]</td>
+                    <td th:if="${showAll}">
+                        <span th:replace="fragments/taskStatus(userTask=${userTask})"></span>
+                    </td>
+                    <td class="text-center">
+                        <a th:href="@{'/tasks/task/' + ${userTask.id}}"
+                           class="btn btn-outline-primary text-nowrap" th:unless="${true == editTasks}">
+                            <span th:if="${!showDone}"><i class="bi bi-pencil-fill me-1"></i>Bearbeiten</span>
+                            <span th:if="${showDone}"><i class="bi bi-eye-fill me-1"></i>Ansehen</span>
+                        </a>
+                        <input th:if="${true == editTasks}" type="checkbox" th:value="${userTask.id}"
+                               th:field="*{userTaskIds}" name="userTaskIds"/>
+                    </td>
+                </tr>
 
-            </tbody>
-            <tfoot>
-            <tr th:if="${!userTasks.empty}">
-                <th>Modul</th>
-                <th>Titel</th>
-                <th>Schüler*in</th>
-                <th>Jahrgang</th>
-                <th>Klasse</th>
-                <th th:if="${showAll}">Lehkraft</th>
-                <th th:if="${showAll}"></th>
-                <th></th>
-            </tr>
-            </tfoot>
-        </table>
+                </tbody>
+                <tfoot>
+                <tr th:if="${!userTasks.empty}">
+                    <th>Modul</th>
+                    <th>Titel</th>
+                    <th>Schüler*in</th>
+                    <th>Jahrgang</th>
+                    <th>Klasse</th>
+                    <th th:if="${showAll}">Lehkraft</th>
+                    <th th:if="${showAll}"></th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
     </form>
 </div>
 </body>
