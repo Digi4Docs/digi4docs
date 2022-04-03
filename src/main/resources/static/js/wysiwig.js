@@ -4,12 +4,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         height: 400,
         menubar: false,
         plugins: [
-            'lists', 'image', 'media', 'table', 'link'
+            'lists', 'image', 'media', 'table', 'link', 'code'
         ],
         toolbar: 'undo redo | fontsize | ' +
             'bold italic strikethrough forecolor backcolor | ' +
             'alignleft aligncenter alignright alignjustify | bullist numlist | ' +
-            'link image media | removeformat ',
+            'link image media | code | removeformat ',
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
     });
 });
