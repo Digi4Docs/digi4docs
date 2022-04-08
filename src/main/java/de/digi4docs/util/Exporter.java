@@ -74,7 +74,7 @@ public class Exporter {
             headerRow.add("Aufgabe");
             studentYears.forEach(year -> {
                 headerRow.add(year + " abgeschlossen");
-                headerRow.add(year + " Anzahl Schüler*innen");
+                headerRow.add(year + " Anzahl Schülerinnen/Schüler");
                 headerRow.add(year + " Erfüllung in %");
             });
             rows.add(headerRow);

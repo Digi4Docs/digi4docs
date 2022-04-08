@@ -43,7 +43,7 @@
                 <td>
                 <span th:each="userRole: ${user.roles}" th:text="${userRole.role.displayValue}"
                       class="badge me-1"
-                      th:classappend="${userRole.role.displayValue == 'Administrator' ? 'bg-primary' : (userRole.role.displayValue == 'Lehrkraft' ? 'bg-info' : (userRole.role.displayValue == 'Schüler*innen' ? 'bg-success' : 'bg-secondary'))}"
+                      th:classappend="${userRole.role.displayValue == 'Administrator' ? 'bg-primary' : (userRole.role.displayValue == 'Lehrkraft' ? 'bg-info' : (userRole.role.displayValue == 'Schülerinnen/Schüler' ? 'bg-success' : 'bg-secondary'))}"
                 ></span>
                 </td>
                 <td>[[${user.classYear}]]</td>
