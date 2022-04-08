@@ -137,6 +137,22 @@ public class TaskReviewController extends AbstractController {
         return saveTask(id, taskReviewForm, bindingResult, model, FORM_ACTION_REJECT);
     }
 
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
+    @PostMapping(value = "/tasks/task/{id}", params = "back")
+    public String getBackTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
+            Model model) {
+
+        Optional<UserTask> userTaskOptional = userTaskService.findById(id);
+        if (userTaskOptional.isEmpty()) {
+            return "redirect:/tasks";
+        }
+
+        UserTask userTask = userTaskOptional.get();
+        userTask.setStatus(TaskStatus.TRANSMITTED);
+        save(userTask, model);
+        return "redirect:/tasks/task/" + id;
+    }
+
     private String showTaskPage(int id, TaskReviewForm taskReviewForm, Model model, boolean initFormData) {
         Optional<UserTask> userTaskOptional = userTaskService.findById(id);
         if (userTaskOptional.isEmpty()) {
@@ -208,6 +224,16 @@ public class TaskReviewController extends AbstractController {
             userTask.setRejectedAt(LocalDateTime.now());
         }
 
+        boolean successful = save(userTask, model);
+
+        if (formAction == FORM_ACTION_SAVE || !successful) {
+            return showTaskPage(id, taskReviewForm, model, false);
+        }
+
+        return "redirect:/tasks/task/" + id;
+    }
+
+    private boolean save(UserTask userTask, Model model) {
         boolean successful = false;
         try {
             userTaskService.save(userTask);
@@ -217,10 +243,6 @@ public class TaskReviewController extends AbstractController {
             model.addAttribute("error", e.getMessage());
         }
 
-        if (formAction == FORM_ACTION_SAVE || !successful) {
-            return showTaskPage(id, taskReviewForm, model, false);
-        }
-
-        return "redirect:/tasks/task/" + id;
+        return successful;
     }
 }
