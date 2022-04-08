@@ -173,7 +173,18 @@
                                 <div th:if="${null != userTask.doneAt}">
                                     Deine Lehrkraft hat die Aufgabe am
                                     <span class="d-inline text-success">[[ ${#temporals.format(userTask.doneAt, 'dd.MM.yyyy HH:mm')} ]] Uhr</span>
-                                    als erledigt markiert.
+                                    als erledigt markiert. Sie hat dir dazu folgende Hinweise hinterlassen:
+                                    <figure class="mt-4 me-4">
+                                        <blockquote class="blockquote">
+                                            <p th:unless="${#strings.isEmpty(userTask.comment)}">
+                                                [(${#strings.replace(#strings.escapeXml(userTask.comment),'&#10;','&lt;br&gt;')})]</p>
+                                            <p th:if="${#strings.isEmpty(userTask.comment)}">Es wurde kein Kommentar
+                                                hinterlegt</p>
+                                        </blockquote>
+                                        <figcaption class="blockquote-footer">
+                                            [[ ${userTask.teacher.fullname} ]]
+                                        </figcaption>
+                                    </figure>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +200,7 @@
                                 Löschen
                             </button>
                             <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}"
-                               class="btn btn-secondary ms-2 mb-4 mb-md-0"
+                               class="btn btn-secondary ms-2 mb-4 mb-md-0 text-nowrap"
                                th:classappend="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED' ? 'float-end' : ''}">
                                 <i class="bi bi-list"></i>
                                 Zurück zur Aufgabenliste
