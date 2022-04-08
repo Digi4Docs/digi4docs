@@ -69,4 +69,8 @@ public class User {
     public String getFullname() {
         return (null != lastname ? lastname : "") + ", " + (null != firstname ? firstname : "");
     }
+
+    public String getFullnameReverse() {
+        return (null != firstname ? firstname : "") + " " + (null != lastname ? lastname : "");
+    }
 }

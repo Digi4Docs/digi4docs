@@ -66,7 +66,7 @@
             </div>
         </fieldset>
         <fieldset class="border p-3 mt-4">
-            <legend class="mb-4">Angaben der Schülerin/des Schülers</legend>
+            <legend class="mb-4">Angaben der Schülerin/des Schülers: [[${userTask.user.fullnameReverse}]]</legend>
 
             <div class="alert alert-success mb-3" th:if="${success}">Die Aufgabe wurde gespeichert.</div>
             <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
@@ -138,7 +138,7 @@
         </fieldset>
         <div class="row mt-4">
             <div class="col-12">
-                <label for="comment" class="form-label">Bemerkung</label>
+                <label for="comment" class="form-label">Deine Bemerkung an [[${userTask.user.fullnameReverse}]]</label>
                 <textarea th:field="*{comment}" class="form-control" rows="10"
                           th:classappend="${#fields.hasErrors('comment') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                           id="comment" name="comment"
