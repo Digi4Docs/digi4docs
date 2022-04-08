@@ -34,7 +34,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row print-on-demand mt-2" th:if="${null != userTaskMap.get(task.id) and null != userTaskMap.get(task.id).file and userTaskMap.get(task.id).file.type.startsWith('image/')}">
+            <div class="row print-on-demand mt-2" th:if="${null != userTaskMap.get(task.id) and userTaskMap.get(task.id).status.toString == 'DONE' and null != userTaskMap.get(task.id).file and userTaskMap.get(task.id).file.type.startsWith('image/')}">
                 <img th:src="@{'/public/file/' + ${userTaskMap.get(task.id).file.id}}" />
             </div>
         </div>
