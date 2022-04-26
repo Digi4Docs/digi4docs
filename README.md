@@ -135,7 +135,7 @@ Digi4Docs uses some freely available resources and libraries. Thanks for this go
 * Background image: @stux - https://pixabay.com/de/illustrations/aquarell-farbverlauf-maltechnik-1325656/
 * Dashboard image: @kreatikar - https://pixabay.com/de/illustrations/online-netz-statistiken-daten-3539412/
 
-### Libaries
+### Libraries
 * CSS framework: Bootstrap - https://getbootstrap.com/
 * Datatables: 
   * jQuery - https://jquery.com/

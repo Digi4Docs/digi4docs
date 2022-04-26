@@ -194,7 +194,7 @@ public class TaskReviewController extends AbstractController {
 
     private String saveTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
             Model model, int formAction) {
-        if (bindingResult.hasErrors()) {
+        if (userService.hasCurrentUserRole(Role.ADMIN) && bindingResult.hasErrors()) {
             return task(id, taskReviewForm, model);
         }
 
