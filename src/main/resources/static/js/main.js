@@ -85,4 +85,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
     }
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('Successfully registration of service worker, scope is:', registration.scope);
+            })
+            .catch(function(error) {
+                console.log('Service worker registration failed, error:', error);
+            });
+    }
 });

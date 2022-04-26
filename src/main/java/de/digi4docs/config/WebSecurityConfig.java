@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/home", true)
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
@@ -60,6 +60,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/static/**");
+                .antMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/static/**", "/manifest.webmanifest");
     }
 }
