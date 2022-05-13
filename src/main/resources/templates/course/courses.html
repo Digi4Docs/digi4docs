@@ -44,7 +44,7 @@
                     <span th:if="${course.isActive}" class="badge bg-success">aktiv</span>
                     <span th:unless="${course.isActive}" class="badge bg-danger">gesperrt</span>
                 </td>
-                <td class="text-end">
+                <td class="text-end text-nowrap">
                     <a th:href="@{'/public/course/' + ${course.id}}" class="btn btn-outline-secondary me-2" target="_blank">
                         <i class="bi bi-eye-fill me-1"></i>
                         Vorschau

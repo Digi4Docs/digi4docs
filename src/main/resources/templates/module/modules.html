@@ -28,7 +28,7 @@
             </button>
             <button th:if="${null != parentModule}" class="nav-link" id="nav-tasks-tab" data-bs-toggle="tab"
                     data-bs-target="#nav-tasks"
-                    type="button" role="tab" aria-controls="nav-modules" aria-selected="false"
+                    type="button" role="tab" aria-controls="nav-tasks" aria-selected="false"
                     th:onclick="'window.location.href = \'' + @{'/module/' + ${parentModule.id} + '/tasks/' } + '\''">
                 <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
             </button>
@@ -84,7 +84,7 @@
                                th:if="${!mStat.last}"><i class="bi bi-caret-down-fill"></i></a>
                             <i th:if="${mStat.last}" class="bi bi-caret-down-fill text-light"></i>
                         </td>
-                        <td class="text-end">
+                        <td class="text-end text-nowrap">
                             <a th:href="@{'/public/course/' + ${linkCourseId} + '/module/' + ${module.id}}"
                                class="btn btn-outline-secondary me-1" target="_blank">
                                 <i class="bi bi-eye-fill me-1"></i>
