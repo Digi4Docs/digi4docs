@@ -4,6 +4,7 @@ import de.digi4docs.form.ModuleForm;
 import de.digi4docs.model.Course;
 import de.digi4docs.model.Module;
 import de.digi4docs.service.CourseService;
+import de.digi4docs.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ public class CourseModuleController extends AbstractModuleController {
         Course course = courseService.findById(id)
                                      .get();
         model.addAttribute("course", course);
+        model.addAttribute("linkCourseId", course.getId());
         model.addAttribute("modules", moduleService.findAllByCourse(id));
 
         initBreadcrumbCourseEntries(course).showBreadcrumbs(model);
@@ -40,6 +42,7 @@ public class CourseModuleController extends AbstractModuleController {
         Course course = courseService.findById(id)
                                      .get();
         model.addAttribute("course", course);
+        model.addAttribute("linkCourseId", course.getId());
 
         initBreadcrumbCourseEntries(course);
         getBreadcrumbs().put("/course/" + course.getId() + "/module", "Neues Modul");

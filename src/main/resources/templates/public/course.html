@@ -12,6 +12,11 @@
     <div th:replace="public/title-image(title=${course.title}, icon=${course.icon}, progressPercentage=${generalModuleTaskTotal > 0 and personalModuleTaskTotal > 0 ? (((personalModuleTaskTotal + 0.0) / generalModuleTaskTotal) * 100) : 0})"></div>
 </div>
 <div layout:fragment="content">
+    <div th:unless="${course.isActive}" class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-danger">Achtung: Der angezeigte Kurs wurde noch nicht aktiviert.</div>
+        </div>
+    </div>
     <div class="row">
         <div th:if="${course.modules.empty}">
             <div class="alert alert-info">

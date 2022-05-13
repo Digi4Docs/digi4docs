@@ -59,18 +59,23 @@
                         <div class="row mt-4">
                             <div class="col-12">
                                 <button type="submit" class="btn btn-success text-white">
-                                    <i class="bi bi-check"></i>
+                                    <i class="bi bi-check me-1"></i>
                                     Speichern
                                 </button>
                                 <a th:href="@{'/module/' + ${parentModule.id} + '/tasks'}"
                                    class="btn btn-secondary ms-2">
-                                    <i class="bi bi-table"></i>
+                                    <i class="bi bi-table me-1"></i>
                                     Zurück zur Liste
                                 </a>
                                 <a th:href="@{'/module/' + ${parentModule.id} + '/task/confirm-delete/' + ${task.id}}"
                                    class="btn btn-danger ms-2">
-                                    <i class="bi bi-trash-fill"></i>
+                                    <i class="bi bi-trash-fill me-1"></i>
                                     Löschen
+                                </a>
+                                <a th:href="@{'/public/course/' + ${linkCourseId} + '/task/' + ${task.id}}"
+                                   class="btn btn-outline-secondary ms-2" target="_blank">
+                                    <i class="bi bi-eye-fill me-1"></i>
+                                    Vorschau
                                 </a>
                             </div>
                         </div>

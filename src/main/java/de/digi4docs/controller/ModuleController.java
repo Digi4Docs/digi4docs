@@ -2,6 +2,7 @@ package de.digi4docs.controller;
 
 import de.digi4docs.form.ModuleForm;
 import de.digi4docs.model.Module;
+import de.digi4docs.util.RecursiveHandler;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class ModuleController extends AbstractModuleController {
         if (null != parentModule.getCourse()) {
             model.addAttribute("course", parentModule.getCourse());
         }
+        model.addAttribute("linkCourseId", RecursiveHandler.getCourse(parentModule).getId());
 
         initBreadcrumbModuleEntries(parentModule).showBreadcrumbs(model);
 

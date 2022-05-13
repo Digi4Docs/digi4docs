@@ -4,6 +4,7 @@ import de.digi4docs.model.Course;
 import de.digi4docs.model.Module;
 import de.digi4docs.model.Task;
 import de.digi4docs.model.UserTask;
+import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -64,5 +65,14 @@ public class RecursiveHandler {
         List<Course> courses = new ArrayList<>(courseMap.values());
         courses.sort(Comparator.comparing(Course::getTitle));
         return courses;
+    }
+
+    public static Course getCourse(Module module)
+    {
+        while (null == module.getCourse()) {
+            module = module.getParent();
+        }
+
+        return module.getCourse();
     }
 }

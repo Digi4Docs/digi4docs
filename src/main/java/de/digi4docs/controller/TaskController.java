@@ -4,6 +4,7 @@ import de.digi4docs.form.TaskForm;
 import de.digi4docs.model.Module;
 import de.digi4docs.model.Task;
 import de.digi4docs.service.TaskService;
+import de.digi4docs.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class TaskController extends AbstractModuleController {
         model.addAttribute("parentModule", parentModule);
         model.addAttribute("tasks", taskService.findAllByModule(parentModule.getId()));
         model.addAttribute("course", parentModule.getCourse());
+        model.addAttribute("linkCourseId", RecursiveHandler.getCourse(parentModule).getId());
 
         initBreadcrumbModuleEntries(parentModule);
         getBreadcrumbs().put("/module/" + id + "/tasks", "Aufgaben");
@@ -188,6 +190,7 @@ public class TaskController extends AbstractModuleController {
         model.addAttribute("parentModule", task.getModule());
         model.addAttribute("course", task.getModule()
                                          .getCourse());
+        model.addAttribute("linkCourseId", RecursiveHandler.getCourse(task.getModule()).getId());
 
         initBreadcrumbModuleEntries(task.getModule());
         getBreadcrumbs().put("/module/" + task.getModule()

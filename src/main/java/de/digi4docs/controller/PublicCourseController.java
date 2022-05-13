@@ -54,8 +54,12 @@ public class PublicCourseController extends AbstractController {
     public String course(@PathVariable int id, Model model) {
         Optional<Course> courseOptional = courseService.findById(id);
 
-        if (!courseOptional.isPresent() || !courseOptional.get()
-                                                          .getIsActive()) {
+        User currentUser = userService.findCurrentUser();
+        boolean isCourseEditor =
+                userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.COURSES);
+
+        if (!courseOptional.isPresent() || (!isCourseEditor && !courseOptional.get()
+                                                          .getIsActive())) {
             return "redirect:/home";
         }
 
@@ -85,8 +89,12 @@ public class PublicCourseController extends AbstractController {
     public String module(@PathVariable int id, @PathVariable int moduleId, Model model) {
         Optional<Course> courseOptional = courseService.findById(id);
 
-        if (!courseOptional.isPresent() || !courseOptional.get()
-                                                          .getIsActive()) {
+        User currentUser = userService.findCurrentUser();
+        boolean isModuleEditor =
+                userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.COURSES);
+
+        if (!courseOptional.isPresent() || (!isModuleEditor && !courseOptional.get()
+                                                          .getIsActive())) {
             return "redirect:/home";
         }
 
@@ -94,8 +102,8 @@ public class PublicCourseController extends AbstractController {
 
         Optional<Module> moduleOptional = moduleService.findById(moduleId);
 
-        if (!moduleOptional.isPresent() || !moduleOptional.get()
-                                                          .getIsActive()) {
+        if (!moduleOptional.isPresent() || (!isModuleEditor && !moduleOptional.get()
+                                                          .getIsActive())) {
             if (null != moduleOptional.get()
                                       .getParent()) {
                 return "redirect:/public/course/" + course.getId() + "/module/" + moduleOptional.get()
@@ -225,7 +233,8 @@ public class PublicCourseController extends AbstractController {
                 boolean successfulFileInit = UploadUtils.addUploadData(userTask.getFile(), formFile);
                 if (!successfulFileInit) {
                     model.addAttribute("error",
-                            "Deine Datei kann nicht hochgeladen werden. Beachte, dass die Datei maximal 2MB groß sein darf.");
+                            "Deine Datei kann nicht hochgeladen werden. Beachte, dass die Datei maximal 2MB groß sein" +
+                                    " darf.");
                     return showTaskPage(id, taskId, model, publicTaskForm, false);
                 }
             }
@@ -267,15 +276,19 @@ public class PublicCourseController extends AbstractController {
 
     private String showTaskPage(int courseId, int taskId, Model model, PublicTaskForm publicTaskForm,
             boolean initFormData) {
+        User currentUser = userService.findCurrentUser();
+        boolean isTaskEditor =
+                userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.COURSES);
+
         Optional<Course> courseOptional = courseService.findById(courseId);
-        if (!courseOptional.isPresent() || !courseOptional.get()
-                                                          .getIsActive()) {
+        if (!courseOptional.isPresent() || (!isTaskEditor && !courseOptional.get()
+                                                                            .getIsActive())) {
             return "redirect:/home";
         }
 
         Optional<Task> taskOptional = taskService.findById(taskId);
-        if (!taskOptional.isPresent() || !taskOptional.get()
-                                                      .getIsActive()) {
+        if (!taskOptional.isPresent() || (!isTaskEditor && !taskOptional.get()
+                                                                        .getIsActive())) {
             return "redirect:/home";
         }
 

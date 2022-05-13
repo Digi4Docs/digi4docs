@@ -56,6 +56,7 @@
                                 <th>Titel</th>
                                 <th>Untertitel</th>
                                 <th>Status</th>
+                                <th data-sortable="false" class="text-end">Reihenfolge ändern</th>
                                 <th data-sortable="false"></th>
                             </tr>
                             </thead>
@@ -67,18 +68,14 @@
                                 <td class="table-column-small">
                                     <i th:if="${module.icon}" th:class="${module.icon}"></i>
                                 </td>
-                                <td>[[${module.title}]]</td>
+                                <td>
+                                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/' + ${module.id})}">[[${module.title}]]</a></td>
                                 <td>[[${module.subTitle}]]</td>
                                 <td>
                                     <span th:if="${module.isActive}" class="badge bg-success">aktiv</span>
                                     <span th:unless="${module.isActive}" class="badge bg-danger">gesperrt</span>
                                 </td>
                                 <td class="text-end">
-                                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/' + ${module.id})}"
-                                       class="btn btn-outline-primary">
-                                        <i class="bi bi-pencil-fill me-1"></i>
-                                        Bearbeiten
-                                    </a>
                                     <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/up/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/up/' + ${module.id})}"
                                        th:if="${!mStat.first}" class="ms-2"><i class="bi bi-caret-up-fill"></i></a>
                                     <i th:if="${mStat.first}" class="bi bi-caret-up-fill text-light ms-2"></i>
@@ -86,6 +83,17 @@
                                     <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/down/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/down/' + ${module.id})}"
                                        th:if="${!mStat.last}"><i class="bi bi-caret-down-fill"></i></a>
                                     <i th:if="${mStat.last}" class="bi bi-caret-down-fill text-light"></i>
+                                </td>
+                                <td class="text-end">
+                                    <a th:href="@{'/public/course/' + ${linkCourseId} + '/module/' + ${module.id}}" class="btn btn-outline-secondary me-1" target="_blank">
+                                        <i class="bi bi-eye-fill me-1"></i>
+                                        Vorschau
+                                    </a>
+                                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/' + ${module.id})}"
+                                       class="btn btn-outline-primary">
+                                        <i class="bi bi-pencil-fill me-1"></i>
+                                        Bearbeiten
+                                    </a>
                                 </td>
                             </tr>
 

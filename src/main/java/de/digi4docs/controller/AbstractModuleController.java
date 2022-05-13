@@ -4,6 +4,7 @@ import de.digi4docs.form.ModuleForm;
 import de.digi4docs.model.Course;
 import de.digi4docs.model.Module;
 import de.digi4docs.service.ModuleService;
+import de.digi4docs.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
@@ -48,6 +49,7 @@ public abstract class AbstractModuleController extends AbstractController {
         }
 
         model.addAttribute("module", module);
+        model.addAttribute("linkCourseId", RecursiveHandler.getCourse(module).getId());
 
         if (addCourseToModel) {
             model.addAttribute("course", module.getCourse());
