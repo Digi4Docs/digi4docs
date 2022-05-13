@@ -296,7 +296,7 @@ public class PublicCourseController extends AbstractController {
         Task task = taskOptional.get();
         Module module = task.getModule();
 
-        if (!module.getIsActive()) {
+        if (!module.getIsActive() && !isTaskEditor) {
             return "redirect:/home";
         }
 

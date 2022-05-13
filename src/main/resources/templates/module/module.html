@@ -20,64 +20,57 @@
 <div layout:fragment="title" class="mb-3">Modul: [[${module.title}]]</div>
 
 <div layout:fragment="content">
-    <div class="accordion" id="accordionModule">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingEdit">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEdit"
-                        aria-expanded="true" aria-controls="collapseEdit">
-                    <i class="bi bi-pencil-fill me-1"></i> Modul bearbeiten
-                </button>
-            </h2>
-            <div id="collapseEdit" class="accordion-collapse collapse show" aria-labelledby="headingEdit"
-                 data-bs-parent="#accordionModule">
-                <div class="accordion-body">
-                    <form th:action="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id}:'/module/' + ${parentModule.id} + '/module/' + ${module.id})}" method="post" th:object="${moduleForm}" novalidate>
-                        <input type="hidden" th:field="*{id}" name="id"/>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-edit-tab" data-bs-toggle="tab" data-bs-target="#nav-edit"
+                    type="button" role="tab" aria-controls="nav-edit" aria-selected="true">
+                <i class="bi bi-pencil-fill me-1"></i> Modul bearbeiten
+            </button>
+            <button class="nav-link" id="nav-modules-tab" data-bs-toggle="tab" data-bs-target="#nav-modules"
+                    type="button" role="tab" aria-controls="nav-modules" aria-selected="false"
+                    th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/modules\''">
+                <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
+            </button>
+            <button class="nav-link" id="nav-tasks-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-tasks"
+                    type="button" role="tab" aria-controls="nav-modules" aria-selected="false"
+                    th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/tasks\''">
+                <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
+            </button>
+        </div>
+    </nav>
 
-                        <div th:insert="module/module-form"></div>
+    <div class="tab-content p-3 border border-top-0" id="nav-tabContent">
+        <form th:action="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id}:'/module/' + ${parentModule.id} + '/module/' + ${module.id})}"
+              method="post" th:object="${moduleForm}" novalidate>
+            <input type="hidden" th:field="*{id}" name="id"/>
 
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-success text-white">
-                                    <i class="bi bi-check me-1"></i>
-                                    Speichern
-                                </button>
-                                <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/modules':'/module/' + ${parentModule.id} + '/modules')}" class="btn btn-secondary ms-2">
-                                    <i class="bi bi-table me-1"></i>
-                                    Zurück zur Liste
-                                </a>
-                                <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/confirm-delete/' + ${module.id}:'/module/' + ${parentModule.id} + '/module/confirm-delete/' + ${module.id})}" class="btn btn-danger ms-2">
-                                    <i class="bi bi-trash-fill me-1"></i>
-                                    Löschen
-                                </a>
-                                <a th:href="@{'/public/course/' + ${linkCourseId} + '/module/' + ${module.id}}" class="btn btn-outline-secondary ms-2" target="_blank">
-                                    <i class="bi bi-eye-fill me-1"></i>
-                                    Vorschau
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+            <div th:insert="module/module-form"></div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success text-white">
+                        <i class="bi bi-check me-1"></i>
+                        Speichern
+                    </button>
+                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/modules':'/module/' + ${parentModule.id} + '/modules')}"
+                       class="btn btn-secondary ms-2">
+                        <i class="bi bi-table me-1"></i>
+                        Zurück zur Liste
+                    </a>
+                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/confirm-delete/' + ${module.id}:'/module/' + ${parentModule.id} + '/module/confirm-delete/' + ${module.id})}"
+                       class="btn btn-danger ms-2">
+                        <i class="bi bi-trash-fill me-1"></i>
+                        Löschen
+                    </a>
+                    <a th:href="@{'/public/course/' + ${linkCourseId} + '/module/' + ${module.id}}"
+                       class="btn btn-outline-secondary ms-2" target="_blank">
+                        <i class="bi bi-eye-fill me-1"></i>
+                        Vorschau
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingModules">
-                <button th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/modules\''"
-                   class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules">
-                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
-                </button>
-            </h2>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTasks">
-                <button th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/tasks\''"
-                   class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTasks" aria-expanded="false" aria-controls="collapseTasks">
-                    <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
-                </button>
-            </h2>
-        </div>
+        </form>
     </div>
 </div>
 </body>

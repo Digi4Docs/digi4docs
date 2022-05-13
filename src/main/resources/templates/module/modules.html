@@ -13,114 +13,103 @@
 </div>
 
 <div layout:fragment="content">
-    <div class="accordion" id="accordionCourse">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingEdit">
-                <button th:onclick="'window.location.href = \'' + @{(${null == parentModule} ? '/course/' + ${course.id} : (${null == course}  ? '/module/' + ${parentModule.parent.id} + '/module/' + ${parentModule.id} :  '/course/' + ${course.id} + '/module/' + ${parentModule.id})) } + '\''"
-                        class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseModules"
-                        aria-expanded="false" aria-controls="collapseModules">
-                    <i class="bi bi-pencil-fill me-1"></i>
-                    <span th:if="${null == parentModule}">Kurs bearbeiten</span>
-                    <span th:unless="${null == parentModule}">Modul bearbeiten</span>
-                </button>
-            </h2>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link" id="nav-edit-tab" data-bs-toggle="tab" data-bs-target="#nav-edit" type="button"
+                    role="tab" aria-controls="nav-edit" aria-selected="false"
+                    th:onclick="'window.location.href = \'' + @{(${null == parentModule} ? '/course/' + ${course.id} : (${null == course}  ? '/module/' + ${parentModule.parent.id} + '/module/' + ${parentModule.id} :  '/course/' + ${course.id} + '/module/' + ${parentModule.id})) } + '\''">
+                <i class="bi bi-pencil-fill me-1"></i>
+                <span th:if="${null == parentModule}">Kurs bearbeiten</span>
+                <span th:unless="${null == parentModule}">Modul bearbeiten</span>
+            </button>
+            <button class="nav-link active" id="nav-modules-tab" data-bs-toggle="tab" data-bs-target="#nav-modules"
+                    type="button" role="tab" aria-controls="nav-modules" aria-selected="true">
+                <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
+            </button>
+            <button th:if="${null != parentModule}" class="nav-link" id="nav-tasks-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-tasks"
+                    type="button" role="tab" aria-controls="nav-modules" aria-selected="false"
+                    th:onclick="'window.location.href = \'' + @{'/module/' + ${parentModule.id} + '/tasks/' } + '\''">
+                <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
+            </button>
         </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingModules">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseModules" aria-expanded="true" aria-controls="collapseModules">
-                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
-                </button>
-            </h2>
-
-            <div id="collapseModules" class="accordion-collapse collapse show" aria-labelledby="headingModules"
-                 data-bs-parent="#accordionCourse">
-                <div class="accordion-body">
-                    <div class="row text-end mb-3">
-                        <div class="col-12">
-                            <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module' : '/module/' + ${parentModule.id} + '/module')}"
-                               class="btn btn-primary">
-                                <i class="bi bi-collection-fill"></i>
-                                Neues Modul
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover datatables border mt-2 mb-1" id="moduleList"
-                               data-ordering="false">
-                            <thead>
-                            <tr>
-                                <th data-sortable="false" class="table-column-small">Icon</th>
-                                <th>Titel</th>
-                                <th>Untertitel</th>
-                                <th>Status</th>
-                                <th data-sortable="false" class="text-end">Reihenfolge ändern</th>
-                                <th data-sortable="false"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:if="${modules.empty}">
-                                <td colspan="5"> Keine Module gefunden</td>
-                            </tr>
-                            <tr th:each="module, mStat : ${modules}">
-                                <td class="table-column-small">
-                                    <i th:if="${module.icon}" th:class="${module.icon}"></i>
-                                </td>
-                                <td>
-                                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/' + ${module.id})}">[[${module.title}]]</a></td>
-                                <td>[[${module.subTitle}]]</td>
-                                <td>
-                                    <span th:if="${module.isActive}" class="badge bg-success">aktiv</span>
-                                    <span th:unless="${module.isActive}" class="badge bg-danger">gesperrt</span>
-                                </td>
-                                <td class="text-end">
-                                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/up/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/up/' + ${module.id})}"
-                                       th:if="${!mStat.first}" class="ms-2"><i class="bi bi-caret-up-fill"></i></a>
-                                    <i th:if="${mStat.first}" class="bi bi-caret-up-fill text-light ms-2"></i>
-
-                                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/down/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/down/' + ${module.id})}"
-                                       th:if="${!mStat.last}"><i class="bi bi-caret-down-fill"></i></a>
-                                    <i th:if="${mStat.last}" class="bi bi-caret-down-fill text-light"></i>
-                                </td>
-                                <td class="text-end">
-                                    <a th:href="@{'/public/course/' + ${linkCourseId} + '/module/' + ${module.id}}" class="btn btn-outline-secondary me-1" target="_blank">
-                                        <i class="bi bi-eye-fill me-1"></i>
-                                        Vorschau
-                                    </a>
-                                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/' + ${module.id})}"
-                                       class="btn btn-outline-primary">
-                                        <i class="bi bi-pencil-fill me-1"></i>
-                                        Bearbeiten
-                                    </a>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                            <tfoot th:if="${!modules.empty}">
-                            <tr>
-                                <th></th>
-                                <th>Titel</th>
-                                <th>Untertitel</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+    </nav>
+    <div class="tab-content p-3 border border-top-0" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-modules" role="tabpanel" aria-labelledby="nav-modules-tab">
+            <div class="row text-end mb-3">
+                <div class="col-12">
+                    <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module' : '/module/' + ${parentModule.id} + '/module')}"
+                       class="btn btn-primary">
+                        <i class="bi bi-collection-fill"></i>
+                        Neues Modul
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="accordion-item" th:if="${null != parentModule}">
-            <h2 class="accordion-header" id="headingTasks">
-                <button th:onclick="'window.location.href = \'' + @{'/module/' + ${parentModule.id} + '/tasks/' } + '\''"
-                        class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTasks"
-                        aria-expanded="false" aria-controls="collapseTasks">
-                    <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
-                </button>
-            </h2>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover datatables border mt-2 mb-1" id="moduleList"
+                       data-ordering="false">
+                    <thead>
+                    <tr>
+                        <th data-sortable="false" class="table-column-small">Icon</th>
+                        <th>Titel</th>
+                        <th>Untertitel</th>
+                        <th>Status</th>
+                        <th data-sortable="false" class="text-end">Reihenfolge ändern</th>
+                        <th data-sortable="false"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${modules.empty}">
+                        <td colspan="6"> Keine Module gefunden</td>
+                    </tr>
+                    <tr th:each="module, mStat : ${modules}">
+                        <td class="table-column-small">
+                            <i th:if="${module.icon}" th:class="${module.icon}"></i>
+                        </td>
+                        <td>
+                            <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/' + ${module.id})}">[[${module.title}]]</a>
+                        </td>
+                        <td>[[${module.subTitle}]]</td>
+                        <td>
+                            <span th:if="${module.isActive}" class="badge bg-success">aktiv</span>
+                            <span th:unless="${module.isActive}" class="badge bg-danger">gesperrt</span>
+                        </td>
+                        <td class="text-end">
+                            <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/up/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/up/' + ${module.id})}"
+                               th:if="${!mStat.first}" class="ms-2"><i class="bi bi-caret-up-fill"></i></a>
+                            <i th:if="${mStat.first}" class="bi bi-caret-up-fill text-light ms-2"></i>
+
+                            <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/down/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/down/' + ${module.id})}"
+                               th:if="${!mStat.last}"><i class="bi bi-caret-down-fill"></i></a>
+                            <i th:if="${mStat.last}" class="bi bi-caret-down-fill text-light"></i>
+                        </td>
+                        <td class="text-end">
+                            <a th:href="@{'/public/course/' + ${linkCourseId} + '/module/' + ${module.id}}"
+                               class="btn btn-outline-secondary me-1" target="_blank">
+                                <i class="bi bi-eye-fill me-1"></i>
+                                Vorschau
+                            </a>
+                            <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id} : '/module/' + ${parentModule.id} + '/module/' + ${module.id})}"
+                               class="btn btn-outline-primary">
+                                <i class="bi bi-pencil-fill me-1"></i>
+                                Bearbeiten
+                            </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                    <tfoot th:if="${!modules.empty}">
+                    <tr>
+                        <th></th>
+                        <th>Titel</th>
+                        <th>Untertitel</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 </div>
