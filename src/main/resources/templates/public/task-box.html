@@ -23,12 +23,12 @@
             <div class="text-end">
                 <a th:href="@{'/public/course/' + ${course.id} + '/task/' + ${task.id}}" class="btn btn-primary text-nowrap"
                    th:if="${null == userTasks.get(task.id) || userTasks.get(task.id).status.toString() == 'OPEN'}">
-                    <i class="bi bi-pencil-fill"></i>
-                    Aufgabe abgeben
+                    <i class="bi bi-journal-bookmark mr-1"></i>
+                    Aufgabe öffnen
                 </a>
                 <a th:href="@{'/public/course/' + ${course.id} + '/task/' + ${task.id}}" class="btn btn-outline-primary text-nowrap"
                    th:unless="${null == userTasks.get(task.id) || userTasks.get(task.id).status.toString() == 'OPEN'}">
-                    <i class="bi bi-eye-fill"></i>
+                    <i class="bi bi-journal-bookmark-fill mr-1"></i>
                     Details ansehen
                 </a>
             </div>
