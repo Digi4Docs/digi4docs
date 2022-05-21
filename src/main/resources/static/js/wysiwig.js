@@ -3,13 +3,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
         selector: 'textarea.wysiwyg-editor',
         height: 400,
         menubar: false,
+        extended_valid_elements: 'script[language|type|src|async]',
         plugins: [
-            'lists', 'image', 'media', 'table', 'link', 'code', 'iframe'
+            'lists', 'image', 'media', 'table', 'link', 'code', 'iframe', 'emoticons'
         ],
         toolbar: 'undo redo | fontsize | ' +
             'bold italic strikethrough forecolor backcolor | ' +
             'alignleft aligncenter alignright alignjustify | bullist numlist | ' +
-            'link image media iframe |  code  | removeformat ',
+            'link image media iframe |  code  | emoticons | removeformat ',
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
     });
 });
