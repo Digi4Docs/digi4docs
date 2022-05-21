@@ -93,9 +93,13 @@
                                         <i class="bi bi-eye-fill"></i>
                                         Ansehen
                                     </a>
-                                    <a th:href="@{'/public/certificate/' + ${course.id}}" class="btn btn-secondary">
+                                    <a th:href="@{'/public/certificate/' + ${course.id}}" class="btn btn-secondary me-2">
                                         <i class="bi bi-award-fill"></i>
                                         Zertifikat öffnen
+                                    </a>
+                                    <a th:href="@{'/public/course-overview/' + ${course.id}}" class="btn btn-outline-secondary">
+                                        <i class="bi bi-list-check"></i>
+                                        Fortschritt ansehen
                                     </a>
                                 </div>
                             </div>

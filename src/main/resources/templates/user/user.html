@@ -39,9 +39,14 @@
                             <td>[[ ${#lists.size(course.modules) }]]</td>
                             <td class="text-end">
                                 <a th:href="@{'/public/certificate/' + ${course.id} + '/' + ${user.id}}"
-                                   class="btn btn-secondary">
-                                    <i class="bi bi-award-fill"></i>
+                                   class="btn btn-secondary me-2">
+                                    <i class="bi bi-award-fill mr-1"></i>
                                     Zertifikat öffnen
+                                </a>
+                                <a th:href="@{'/public/course-overview/' + ${course.id} + '/' + ${user.id}}"
+                                   class="btn btn-secondary">
+                                    <i class="bi bi-list-check mr-1"></i>
+                                    Fortschritt ansehen
                                 </a>
                             </td>
                         </tr>

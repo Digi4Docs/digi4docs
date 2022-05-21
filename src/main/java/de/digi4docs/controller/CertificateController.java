@@ -34,10 +34,10 @@ public class CertificateController extends AbstractController {
     @GetMapping("/public/certificate/{courseId}")
     public String certificate(@PathVariable int courseId, Model model) {
         User currentUser = userService.findCurrentUser();
-        return showPage(courseId, model, currentUser, true);
+        return showCertificatePage(courseId, model, currentUser, true);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') or  hasAuthority('USERS')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
     @GetMapping("/public/certificate/{courseId}/{userId}")
     public String certificate(@PathVariable int courseId, @PathVariable int userId, Model model) {
         Optional<User> userOptional = userService.findById(userId);
@@ -45,10 +45,28 @@ public class CertificateController extends AbstractController {
             return "redirect:/home";
         }
 
-        return showPage(courseId, model, userOptional.get(), false);
+        return showCertificatePage(courseId, model, userOptional.get(), false);
     }
 
-    private String showPage(int courseId, Model model, User user, boolean isCurrentUserPage) {
+    @PreAuthorize("hasAuthority('STUDENT')")
+    @GetMapping("/public/course-overview/{courseId}")
+    public String courseOverview(@PathVariable int courseId, Model model) {
+        User currentUser = userService.findCurrentUser();
+        return showCourseOverviewPage(courseId, model, currentUser, true);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")
+    @GetMapping("/public/course-overview/{courseId}/{userId}")
+    public String courseOverview(@PathVariable int courseId, @PathVariable int userId, Model model) {
+        Optional<User> userOptional = userService.findById(userId);
+        if (userOptional.isEmpty()) {
+            return "redirect:/home";
+        }
+
+        return showCourseOverviewPage(courseId, model, userOptional.get(), false);
+    }
+
+    private String showCertificatePage(int courseId, Model model, User user, boolean isCurrentUserPage) {
         Optional<Course> courseOptional = courseService.findById(courseId);
 
         if (courseOptional.isEmpty()) {
@@ -86,6 +104,59 @@ public class CertificateController extends AbstractController {
         showBreadcrumbs(model);
 
         return "certificate/certificate";
+    }
+
+    private String showCourseOverviewPage(int courseId, Model model, User user, boolean isCurrentUserPage) {
+        Optional<Course> courseOptional = courseService.findById(courseId);
+
+        if (courseOptional.isEmpty()) {
+            return "redirect:/home";
+        }
+
+        Course course = courseOptional.get();
+        model.addAttribute("course", course);
+
+        if (!isCurrentUserPage) {
+            model.addAttribute("user", user);
+        }
+
+
+        LinkedList<Module> courseModules = getCourseModules(course);
+
+        List<Integer> taskIds = courseModules.stream()
+                                             .map(Module::getTasks)
+                                             .flatMap(Collection::stream)
+                                             .map(Task::getId)
+                                             .collect(Collectors.toList());
+
+        List<UserTask> userTasks = userTaskService.findByTasks(taskIds, user);
+        userTasks.stream()
+                 .filter(userTask -> userTask.getStatus()
+                                             .equals(TaskStatus.DONE));
+
+        Map<Integer, List<UserTask>> doneTasks = userTasks
+                .stream()
+                .filter(userTask -> TaskStatus.DONE.equals(userTask.getStatus()))
+                .collect(Collectors.groupingBy(userTask -> userTask.getTask().getModule().getId()));
+        model.addAttribute("doneTasks", doneTasks);
+
+        Map<Integer, List<UserTask>> transmittedTasks = userTasks
+                .stream()
+                .filter(userTask -> TaskStatus.TRANSMITTED.equals(userTask.getStatus()))
+                .collect(Collectors.groupingBy(userTask -> userTask.getTask().getModule().getId()));
+        model.addAttribute("transmittedTasks", transmittedTasks);
+
+
+
+        if (isCurrentUserPage) {
+            getBreadcrumbs(true).put("/public/course/" + course.getId(), course.getTitle());
+        } else {
+            getBreadcrumbs(true).put("/course/" + course.getId(), course.getTitle());
+        }
+        getBreadcrumbs().put("/public/course-overview/" + course.getId(), "Kurs-Übersicht");
+        showBreadcrumbs(model);
+
+        return "certificate/courseOverview";
     }
 
     private LinkedList<Module> getCourseModules(Course course) {

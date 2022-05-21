@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Kurs-Übersicht "[[${course.title}]]"</title>
+</head>
+<body sec:authorize="isAuthenticated()">
+<div layout:fragment="title">Kurs-Übersicht "[[${course.title}]]" <span
+        th:if="${null != user}">von [[${user.fullname}]] </span></div>
+
+<div layout:fragment="content">
+    <h6 class="mt-2" th:if="${!#strings.isEmpty(course.subTitle)}">[[${course.subTitle}]]</h6>
+    <div class="w-100 text-end">
+        <a th:if="${null != user}" class="btn btn-secondary" th:href="@{'/user/' + ${user.id}}">
+            <i class="bi bi-arrow-left-short mr-1"></i>
+            Zurück zum Benutzer
+        </a>
+        <a th:unll="${null != user}" class="btn btn-secondary" th:href="@{'/home'}">
+            <i class="bi bi-arrow-left-short mr-1"></i>
+            Zurück zur Übersicht
+        </a>
+    </div>
+    <div class="table-responsive mt-4">
+        <table class="table table-hover border mt-2 mb-1" id="taskList">
+            <thead>
+            <tr>
+                <th colspan="2">Modul</th>
+                <th>Untermodul</th>
+                <th class="text-center">Erledigt</th>
+                <th class="text-center">Eingereicht</th>
+                <th class="text-center">Aufgaben</th>
+                <th class="text-center">Geschafft (%)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:if="${#lists.size(course.modules) > 0}" th:each="module: ${course.modules}"
+                      th:with="percentage=${#lists.size(module.tasks) > 0 and null != doneTasks.get(module.id) ? #lists.size(doneTasks.get(module.id)) * 100 / #lists.size(module.tasks) : 0}">
+                <tr th:class="${percentage eq 100 ? 'table-success' : ''}">
+                    <td><i th:if="${module.icon}" th:class="${module.icon}"></i></td>
+                    <td>[[${module.title}]]</td>
+                    <td>[[${module.subTitle}]]</td>
+                    <td class="text-center">
+                        <span th:if="${null != doneTasks.get(module.id)}">[[${#lists.size(doneTasks.get(module.id))}]]</span>
+                        <span th:unless="${null != doneTasks.get(module.id)}">0</span>
+                    </td>
+                    <td class="text-center">
+                        <span th:if="${null != transmittedTasks.get(module.id)}">[[${#lists.size(transmittedTasks.get(module.id))}]]</span>
+                        <span th:unless="${null != transmittedTasks.get(module.id)}">0</span>
+                    </td>
+                    <td class="text-center">[[${#lists.size(module.tasks)}]]</td>
+                    <td class="text-center">[[${#numbers.formatDecimal(percentage, 1, 0)}]] %</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
