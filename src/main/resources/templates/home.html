@@ -41,10 +41,11 @@
                  th:if="${showTeacherTasks}">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Meine Aufgaben</h5>
-                    <div class="card-text">
+                    <div class="card-text" th:with="maxTasks=20">
                         <div class="mb-3" th:if="${null != teacherTasks and #lists.size(teacherTasks) > 0}">
                             Es liegen <span
-                                th:class="${#lists.size(teacherTasks) < 10 ? 'text-warning' : 'text-danger'}">[[${#lists.size(teacherTasks)}]]</span>
+                                th:class="${#lists.size(teacherTasks) < 10 ? 'text-warning' : 'text-danger'}">
+                            [[${#lists.size(teacherTasks) < (maxTasks+1) ? #lists.size(teacherTasks) : 'mehr als ' + maxTasks  }]]</span>
                             Aufgaben in deinem Postfach.
                         </div>
                         <div class="mb-3" th:unless="${null != teacherTasks and #lists.size(teacherTasks) > 0}">
@@ -53,7 +54,7 @@
                         </div>
                         <div th:each="userTask, itStat: ${teacherTasks}">
                             <div class="p-2 border rounded-0 rounded-top d-flex flex-row bg-white"
-                                 th:classappend="${!itStat.last ? 'mb-2' : ''}">
+                                 th:classappend="${!itStat.last ? 'mb-2' : ''}" th:if="${itStat.index < maxTasks}">
                                 <div class="d-flex flex-column flex-grow-1 justify-content-between">
                                     <div>
                                         <div>[[${userTask.task.module.title}]]</div>
