@@ -7,7 +7,13 @@ import java.io.IOException;
 
 public class UploadUtils {
     public static boolean addUploadData(File file, MultipartFile formFile) {
-        file.setName(formFile.getOriginalFilename());
+        String originalFilename = formFile.getOriginalFilename();
+        if (null != originalFilename) {
+            originalFilename = originalFilename.replace(",", "_");
+            originalFilename = originalFilename.replace(":", "_");
+            originalFilename = originalFilename.replace(" ", "_");
+        }
+        file.setName(originalFilename);
         file.setType(formFile.getContentType());
         file.setSize(formFile.getSize());
         try {
