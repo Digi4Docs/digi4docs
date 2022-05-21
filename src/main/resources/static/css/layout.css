@@ -50,6 +50,18 @@ legend {
 
 .xxl-icon {
   font-size: 5rem;
+  width: 6rem;
+  height: 6rem;
+}
+
+.home-badge {
+  color: var(--bs-gray-700);
+  text-decoration: none;
+  max-width: 9rem;
+}
+
+.home-badge:hover {
+  color: var(--bs-gray-900);
 }
 
 .home-column-height {

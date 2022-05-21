@@ -16,19 +16,25 @@
     <div th:insert="fragments/breadcrumbs" class="d-print-none"></div>
 </div>
 <div class="bg-light web-certificate d-print-p-none certificate">
-    <div sec:authorize="hasAuthority('ADMIN') or  hasAuthority('USERS')" class="d-print-none w-100 text-end">
-        <button type="button" class="btn btn-primary me-2" th:onclick="PublicScripts.printWithImages()">
-            <i class="bi bi-printer-fill"></i>
-            Drucken
-        </button>
-        <button type="button" class="btn btn-secondary me-2" th:onclick="PublicScripts.printWithoutImages()">
-            <i class="bi bi-printer-fill"></i>
-            Drucken (ohne Bilder)
-        </button>
-        <a class="btn btn-outline-secondary" th:href="@{'/user/' + ${user.id}}">
-            <i class="bi bi-arrow-left-short mr-1"></i>
-            Zurück zum Benutzer
+    <div class="d-print-none w-100 text-end">
+        <a class="btn btn-outline-secondary me-2" th:href="@{'/home'}">
+            <i class="bi bi-house-heart-fill mr-1"></i>
+            Zur Startseite
         </a>
+        <th:block sec:authorize="hasAuthority('ADMIN') or  hasAuthority('USERS')">
+            <a class="btn btn-outline-secondary me-2" th:href="@{'/user/' + ${user.id}}">
+                <i class="bi bi-arrow-left-short mr-1"></i>
+                Zum Benutzer
+            </a>
+            <button type="button" class="btn btn-primary me-2" th:onclick="PublicScripts.printWithImages()">
+                <i class="bi bi-printer-fill"></i>
+                Drucken
+            </button>
+            <button type="button" class="btn btn-secondary" th:onclick="PublicScripts.printWithoutImages()">
+                <i class="bi bi-printer-fill"></i>
+                Drucken (ohne Bilder)
+            </button>
+        </th:block>
     </div>
     <div class="text-center d-block pt-5">
         <h1 class="text-uppercase">[[${course.title}]]</h1>

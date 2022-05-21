@@ -21,15 +21,19 @@
                 <div class="card-body">
                     <h5 class="card-title mb-3">Meine Auszeichnungen</h5>
                     <div class="card-text overflow-auto">
-                        <div class="p-2 border rounded bg-white me-2 d-flex flex-column align-items-center" style="width:300px"
-                             th:each="finishedCourse, itStat: ${finishedCourses}">
-                            <div class="text-success">
-                                <i class="icon border-success" th:if="${!#strings.isEmpty(finishedCourse.icon)}"
-                                   th:classappend="${finishedCourse.icon}"></i>
-                                <i th:if="${#strings.isEmpty(finishedCourse.icon)}" class="bi bi-emoji-smile icon"></i>
-                            </div>
-                            <span class="mt-2">[[${finishedCourse.title}]]</span>
-                        </div>
+                        <th:block th:each="finishedCourse, itStat: ${finishedCourses}">
+                            <a th:href="@{'/public/certificate/' + ${finishedCourse.id}}"
+                               class="px-2 py-3 border rounded bg-white me-2 d-flex flex-column align-items-center home-badge text-center">
+                                <div class="text-success">
+                                    <i class="icon xxl-icon border-success"
+                                       th:if="${!#strings.isEmpty(finishedCourse.icon)}"
+                                       th:classappend="${finishedCourse.icon}"></i>
+                                    <i th:if="${#strings.isEmpty(finishedCourse.icon)}"
+                                       class="bi bi-emoji-smile icon xxl-icon border-success"></i>
+                                </div>
+                                <span class="mt-2">[[${finishedCourse.title}]]</span>
+                            </a>
+                        </th:block>
                     </div>
                 </div>
             </div>
