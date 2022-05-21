@@ -54,6 +54,7 @@
 <div class="row">
     <div class="col-12 mb-3">
         <label for="description" class="form-label">Beschreibung</label>
+        <div th:replace="fragments/license-hint"></div>
         <textarea th:field="*{description}" class="form-control wysiwyg-editor"
                   th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                   id="description"

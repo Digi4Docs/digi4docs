@@ -29,11 +29,12 @@
 <div class="row">
     <div class="col-12 mb-3">
         <label for="title" class="form-label">Externe Bild-URL</label>
+        <div th:replace="fragments/license-hint"></div>
         <input type="text" maxlength="255" th:field="*{externalImage}" class="form-control"
                th:classappend="${#fields.hasErrors('externalImage') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                id="externalImage" name="externalImage"/>
         <div class="d-block text-muted small">Die externe Bild-URL ist optional und wird auf der Startseite des
-            Zertifikats ausgegeben.
+            Zertifikats ausgegeben. <br/>
         </div>
         <div class="invalid-feedback" th:if="${#fields.hasErrors('externalImage')}" th:errors="*{externalImage}"></div>
     </div>
