@@ -6,6 +6,7 @@ import de.digi4docs.service.ConfigService;
 import de.digi4docs.service.CourseService;
 import de.digi4docs.service.UserService;
 import de.digi4docs.service.UserTaskService;
+import de.digi4docs.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -79,13 +80,9 @@ public class CertificateController extends AbstractController {
         model.addAttribute("certificateFooter", configService.getCertificateFooter());
 
 
-        LinkedList<Module> courseModules = getCourseModules(course);
+        LinkedList<Module> courseModules = RecursiveHandler.getCourseModules(course);
 
-        List<Integer> taskIds = courseModules.stream()
-                                             .map(Module::getTasks)
-                                             .flatMap(Collection::stream)
-                                             .map(Task::getId)
-                                             .collect(Collectors.toList());
+        List<Integer> taskIds = RecursiveHandler.getCourseTaskIds(courseModules);
 
         Map<Integer, UserTask> userTaskMap = userTaskService.findByTasks(taskIds, user)
                                                             .stream()
@@ -121,7 +118,7 @@ public class CertificateController extends AbstractController {
         }
 
 
-        LinkedList<Module> courseModules = getCourseModules(course);
+        LinkedList<Module> courseModules = RecursiveHandler.getCourseModules(course);
 
         List<Integer> taskIds = courseModules.stream()
                                              .map(Module::getTasks)
@@ -137,15 +134,18 @@ public class CertificateController extends AbstractController {
         Map<Integer, List<UserTask>> doneTasks = userTasks
                 .stream()
                 .filter(userTask -> TaskStatus.DONE.equals(userTask.getStatus()))
-                .collect(Collectors.groupingBy(userTask -> userTask.getTask().getModule().getId()));
+                .collect(Collectors.groupingBy(userTask -> userTask.getTask()
+                                                                   .getModule()
+                                                                   .getId()));
         model.addAttribute("doneTasks", doneTasks);
 
         Map<Integer, List<UserTask>> transmittedTasks = userTasks
                 .stream()
                 .filter(userTask -> TaskStatus.TRANSMITTED.equals(userTask.getStatus()))
-                .collect(Collectors.groupingBy(userTask -> userTask.getTask().getModule().getId()));
+                .collect(Collectors.groupingBy(userTask -> userTask.getTask()
+                                                                   .getModule()
+                                                                   .getId()));
         model.addAttribute("transmittedTasks", transmittedTasks);
-
 
 
         if (isCurrentUserPage) {
@@ -157,23 +157,5 @@ public class CertificateController extends AbstractController {
         showBreadcrumbs(model);
 
         return "certificate/courseOverview";
-    }
-
-    private LinkedList<Module> getCourseModules(Course course) {
-        LinkedList<Module> courseModules = new LinkedList<>();
-
-        addModules(course.getModules(), courseModules);
-
-        return courseModules;
-    }
-
-    private void addModules(List<Module> modules, LinkedList<Module> courseModules) {
-        for (Module module : modules) {
-            courseModules.add(module);
-            if (!module.getModules()
-                       .isEmpty()) {
-                addModules(module.getModules(), courseModules);
-            }
-        }
     }
 }

@@ -21,10 +21,14 @@
             <i class="bi bi-printer-fill"></i>
             Drucken
         </button>
-        <button type="button" class="btn btn-secondary" th:onclick="PublicScripts.printWithoutImages()">
+        <button type="button" class="btn btn-secondary me-2" th:onclick="PublicScripts.printWithoutImages()">
             <i class="bi bi-printer-fill"></i>
             Drucken (ohne Bilder)
         </button>
+        <a class="btn btn-outline-secondary" th:href="@{'/user/' + ${user.id}}">
+            <i class="bi bi-arrow-left-short mr-1"></i>
+            Zurück zum Benutzer
+        </a>
     </div>
     <div class="text-center d-block pt-5">
         <h1 class="text-uppercase">[[${course.title}]]</h1>

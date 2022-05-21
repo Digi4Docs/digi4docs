@@ -1,9 +1,7 @@
 package de.digi4docs.controller;
 
-import de.digi4docs.model.Course;
-import de.digi4docs.model.Role;
-import de.digi4docs.model.User;
-import de.digi4docs.model.UserTask;
+import de.digi4docs.model.Module;
+import de.digi4docs.model.*;
 import de.digi4docs.service.CourseService;
 import de.digi4docs.service.UserService;
 import de.digi4docs.service.UserTaskService;
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +47,23 @@ public class HomeController {
             List<UserTask> rejectedOfCurrentUser = userTaskService.findRejectedOfCurrentUser();
             model.addAttribute("rejectedTasks", rejectedOfCurrentUser);
             model.addAttribute("rejectTaskCourses", RecursiveHandler.getUserTaskCourseMap(rejectedOfCurrentUser));
+
+            List<Course> finishedCourses = new ArrayList<>();
+            coursePersonTaskCount.keySet()
+                                 .forEach(course -> {
+                                     LinkedList<Module> courseModules = RecursiveHandler.getCourseModules(course);
+                                     List<Integer> taskIds = RecursiveHandler.getCourseTaskIds(courseModules);
+                                     int userTaskCount =
+                                             Math.toIntExact(userTaskService.findByTasks(taskIds, currentUser)
+                                                                            .stream()
+                                                                            .filter(userTask -> TaskStatus.DONE.equals(
+                                                                                    userTask.getStatus()))
+                                                                            .count());
+                                     if (userTaskCount == taskIds.size()) {
+                                         finishedCourses.add(course);
+                                     }
+                                 });
+            model.addAttribute("finishedCourses", finishedCourses);
         }
 
         boolean showTeacherTasks =

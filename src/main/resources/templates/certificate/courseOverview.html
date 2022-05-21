@@ -17,7 +17,7 @@
             <i class="bi bi-arrow-left-short mr-1"></i>
             Zurück zum Benutzer
         </a>
-        <a th:unll="${null != user}" class="btn btn-secondary" th:href="@{'/home'}">
+        <a th:unless="${null != user}" class="btn btn-secondary" th:href="@{'/home'}">
             <i class="bi bi-arrow-left-short mr-1"></i>
             Zurück zur Übersicht
         </a>

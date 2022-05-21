@@ -4,9 +4,9 @@ import de.digi4docs.model.Course;
 import de.digi4docs.model.Module;
 import de.digi4docs.model.Task;
 import de.digi4docs.model.UserTask;
-import org.springframework.ui.Model;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RecursiveHandler {
 
@@ -67,12 +67,40 @@ public class RecursiveHandler {
         return courses;
     }
 
-    public static Course getCourse(Module module)
-    {
+    public static Course getCourse(Module module) {
         while (null == module.getCourse()) {
             module = module.getParent();
         }
 
         return module.getCourse();
+    }
+
+
+    public static List<Integer> getCourseTaskIds(List<Module> courseModules) {
+
+        return courseModules.stream()
+                            .map(Module::getTasks)
+                            .flatMap(Collection::stream)
+                            .map(Task::getId)
+                            .collect(Collectors.toList());
+    }
+
+
+    public static LinkedList<Module> getCourseModules(Course course) {
+        LinkedList<Module> courseModules = new LinkedList<>();
+
+        addModules(course.getModules(), courseModules);
+
+        return courseModules;
+    }
+
+    private static void addModules(List<Module> modules, LinkedList<Module> courseModules) {
+        for (Module module : modules) {
+            courseModules.add(module);
+            if (!module.getModules()
+                       .isEmpty()) {
+                addModules(module.getModules(), courseModules);
+            }
+        }
     }
 }
