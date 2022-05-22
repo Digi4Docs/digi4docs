@@ -18,14 +18,21 @@
 <div layout:fragment="content">
     <form th:action="@{'/tasks/edit'}"
           method="post" th:object="${tasksReviewMultipleForm}" novalidate>
-        <div class="row">
-            <div class="col-12 text-end mb-4">
+        <div class="row mb-4">
+            <div class="col-6" th:with="taskSize=${userTasks.empty ? 0 : #lists.size(userTasks)}">
+                Du hast noch
+                <span th:class="${taskSize < 10 ? (taskSize == 0 ? '' : 'text-warning') : 'text-danger'}">
+                     [[${taskSize}]]
+                </span> Aufgaben in deinem Postfach.
+            </div>
+            <div class="col-6 text-end">
                 <a th:href="@{/tasks/edit}" class="btn btn-sm btn-secondary mb-2 mb-md-0"
                    th:if="${true != editTasks and !showDone and !showAll and !userTasks.empty}">
                     <i class="bi bi-check-all"></i>
                     Mehrere bearbeiten
                 </a>
-                <button type="submit" class="btn btn-sm btn-success text-white me-2 mb-2 mb-md-0" th:if="${true == editTasks}">
+                <button type="submit" class="btn btn-sm btn-success text-white me-2 mb-2 mb-md-0"
+                        th:if="${true == editTasks}">
                     <i class="bi bi-check-all"></i>
                     Auswahl als erledigt markieren
                 </button>
@@ -66,10 +73,12 @@
                 <tr th:each="userTask : ${userTasks}">
                     <td>[[${userTask.task.module.title}]]</td>
                     <td>[[${userTask.task.title}]]</td>
-                    <td  sec:authorize="hasAuthority('ADMIN') or hasAuthority('USERS')">
+                    <td sec:authorize="hasAuthority('ADMIN') or hasAuthority('USERS')">
                         <a th:href="@{'/user/' + ${userTask.user.id}}">[[${userTask.user.fullname}]]</a>
                     </td>
-                    <td  sec:authorize="!hasAuthority('ADMIN') and !hasAuthority('USERS')">[[${userTask.user.fullname}]]</td>
+                    <td sec:authorize="!hasAuthority('ADMIN') and !hasAuthority('USERS')">
+                        [[${userTask.user.fullname}]]
+                    </td>
                     <td>[[${userTask.user.classYear}]]</td>
                     <td>[[${userTask.user.classIdentifier}]]</td>
                     <td th:if="${showAll}">[[${userTask.teacher.fullname}]]</td>
