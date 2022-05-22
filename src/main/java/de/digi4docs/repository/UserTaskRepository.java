@@ -1,6 +1,7 @@
 package de.digi4docs.repository;
 
 import de.digi4docs.dto.TaskDoneCountResult;
+import de.digi4docs.dto.TaskReviewRow;
 import de.digi4docs.model.TaskStatus;
 import de.digi4docs.model.UserTask;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,9 +23,29 @@ public interface UserTaskRepository extends JpaRepository<UserTask, Integer> {
 
     List<UserTask> findByUserId(int userId);
 
-    List<UserTask> findByTeacherIdAndStatus(int teacherId, TaskStatus taskStatus);
+    @Query("SELECT t.title as title, m.title as moduleTitle, m.subTitle as moduleSubTitle, u.id as userId, CONCAT(u" +
+            ".lastname, ', ', u.firstname) as userName, u.classYear as classYear, u.classNumber as classNumber, u" +
+            ".classIdentifier as classIdentifier,CONCAT(u2.lastname, ', ', u2" +
+            ".firstname) as teacherName, ut.id as userTaskId, ut.status as userTaskStatus, ut.transmittedAt as " +
+            "transmittedAt, t.title as taskTitle " +
+            "FROM UserTask ut JOIN Task t ON t.id = ut.task.id " +
+            "JOIN Module m ON m.id = t.module.id " +
+            "JOIN User u ON u.id = ut.user.id " +
+            "JOIN User u2 ON u2.id = ut.teacher.id " +
+            "WHERE ut.status = :taskStatus and u2.id = :teacherId")
+    List<TaskReviewRow> findDtoByTeacherIdAndStatus(int teacherId, TaskStatus taskStatus);
 
-    List<UserTask> findByStatus(TaskStatus taskStatus);
+    @Query("SELECT t.title as title, m.title as moduleTitle, m.subTitle as moduleSubTitle, u.id as userId, CONCAT(u" +
+            ".lastname, ', ', u.firstname) as userName, u.classYear as classYear, u.classNumber as classNumber, u" +
+            ".classIdentifier as classIdentifier,CONCAT(u2.lastname, ', ', u2" +
+            ".firstname) as teacherName, ut.id as userTaskId, ut.status as userTaskStatus, ut.transmittedAt as " +
+            "transmittedAt, t.title as taskTitle " +
+            "FROM UserTask ut JOIN Task t ON t.id = ut.task.id " +
+            "JOIN Module m ON m.id = t.module.id " +
+            "JOIN User u ON u.id = ut.user.id " +
+            "JOIN User u2 ON u2.id = ut.teacher.id " +
+            "WHERE ut.status = :taskStatus")
+    List<TaskReviewRow> findDtoByStatus(TaskStatus taskStatus);
 
     List<UserTask> findByUserIdAndStatus(int userId, TaskStatus taskStatus);
 

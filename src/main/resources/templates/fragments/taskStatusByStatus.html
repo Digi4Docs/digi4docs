@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<span class="badge bg-secondary" th:if="${userTaskStatus.toString() == 'OPEN'}">
+                        <i class="bi bi-emoji-neutral me-1"></i>
+                        [[${T(de.digi4docs.model.TaskStatus).OPEN.displayValue}]]
+                    </span>
+<span class="badge bg-warning" th:if="${userTaskStatus.toString() == 'TRANSMITTED'}">
+                        <i class="bi bi-emoji-smile me-1"></i>
+                        [[${T(de.digi4docs.model.TaskStatus).TRANSMITTED.displayValue}]]
+                    </span>
+<span class="badge bg-danger" th:if="${userTaskStatus.toString() == 'REJECTED'}">
+                        <i class="bi bi-emoji-frown me-1"></i>
+                        [[${T(de.digi4docs.model.TaskStatus).REJECTED.displayValue}]]
+                    </span>
+<span class="badge bg-success" th:if="${userTaskStatus.toString() == 'DONE'}">
+                        <i class="bi bi-emoji-laughing me-1"></i>
+                        [[${T(de.digi4docs.model.TaskStatus).DONE.displayValue}]]
+                    </span>
+</body>

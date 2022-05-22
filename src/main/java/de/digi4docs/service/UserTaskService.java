@@ -1,6 +1,7 @@
 package de.digi4docs.service;
 
 import de.digi4docs.dto.TaskDoneCountResult;
+import de.digi4docs.dto.TaskReviewRow;
 import de.digi4docs.model.TaskStatus;
 import de.digi4docs.model.User;
 import de.digi4docs.model.UserTask;
@@ -57,37 +58,38 @@ public class UserTaskService {
         return userTaskRepository.findByUserId(userId);
     }
 
-    public List<UserTask> findTransmittedOfCurrentUser() {
+    public List<TaskReviewRow> findTransmittedOfCurrentUser() {
         User currentUser = userService.findCurrentUser();
-        List<UserTask> userTasks =
-                userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.TRANSMITTED);
-        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+        List<TaskReviewRow> userTasks =
+                userTaskRepository.findDtoByTeacherIdAndStatus(currentUser.getId(), TaskStatus.TRANSMITTED);
+        userTasks.sort(Comparator.comparing(TaskReviewRow::getTransmittedAt, Comparator.nullsLast(
                 Comparator.naturalOrder())));
         return userTasks;
     }
 
-    public List<UserTask> findAllTransmitted() {
-        List<UserTask> userTasks = userTaskRepository.findByStatus(TaskStatus.TRANSMITTED);
-        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+    public List<TaskReviewRow> findAllTransmitted() {
+        List<TaskReviewRow> userTasks = userTaskRepository.findDtoByStatus(TaskStatus.TRANSMITTED);
+        userTasks.sort(Comparator.comparing(TaskReviewRow::getTransmittedAt, Comparator.nullsLast(
                 Comparator.naturalOrder())));
         return userTasks;
     }
 
-    public List<UserTask> findDoneOfCurrentUser() {
+    public List<TaskReviewRow> findDoneOfCurrentUser() {
         User currentUser = userService.findCurrentUser();
-        List<UserTask> userTasks = userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.DONE);
-        userTasks.addAll(userTaskRepository.findByTeacherIdAndStatus(currentUser.getId(), TaskStatus.REJECTED));
-        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+        List<TaskReviewRow> userTasks =
+                userTaskRepository.findDtoByTeacherIdAndStatus(currentUser.getId(), TaskStatus.DONE);
+        userTasks.addAll(userTaskRepository.findDtoByTeacherIdAndStatus(currentUser.getId(), TaskStatus.REJECTED));
+        userTasks.sort(Comparator.comparing(TaskReviewRow::getTransmittedAt, Comparator.nullsLast(
                 Comparator.naturalOrder())));
         return userTasks;
     }
 
-    public List<UserTask> findAllDone() {
-        List<UserTask> userTasks = userTaskRepository.findByStatus(TaskStatus.DONE);
-        userTasks.addAll(userTaskRepository.findByStatus(TaskStatus.REJECTED));
-        userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
+    public List<TaskReviewRow> findAllDone() {
+        List<TaskReviewRow> tasks = userTaskRepository.findDtoByStatus(TaskStatus.DONE);
+        tasks.addAll(userTaskRepository.findDtoByStatus(TaskStatus.REJECTED));
+        tasks.sort(Comparator.comparing(TaskReviewRow::getTransmittedAt, Comparator.nullsLast(
                 Comparator.naturalOrder())));
-        return userTasks;
+        return tasks;
     }
 
     public List<TaskDoneCountResult> findDoneTaskCount(List<Integer> taskIds, String start, String end) {

@@ -1,5 +1,6 @@
 package de.digi4docs.controller;
 
+import de.digi4docs.dto.TaskReviewRow;
 import de.digi4docs.model.Module;
 import de.digi4docs.model.*;
 import de.digi4docs.service.CourseService;
@@ -70,7 +71,7 @@ public class HomeController {
                 userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.TEACHER);
         model.addAttribute("showTeacherTasks", showTeacherTasks);
         if (showTeacherTasks) {
-            List<UserTask> teacherTasks = userTaskService.findTransmittedOfCurrentUser();
+            List<TaskReviewRow> teacherTasks = userTaskService.findTransmittedOfCurrentUser();
             model.addAttribute("teacherTasks", teacherTasks);
         }
 

@@ -43,7 +43,7 @@ public class TaskReviewController extends AbstractController {
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     @GetMapping("/tasks")
     public String tasks(Model model, TasksReviewMultipleForm tasksReviewMultipleForm) {
-        model.addAttribute("userTasks", userTaskService.findTransmittedOfCurrentUser());
+        model.addAttribute("tasks", userTaskService.findTransmittedOfCurrentUser());
         model.addAttribute("showAll", false);
         model.addAttribute("showDone", false);
 
@@ -74,7 +74,7 @@ public class TaskReviewController extends AbstractController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/tasks/all")
     public String tasksAll(Model model) {
-        model.addAttribute("userTasks", userTaskService.findAllTransmitted());
+        model.addAttribute("tasks", userTaskService.findAllTransmitted());
         model.addAttribute("showAll", true);
         model.addAttribute("showDone", false);
 
@@ -87,7 +87,7 @@ public class TaskReviewController extends AbstractController {
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     @GetMapping("/tasks/done")
     public String tasksDone(Model model) {
-        model.addAttribute("userTasks", userTaskService.findDoneOfCurrentUser());
+        model.addAttribute("tasks", userTaskService.findDoneOfCurrentUser());
         model.addAttribute("showAll", false);
         model.addAttribute("showDone", true);
 
@@ -100,7 +100,7 @@ public class TaskReviewController extends AbstractController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/tasks/done-all")
     public String tasksAllDone(Model model) {
-        model.addAttribute("userTasks", userTaskService.findAllDone());
+        model.addAttribute("tasks", userTaskService.findAllDone());
         model.addAttribute("showAll", true);
         model.addAttribute("showDone", true);
 
