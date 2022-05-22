@@ -15,7 +15,7 @@
     <img th:src="@{~/img/home-title.jpg}" class="card-img-top rounded-0"/>
 </div>
 <div layout:fragment="content">
-    <div th:if="${#lists.size(finishedCourses) > 0}" class="row">
+    <div th:if="${null != finishedCourses and #lists.size(finishedCourses) > 0}" class="row">
         <div class="col-12">
             <div class="card bg-light home-column-height overflow-auto mb-4">
                 <div class="card-body">
