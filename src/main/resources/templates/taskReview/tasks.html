@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="de"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{./layout}">
+      layout:decorate="~{./layout}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body>
 <head>
     <title>Meine Aufgaben</title>
@@ -65,7 +66,10 @@
                 <tr th:each="userTask : ${userTasks}">
                     <td>[[${userTask.task.module.title}]]</td>
                     <td>[[${userTask.task.title}]]</td>
-                    <td>[[${userTask.user.fullname}]]</td>
+                    <td  sec:authorize="hasAuthority('ADMIN') or hasAuthority('USERS')">
+                        <a th:href="@{'/user/' + ${userTask.user.id}}">[[${userTask.user.fullname}]]</a>
+                    </td>
+                    <td  sec:authorize="!hasAuthority('ADMIN') and !hasAuthority('USERS')">[[${userTask.user.fullname}]]</td>
                     <td>[[${userTask.user.classYear}]]</td>
                     <td>[[${userTask.user.classIdentifier}]]</td>
                     <td th:if="${showAll}">[[${userTask.teacher.fullname}]]</td>
