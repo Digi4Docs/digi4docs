@@ -131,10 +131,25 @@ public class TaskReviewController extends AbstractController {
     }
 
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
+    @PostMapping(value = "/tasks/task/{id}", params = "doneBack")
+    public String doneBackTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
+            Model model) {
+        return saveTask(id, taskReviewForm, bindingResult, model, FORM_ACTION_DONE, true);
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     @PostMapping(value = "/tasks/task/{id}", params = "reject")
     public String rejectTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
             Model model) {
         return saveTask(id, taskReviewForm, bindingResult, model, FORM_ACTION_REJECT);
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
+    @PostMapping(value = "/tasks/task/{id}", params = "rejectBack")
+    public String rejectBackTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm,
+            BindingResult bindingResult,
+            Model model) {
+        return saveTask(id, taskReviewForm, bindingResult, model, FORM_ACTION_REJECT, true);
     }
 
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
@@ -194,6 +209,11 @@ public class TaskReviewController extends AbstractController {
 
     private String saveTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
             Model model, int formAction) {
+        return saveTask(id, taskReviewForm, bindingResult, model, formAction, false);
+    }
+
+    private String saveTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
+            Model model, int formAction, boolean onSuccessGoToList) {
         if (userService.hasCurrentUserRole(Role.ADMIN) && bindingResult.hasErrors()) {
             return task(id, taskReviewForm, model);
         }
@@ -228,6 +248,10 @@ public class TaskReviewController extends AbstractController {
 
         if (formAction == FORM_ACTION_SAVE || !successful) {
             return showTaskPage(id, taskReviewForm, model, false);
+        }
+
+        if (onSuccessGoToList) {
+            return "redirect:/tasks/";
         }
 
         return "redirect:/tasks/task/" + id;

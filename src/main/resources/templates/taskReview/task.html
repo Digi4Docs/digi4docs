@@ -159,6 +159,16 @@
                     <i class="bi bi-x-circle-fill"></i>
                     Aufgabe zurückgeben
                 </button>
+                <button type="submit" name="doneBack" class="btn btn-outline-success me-1 mb-4 mb-md-0"
+                        th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Erledigen + Zur Liste wechseln
+                </button>
+                <button type="submit" name="rejectBack" class="btn btn-outline-danger mb-4 mb-md-0"
+                        th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
+                    <i class="bi bi-x-circle-fill"></i>
+                    Zurückgeben + Zur Liste wechseln
+                </button>
                 <button type="submit" name="back" class="btn btn-warning text-white mb-4 mb-md-0"
                         th:if="${(userTask.status.toString() == 'DONE' || userTask.status.toString() == 'REJECTED') and isOwnTask}">
                     <i class="bi bi-shuffle"></i>
