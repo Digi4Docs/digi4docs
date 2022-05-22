@@ -84,6 +84,7 @@ public class UserTaskService {
 
     public List<UserTask> findAllDone() {
         List<UserTask> userTasks = userTaskRepository.findByStatus(TaskStatus.DONE);
+        userTasks.addAll(userTaskRepository.findByStatus(TaskStatus.REJECTED));
         userTasks.sort(Comparator.comparing(UserTask::getTransmittedAt, Comparator.nullsLast(
                 Comparator.naturalOrder())));
         return userTasks;

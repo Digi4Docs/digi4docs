@@ -52,7 +52,7 @@
                     <th>Jahrgang</th>
                     <th>Klasse</th>
                     <th th:if="${showAll}">Lehrkraft</th>
-                    <th th:if="${showAll}">Status</th>
+                    <th th:if="${showAll or showDone}">Status</th>
                     <th data-sortable="false">
                         <button class="btn btn-sm btn-secondary" type="button" th:if="${true == editTasks}"
                                 id="toogleCheckboxes" title="Auswahl umkehren">
@@ -64,10 +64,8 @@
                 <tbody>
                 <tr th:if="${userTasks.empty}">
                     <td th:if="${showDone}" th:colspan="${showAll ? '8' : '6'}">Keine Aufgaben gefunden.</td>
-                    <td th:unless="${showDone}" th:colspan="${showAll ? '8' : '6'}"> Alle Aufgaben erledigt - hier gibt
-                        es
-                        im
-                        Moment nichts zu tun.
+                    <td th:unless="${showDone}" th:colspan="${showAll ? '8' : (showDone ? '7' : '6')}">
+                        Alle Aufgaben erledigt - hier gibt es im Moment nichts zu tun.
                     </td>
                 </tr>
                 <tr th:each="userTask : ${userTasks}">
@@ -82,7 +80,7 @@
                     <td>[[${userTask.user.classYear}]]</td>
                     <td>[[${userTask.user.classIdentifier}]]</td>
                     <td th:if="${showAll}">[[${userTask.teacher.fullname}]]</td>
-                    <td th:if="${showAll}">
+                    <td th:if="${showAll or showDone}">
                         <span th:replace="fragments/taskStatus(userTask=${userTask})"></span>
                     </td>
                     <td class="text-center">
@@ -105,7 +103,7 @@
                     <th>Jahrgang</th>
                     <th>Klasse</th>
                     <th th:if="${showAll}">Lehrkraft</th>
-                    <th th:if="${showAll}"></th>
+                    <th th:if="${showAll or showDone}">Status</th>
                     <th></th>
                 </tr>
                 </tfoot>
