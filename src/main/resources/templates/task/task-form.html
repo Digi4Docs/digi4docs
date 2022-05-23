@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col-12 mb-3">
-        <label for="title" class="form-label">Titel</label>
+        <label for="title" class="form-label">Titel / Lernziel</label>
         <input type="text" maxlength="255" th:field="*{title}" class="form-control"
                th:classappend="${#fields.hasErrors('title') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                id="title"
