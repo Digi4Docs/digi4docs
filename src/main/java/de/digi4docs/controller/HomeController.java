@@ -40,15 +40,8 @@ public class HomeController {
         boolean isStudent = userService.hasUserRole(currentUser, Role.STUDENT);
         if (isStudent) {
             model.addAttribute("courses", courseService.findAllActive());
+
             Map<Course, Integer> coursePersonTaskCount = progressCountProvider.getPersonalCourseTaskCountMap();
-            model.addAttribute("personalCourses", coursePersonTaskCount);
-            model.addAttribute("courseTaskCounts",
-                    progressCountProvider.getGeneralCourseTaskCountMap(coursePersonTaskCount.keySet()));
-
-            List<UserTask> rejectedOfCurrentUser = userTaskService.findRejectedOfCurrentUser();
-            model.addAttribute("rejectedTasks", rejectedOfCurrentUser);
-            model.addAttribute("rejectTaskCourses", RecursiveHandler.getUserTaskCourseMap(rejectedOfCurrentUser));
-
             List<Course> finishedCourses = new ArrayList<>();
             coursePersonTaskCount.keySet()
                                  .forEach(course -> {
@@ -64,6 +57,16 @@ public class HomeController {
                                          finishedCourses.add(course);
                                      }
                                  });
+            finishedCourses.forEach(coursePersonTaskCount::remove);
+
+            model.addAttribute("personalCourses", coursePersonTaskCount);
+            model.addAttribute("courseTaskCounts",
+                    progressCountProvider.getGeneralCourseTaskCountMap(coursePersonTaskCount.keySet()));
+
+            List<UserTask> rejectedOfCurrentUser = userTaskService.findRejectedOfCurrentUser();
+            model.addAttribute("rejectedTasks", rejectedOfCurrentUser);
+            model.addAttribute("rejectTaskCourses", RecursiveHandler.getUserTaskCourseMap(rejectedOfCurrentUser));
+
             model.addAttribute("finishedCourses", finishedCourses);
         }
 
