@@ -11,18 +11,39 @@
 <div layout:fragment="title" class="mb-3">Aufgabe: [[${userTask.task.title}]]</div>
 
 <div layout:fragment="content">
-    <form th:action="@{'/tasks/task/' + ${userTask.id}}"
-          method="post" th:object="${taskReviewForm}" novalidate>
-        <div class="alert alert-warning" th:unless="${isOwnTask or userTask.status.toString() == 'DONE'}">
-            Diese Aufgabe ist dir nicht zugewiesen. Du schaust sie nur als Administrator an.
-            Du kannst deshalb zwar die Informationen in der Aufgabe ändern und bspw. eine
-            andere Lehrkraft zuordnen, du kannst die Aufgabe aber nicht erledigen.
-        </div>
-        <fieldset class="border p-3">
+    <div class="alert alert-warning my-4" th:unless="${isOwnTask or userTask.status.toString() == 'DONE'}">
+        Diese Aufgabe ist dir nicht zugewiesen. Du schaust sie nur als Administrator an.
+        Du kannst deshalb zwar die Informationen in der Aufgabe ändern und bspw. eine
+        andere Lehrkraft zuordnen, du kannst die Aufgabe aber nicht erledigen.
+    </div>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="task-description-tab" data-bs-toggle="tab"
+                    data-bs-target="#task-description" type="button"
+                    role="tab" aria-controls="task-description" aria-selected="true">
+                <i class="bi bi-info-lg me-1"></i>
+                Informationen zur Aufgabe
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="review-task-tab" data-bs-toggle="tab" data-bs-target="#review-task"
+                    type="button"
+                    role="tab" aria-controls="review-task" aria-selected="false">
+                <i class="bi bi-star me-1"></i>
+                Aufgabe bewerten
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active py-4 px-3 border border-top-0 rounded-bottom" id="task-description" role="tabpanel"
+             aria-labelledby="task-description-tab">
+
             <div class="d-flex flew-row justify-content-between">
-                <div class="flew-grow-1">
-                    <legend class="mb-4">Informationen zur Aufgabe</legend>
+                <div class="flew-grow-1 me-4">
                     <div class="d-block h5">[[ ${userTask.task.title} ]]</div>
+                    <div class="d-block mb-4 fst-italic">Eingereicht von: [[${userTask.user.fullnameReverse}]]</div>
                     <div class="d-block">
                         [(${userTask.task.description})]
                     </div>
@@ -64,127 +85,138 @@
                     </div>
                 </div>
             </div>
-        </fieldset>
-        <fieldset class="border p-3 mt-4">
-            <legend class="mb-4">Angaben der Schülerin/des Schülers: [[${userTask.user.fullnameReverse}]]</legend>
+        </div>
+        <div class="tab-pane py-4 px-3 border border-top-0 rounded-bottom" id="review-task" role="tabpanel"
+             aria-labelledby="review-task-tab">
+            <form th:action="@{'/tasks/task/' + ${userTask.id}}"
+                  method="post" th:object="${taskReviewForm}" novalidate>
+                <fieldset class="border bg-light p-3">
+                    <legend class="mb-4">Angaben der Schülerin/des Schülers: [[${userTask.user.fullnameReverse}]]
+                    </legend>
 
-            <div class="alert alert-success mb-3" th:if="${success}">Die Aufgabe wurde gespeichert.</div>
-            <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
-            <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
-                <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
-            </div>
+                    <div class="alert alert-success mb-3" th:if="${success}">Die Aufgabe wurde gespeichert.</div>
+                    <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+                    <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+                        <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+                    </div>
 
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4 pe-4">
-                    <label for="subjectId" class="form-label">Fach</label>
-                    <select th:field="*{subjectId}"
-                            th:classappend="${#fields.hasErrors('subjectId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                            class="form-control" name="subjectId" id="subjectId"
-                            th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
-                        <option value="">Bitte wähle ein Fach aus</option>
-                        <option th:each="subject: ${subjects}" th:value="${subject.id}">[[ ${subject.name} ]]</option>
-                    </select>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('subjectId')}"
-                         th:errors="*{subjectId}"></div>
-                </div>
-                <div class="col-12 col-md-4 mb-4 pe-4">
-                    <label for="teacherId" class="form-label">Lehrkraft</label>
-                    <select th:field="*{teacherId}"
-                            th:classappend="${#fields.hasErrors('teacherId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                            class="form-control" name="teacherId" id="teacherId"
-                            th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
-                        <option value="">Bitte wähle eine Lehrkraft aus</option>
-                        <option th:each="teacher: ${teachers}" th:value="${teacher.id}"
-                                th:data-subjects="${teacher.subjects}"
-                        >[[ ${teacher.fullname} ]]
-                        </option>
-                    </select>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('teacherId')}"
-                         th:errors="*{teacherId}"></div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <label for="date" class="form-label">Datum</label>
-                    <input type="date" th:field="*{date}" class="form-control"
-                           th:classappend="${#fields.hasErrors('date') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                           id="date" name="date"
-                           th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <label for="solution" class="form-label">Lernaufgabe / Projekt</label>
-                    <textarea th:field="*{solution}" class="form-control" rows="10"
-                              th:classappend="${#fields.hasErrors('solution') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                              id="solution" name="solution"
-                              th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
+                    <div class="row">
+                        <div class="col-12 col-md-4 mb-4 pe-4">
+                            <label for="subjectId" class="form-label">Fach</label>
+                            <select th:field="*{subjectId}"
+                                    th:classappend="${#fields.hasErrors('subjectId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                    class="form-control" name="subjectId" id="subjectId"
+                                    th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
+                                <option value="">Bitte wähle ein Fach aus</option>
+                                <option th:each="subject: ${subjects}" th:value="${subject.id}">[[ ${subject.name} ]]
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('subjectId')}"
+                                 th:errors="*{subjectId}"></div>
+                        </div>
+                        <div class="col-12 col-md-4 mb-4 pe-4">
+                            <label for="teacherId" class="form-label">Lehrkraft</label>
+                            <select th:field="*{teacherId}"
+                                    th:classappend="${#fields.hasErrors('teacherId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                    class="form-control" name="teacherId" id="teacherId"
+                                    th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
+                                <option value="">Bitte wähle eine Lehrkraft aus</option>
+                                <option th:each="teacher: ${teachers}" th:value="${teacher.id}"
+                                        th:data-subjects="${teacher.subjects}"
+                                >[[ ${teacher.fullname} ]]
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('teacherId')}"
+                                 th:errors="*{teacherId}"></div>
+                        </div>
+                        <div class="col-12 col-md-4 mb-4">
+                            <label for="date" class="form-label">Datum</label>
+                            <input type="date" th:field="*{date}" class="form-control"
+                                   th:classappend="${#fields.hasErrors('date') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                   id="date" name="date"
+                                   th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}"
+                                 th:errors="*{date}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="solution" class="form-label">Lernaufgabe / Projekt</label>
+                            <textarea th:field="*{solution}" class="form-control" rows="10"
+                                      th:classappend="${#fields.hasErrors('solution') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                      id="solution" name="solution"
+                                      th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
                     </textarea>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('solution')}"
-                         th:errors="*{solution}"></div>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('solution')}"
+                                 th:errors="*{solution}"></div>
+                        </div>
+                    </div>
+                    <div class="row my-4" th:if="${null != userTask && null != userTask.file}">
+                        <div class="col-12 mb-2">
+                            <label class="form-label">Hochgeladene Datei:</label>
+                            <div class="d-block fw-bold">[[${userTask.file.name}]]</div>
+                        </div>
+                        <div class="col-12">
+                            <a th:href="@{'/public/file/' + ${userTask.file.id}}"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-download"></i>
+                                Herunterladen
+                            </a>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <label for="comment" class="form-label">Deine Bemerkung an
+                            [[${userTask.user.fullnameReverse}]]</label>
+                        <textarea th:field="*{comment}" class="form-control" rows="10"
+                                  th:classappend="${#fields.hasErrors('comment') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                  id="comment" name="comment"
+                                  th:disabled="${userTask.status.toString() != 'TRANSMITTED'}"></textarea>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('comment')}"
+                             th:errors="*{comment}"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="row my-4" th:if="${null != userTask && null != userTask.file}">
-                <div class="col-12 mb-2">
-                    <label class="form-label">Hochgeladene Datei:</label>
-                    <div class="d-block fw-bold">[[${userTask.file.name}]]</div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <button type="submit" name="done" class="btn btn-success text-white me-1 mb-4 mb-md-0"
+                                th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Aufgabe als "erledigt" markieren
+                        </button>
+                        <button type="submit" name="reject" class="btn btn-danger text-white mb-4 mb-md-0"
+                                th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
+                            <i class="bi bi-x-circle-fill"></i>
+                            Aufgabe zurückgeben
+                        </button>
+                        <button type="submit" name="doneBack" class="btn btn-outline-success me-1 mb-4 mb-md-0"
+                                th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Erledigen + Zur Liste wechseln
+                        </button>
+                        <button type="submit" name="rejectBack" class="btn btn-outline-danger mb-4 mb-md-0"
+                                th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
+                            <i class="bi bi-x-circle-fill"></i>
+                            Zurückgeben + Zur Liste wechseln
+                        </button>
+                        <button type="submit" name="back" class="btn btn-warning text-white mb-4 mb-md-0"
+                                th:if="${(userTask.status.toString() == 'DONE' || userTask.status.toString() == 'REJECTED') and isOwnTask}">
+                            <i class="bi bi-shuffle"></i>
+                            Aufgabe zurückholen
+                        </button>
+                        <a th:href="@{/tasks}" class="btn btn-secondary ms-2 float-end">
+                            <i class="bi bi-list"></i>
+                            Meine Aufgaben
+                        </a>
+                        <button type="submit" name="save" class="btn btn-primary text-white float-end"
+                                th:if="${userTask.status.toString() == 'TRANSMITTED'}">
+                            <i class="bi bi-check"></i>
+                            Speichern
+                        </button>
+                    </div>
                 </div>
-                <div class="col-12">
-                    <a th:href="@{'/public/file/' + ${userTask.file.id}}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-download"></i>
-                        Herunterladen
-                    </a>
-                </div>
-            </div>
-        </fieldset>
-        <div class="row mt-4">
-            <div class="col-12">
-                <label for="comment" class="form-label">Deine Bemerkung an [[${userTask.user.fullnameReverse}]]</label>
-                <textarea th:field="*{comment}" class="form-control" rows="10"
-                          th:classappend="${#fields.hasErrors('comment') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                          id="comment" name="comment"
-                          th:disabled="${userTask.status.toString() != 'TRANSMITTED'}"></textarea>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('comment')}"
-                     th:errors="*{comment}"></div>
-            </div>
+            </form>
         </div>
-        <div class="row mt-4">
-            <div class="col-12">
-                <button type="submit" name="done" class="btn btn-success text-white me-1 mb-4 mb-md-0"
-                        th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
-                    <i class="bi bi-check-circle-fill"></i>
-                    Aufgabe als "erledigt" markieren
-                </button>
-                <button type="submit" name="reject" class="btn btn-danger text-white mb-4 mb-md-0"
-                        th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
-                    <i class="bi bi-x-circle-fill"></i>
-                    Aufgabe zurückgeben
-                </button>
-                <button type="submit" name="doneBack" class="btn btn-outline-success me-1 mb-4 mb-md-0"
-                        th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
-                    <i class="bi bi-check-circle-fill"></i>
-                    Erledigen + Zur Liste wechseln
-                </button>
-                <button type="submit" name="rejectBack" class="btn btn-outline-danger mb-4 mb-md-0"
-                        th:if="${userTask.status.toString() == 'TRANSMITTED' and isOwnTask}">
-                    <i class="bi bi-x-circle-fill"></i>
-                    Zurückgeben + Zur Liste wechseln
-                </button>
-                <button type="submit" name="back" class="btn btn-warning text-white mb-4 mb-md-0"
-                        th:if="${(userTask.status.toString() == 'DONE' || userTask.status.toString() == 'REJECTED') and isOwnTask}">
-                    <i class="bi bi-shuffle"></i>
-                    Aufgabe zurückholen
-                </button>
-                <a th:href="@{/tasks}" class="btn btn-secondary ms-2 float-end">
-                    <i class="bi bi-list"></i>
-                    Meine Aufgaben
-                </a>
-                <button type="submit" name="save" class="btn btn-primary text-white float-end"
-                        th:if="${userTask.status.toString() == 'TRANSMITTED'}">
-                    <i class="bi bi-check"></i>
-                    Speichern
-                </button>
-            </div>
-        </div>
-    </form>
+    </div>
 </div>
 </body>
