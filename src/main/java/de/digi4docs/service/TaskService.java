@@ -4,6 +4,7 @@ import de.digi4docs.model.Task;
 import de.digi4docs.model.User;
 import de.digi4docs.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,22 @@ public class TaskService {
 
     public List<Task> findAllByModule(Integer moduleId) {
         return taskRepository.findAllByModuleIdOrderByOrderPositionAscTitleAsc(moduleId);
+    }
+
+    @Nullable
+    public Task findNextTask(Integer moduleId, Integer currentTaskPosition) {
+        Optional<Task> task =
+                taskRepository.findFirstByModuleIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(moduleId,
+                        currentTaskPosition);
+        return task.orElse(null);
+    }
+
+    @Nullable
+    public Task findPreviousTask(Integer moduleId, Integer currentTaskPosition) {
+        Optional<Task> task =
+                taskRepository.findFirstByModuleIdAndOrderPositionLessThanOrderByOrderPositionDesc(moduleId,
+                        currentTaskPosition);
+        return task.orElse(null);
     }
 
     public Integer findNextOrder(Integer moduleId) {

@@ -12,116 +12,253 @@
     <div th:replace="public/title-image(title=${course.title}, subTitle=${task.title}, minorTitle=${module.title})"></div>
 </div>
 <div layout:fragment="content">
-    <div class=" m-4 py-4 px-3 border rounded">
-        <div th:unless="${task.isActive}" class="row mb-3">
-            <div class="col-12">
-                <div class="alert alert-danger">Achtung: Die angezeigte Aufgabe wurde noch nicht aktiviert.</div>
-            </div>
+    <div class="m-4 d-flex flex-row justify-content-between">
+        <div>
+            <a th:if="${null != previousTask}"
+               th:href="@{'/public/course/' + ${course.id} + '/task/' + ${previousTask.id}}"
+               class="btn btn-sm btn-outline-secondary text-nowrap">
+                <i class="bi bi-arrow-left-short me-1"></i>
+                Vorherige Aufgabe
+            </a>
+            <button type="button" th:unless="${null != previousTask}"
+                    class="btn btn-sm btn-light border text-nowrap disabled" disabled>
+                <i class="bi bi-arrow-left-short me-1"></i>
+                Vorherige Aufgabe
+            </button>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="d-block h5">[[ ${task.title} ]]</div>
-                <div class="d-block">
-                    [(${task.description})]
-                </div>
-                <hr class="my-4"/>
-            </div>
+        <div><a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}">
+            Aufgabe [[${task.orderPosition}]] von [[${#lists.size(module.tasks)}]]</a>
         </div>
-        <div class="row">
-            <div class="col-12 mb-4">
-                <div class="d-block h5">Wie und wann habe ich das gelernt?</div>
-            </div>
+        <div>
+            <a th:if="${null != nextTask}" th:href="@{'/public/course/' + ${course.id} + '/task/' + ${nextTask.id}}"
+               class="btn btn-sm btn-outline-secondary text-nowrap">
+                <i class="bi bi-arrow-right-short me-1"></i>
+                Nächste Aufgabe
+            </a>
+            <button type="button" th:unless="${null != nextTask}"
+                    class="btn btn-sm btn-light border text-nowrap disabled" disabled>
+                <i class="bi bi-arrow-right-short me-1"></i>
+                Nächste Aufgabe
+            </button>
         </div>
+    </div>
 
-        <form th:action="@{'/public/course/' + ${course.id} + '/task/' + ${task.id}}"
-              method="post" th:object="${publicTaskForm}" enctype="multipart/form-data" novalidate>
+    <div th:unless="${task.isActive}" class="row m-4">
+        <div class="col-12">
+            <div class="alert alert-danger">Achtung: Die angezeigte Aufgabe wurde noch nicht aktiviert.</div>
+        </div>
+    </div>
 
-            <div class="alert alert-success mb-3" th:if="${success}">Die Aufgabe wurde gespeichert.</div>
-            <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
-            <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
-                <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
-            </div>
-
+    <ul class="nav nav-tabs mx-4 mt-4" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    th:classappend="${null == savedStatus && taskStatus.toString() != 'DONE' && taskStatus.toString() != 'REJECTED' && taskStatus.toString() != 'TRANSMITTED' ? 'active' : ''}"
+                    id="task-description-tab" data-bs-toggle="tab"
+                    data-bs-target="#task-description" type="button" role="tab" aria-controls="task-description"
+                    aria-selected="true">
+                <i class="bi bi-info-lg me-1"></i>
+                Aufgabenstellung
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" th:classappend="${null != savedStatus ? 'active' : ''}" id="solution-description-tab" data-bs-toggle="tab"
+                    data-bs-target="#solution-description" type="button" role="tab" aria-controls="solution-description"
+                    aria-selected="false">
+                <i class="bi bi-lightbulb me-1"></i>
+                Deine Lösung
+            </button>
+        </li>
+        <li class="nav-item" role="presentation" th:if="${taskStatus.toString() != 'OPEN'}">
+            <button th:classappend="${null == savedStatus  && taskStatus.toString() == 'REJECTED' ? 'text-danger active': (null == savedStatus && taskStatus.toString() == 'DONE' ? 'text-success active' : (null == savedStatus && taskStatus.toString() == 'TRANSMITTED' ? 'text-warning active' : ''))}"
+                    class="nav-link" id="comment-description-tab" data-bs-toggle="tab"
+                    data-bs-target="#comment-description" type="button" role="tab" aria-controls="comment-description"
+                    aria-selected="false">
+                <i class="bi bi-chat-right-text me-1"></i>
+                Status/Kommentar
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade mx-4 py-4 px-3 border border-top-0 rounded-bottom"
+             th:classappend="${null == savedStatus && taskStatus.toString() != 'DONE' && taskStatus.toString() != 'REJECTED' && taskStatus.toString() != 'TRANSMITTED' ? 'show active' : ''}"
+             id="task-description"
+             role="tabpanel" aria-labelledby="task-description-tab">
             <div class="row">
-                <div class="col-12 col-md-4 mb-4 pe-4">
-                    <label for="subjectId" class="form-label">In diesem Fach habe ich die Aufgabe bearbeitet:</label>
-                    <select th:field="*{subjectId}"
-                            th:classappend="${#fields.hasErrors('subjectId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                            class="form-control" name="subjectId" id="subjectId"
-                            th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}">
-                        <option value="">Bitte wähle ein Fach aus</option>
-                        <option th:each="subject: ${subjects}" th:value="${subject.id}">[[ ${subject.name} ]]</option>
-                    </select>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('subjectId')}"
-                         th:errors="*{subjectId}"></div>
-                </div>
-                <div class="col-12 col-md-4 mb-4 pe-4">
-                    <label for="teacherId" class="form-label">Das war bei dieser Lehrkraft:</label>
-                    <select th:field="*{teacherId}"
-                            th:classappend="${#fields.hasErrors('teacherId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                            class="form-control" name="teacherId" id="teacherId"
-                            th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}">
-                        <option value="">Bitte wähle eine Lehrkraft aus</option>
-                        <option th:each="teacher: ${teachers}" th:value="${teacher.id}"
-                                th:data-subjects="${teacher.subjects}"
-                        >[[ ${teacher.fullname} ]]
-                        </option>
-                    </select>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('teacherId')}"
-                         th:errors="*{teacherId}"></div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <label for="date" class="form-label">Und an diesem Tag:</label>
-                    <input type="date" th:field="*{date}" class="form-control"
-                           th:classappend="${#fields.hasErrors('date') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                           id="date" name="date"
-                           th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}"/>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-12">
-                    <label for="solution" class="form-label">So habe ich die Lernaufgabe / das Projekt gelöst:</label>
-                    <textarea th:field="*{solution}" class="form-control" rows="10"
-                              th:classappend="${#fields.hasErrors('solution') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                              id="solution" name="solution"
-                              th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}"></textarea>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('solution')}"
-                         th:errors="*{solution}"></div>
-                </div>
-            </div>
-            <div class="row my-4" th:if="${null != userTask && null != userTask.file}">
-                <div class="col-12 mb-2">
-                    <label class="form-label">Hochgeladene Datei:</label>
-                    <div class="d-block fw-bold">[[${userTask.file.name}]]</div>
-                </div>
-                <div class="col-12">
-                    <a th:href="@{'/public/file/' + ${userTask.file.id}}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-download"></i>
-                        Herunterladen
-                    </a>
-                    <a th:href="@{'/public/course/' + ${course.id} + '/task/' + ${userTask.task.id} + '/file/delete'}"
-                       class="btn btn-outline-danger btn-sm ms-2"
-                       th:if="${taskStatus.toString() == 'OPEN' or taskStatus.toString() == 'REJECTED' or null == taskStatus}">
-                        <i class="bi bi-trash"></i>
-                        Löschen
-                    </a>
-                </div>
-            </div>
-            <div class="row my-4" th:classappend="${null == userTask || null == userTask.file ? '' : 'd-none'}"
-                 th:if="${taskStatus.toString() == 'OPEN' or taskStatus.toString() == 'REJECTED' or null == taskStatus}">
-                <div class="col-12">
-                    <label for="file" class="form-label">
-                        Hier kannst du eine beliebige Datei hochladen, wenn dies in der Aufgabenstellung gefordert ist.
-                        Achte darauf, dass die Datei nicht größer als <span class="text-danger">25MB</span> ist.
-                    </label>
+                    <div class="d-block h5">[[ ${task.title} ]]</div>
                     <div class="d-block">
-                        <input type="file" name="file" id="file" class="form-control-file"/>
+                        [(${task.description})]
                     </div>
                 </div>
             </div>
-            <div class="row mt-4" th:if="${taskStatus.toString() == 'REJECTED'}">
+        </div>
+        <div class="tab-pane fade mx-4 py-4 px-3 border border-top-0 rounded-bottom" id="solution-description"
+             th:classappend="${null != savedStatus ? 'show active' : ''}"
+             role="tabpanel" aria-labelledby="solution-description-tab">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="d-block h5">Wie und wann habe ich das gelernt?</div>
+                </div>
+            </div>
+
+            <form th:action="@{'/public/course/' + ${course.id} + '/task/' + ${task.id}}"
+                  method="post" th:object="${publicTaskForm}" enctype="multipart/form-data" novalidate>
+
+                <div class="alert alert-success mb-3" th:if="${success}">Die Aufgabe wurde gespeichert.</div>
+                <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+                <div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+                    <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-4 mb-4 pe-4">
+                        <label for="subjectId" class="form-label">In diesem Fach habe ich die Aufgabe
+                            bearbeitet:</label>
+                        <select th:field="*{subjectId}"
+                                th:classappend="${#fields.hasErrors('subjectId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                class="form-control" name="subjectId" id="subjectId"
+                                th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}">
+                            <option value="">Bitte wähle ein Fach aus</option>
+                            <option th:each="subject: ${subjects}" th:value="${subject.id}">[[ ${subject.name} ]]
+                            </option>
+                        </select>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('subjectId')}"
+                             th:errors="*{subjectId}"></div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-4 pe-4">
+                        <label for="teacherId" class="form-label">Das war bei dieser Lehrkraft:</label>
+                        <select th:field="*{teacherId}"
+                                th:classappend="${#fields.hasErrors('teacherId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                class="form-control" name="teacherId" id="teacherId"
+                                th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}">
+                            <option value="">Bitte wähle eine Lehrkraft aus</option>
+                            <option th:each="teacher: ${teachers}" th:value="${teacher.id}"
+                                    th:data-subjects="${teacher.subjects}"
+                            >[[ ${teacher.fullname} ]]
+                            </option>
+                        </select>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('teacherId')}"
+                             th:errors="*{teacherId}"></div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-4">
+                        <label for="date" class="form-label">Und an diesem Tag:</label>
+                        <input type="date" th:field="*{date}" class="form-control"
+                               th:classappend="${#fields.hasErrors('date') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                               id="date" name="date"
+                               th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}"/>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label for="solution" class="form-label">So habe ich die Lernaufgabe / das Projekt
+                            gelöst:</label>
+                        <textarea th:field="*{solution}" class="form-control" rows="10"
+                                  th:classappend="${#fields.hasErrors('solution') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                                  id="solution" name="solution"
+                                  th:disabled="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED'}"></textarea>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('solution')}"
+                             th:errors="*{solution}"></div>
+                    </div>
+                </div>
+                <div class="row my-4" th:if="${null != userTask && null != userTask.file}">
+                    <div class="col-12 mb-2">
+                        <label class="form-label">Hochgeladene Datei:</label>
+                        <div class="d-block fw-bold">[[${userTask.file.name}]]</div>
+                    </div>
+                    <div class="col-12">
+                        <a th:href="@{'/public/file/' + ${userTask.file.id}}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-download"></i>
+                            Herunterladen
+                        </a>
+                        <a th:href="@{'/public/course/' + ${course.id} + '/task/' + ${userTask.task.id} + '/file/delete'}"
+                           class="btn btn-outline-danger btn-sm ms-2"
+                           th:if="${taskStatus.toString() == 'OPEN' or taskStatus.toString() == 'REJECTED' or null == taskStatus}">
+                            <i class="bi bi-trash"></i>
+                            Löschen
+                        </a>
+                    </div>
+                </div>
+                <div class="row my-4" th:classappend="${null == userTask || null == userTask.file ? '' : 'd-none'}"
+                     th:if="${taskStatus.toString() == 'OPEN' or taskStatus.toString() == 'REJECTED' or null == taskStatus}">
+                    <div class="col-12">
+                        <label for="file" class="form-label">
+                            Hier kannst du eine beliebige Datei hochladen, wenn dies in der Aufgabenstellung gefordert
+                            ist.
+                            Achte darauf, dass die Datei nicht größer als <span class="text-danger">25MB</span> ist.
+                        </label>
+                        <div class="d-block">
+                            <input type="file" name="file" id="file" class="form-control-file"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div th:classappend="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED' ? 'd-flex flex-row justify-content-between' : ''}">
+                            <div th:classappend="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED' ? 'd-flex flex-column justify-content-center' : ''}">
+                                <button type="submit" name="save" class="btn btn-success text-white mb-4 mb-md-0"
+                                        th:if="${taskStatus.toString() == 'OPEN' || taskStatus.toString() == 'REJECTED'}">
+                                    <i class="bi bi-check"></i>
+                                    Speichern
+                                </button>
+                                <button type="submit" name="save" class="btn btn-danger ms-2 mb-4 mb-md-0"
+                                        th:if="${taskStatus.toString() == 'REJECTED'}">
+                                    <i class="bi bi-trash"></i>
+                                    Löschen
+                                </button>
+                                <button type="submit" name="transmit"
+                                        class="btn btn-primary text-white float-end mb-4 mb-md-0"
+                                        th:if="${taskStatus.toString() == 'OPEN' || taskStatus.toString() == 'REJECTED'}">
+                                    <i class="bi bi-envelope"></i>
+                                    An Lehrkraft senden
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div th:if="${taskStatus.toString() != 'OPEN'}"
+             class="tab-pane fade mx-4 py-4 px-3 border border-top-0 rounded-bottom"
+             th:classappend="${null == savedStatus && (taskStatus.toString() == 'DONE' || taskStatus.toString() == 'REJECTED' || taskStatus.toString() == 'TRANSMITTED') ? 'show active' : ''}"
+             id="comment-description"
+             role="tabpanel" aria-labelledby="comment-description-tab">
+            <div th:if="${taskStatus.toString() == 'TRANSMITTED'}" class="d-flex flew-row">
+                <div class="medium-icon text-warning me-3">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="text-warning">abgegeben</div>
+                    <div>Deine Lehrkraft überprüft deine Aufgabe zur Zeit noch.</div>
+                </div>
+            </div>
+            <div th:if="${taskStatus.toString() == 'DONE'}" class="d-flex flew-row">
+                <div class="medium-icon text-success me-3">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="text-success">erledigt</div>
+                    <div th:if="${null != userTask.doneAt}">
+                        Deine Lehrkraft hat die Aufgabe am
+                        <span class="d-inline text-success">[[ ${#temporals.format(userTask.doneAt, 'dd.MM.yyyy HH:mm')} ]] Uhr</span>
+                        als erledigt markiert. Sie hat dir dazu folgende Hinweise hinterlassen:
+                        <figure class="mt-4 me-4">
+                            <blockquote class="blockquote">
+                                <p th:unless="${#strings.isEmpty(userTask.comment)}">
+                                    [(${#strings.replace(#strings.escapeXml(userTask.comment),'&#10;','&lt;br&gt;')})]</p>
+                                <p th:if="${#strings.isEmpty(userTask.comment)}">Es wurde kein Kommentar
+                                    hinterlegt</p>
+                            </blockquote>
+                            <figcaption class="blockquote-footer">
+                                [[ ${userTask.teacher.fullname} ]]
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:if="${taskStatus.toString() == 'REJECTED'}">
                 <div class="col-12">
                     <div class="d-flex flex-row justify-content-between">
                         <div class="d-flex flew-row">
@@ -156,71 +293,14 @@
                     Aufgabe auch löschen.
                 </div>
             </div>
-
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div th:classappend="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED' ? 'd-flex flex-row justify-content-between' : ''}">
-                        <div th:if="${taskStatus.toString() == 'TRANSMITTED'}" class="d-flex flew-row">
-                            <div class="medium-icon text-warning me-3">
-                                <i class="bi bi-clock-history"></i>
-                            </div>
-                            <div class="d-flex flex-column justify-content-center">
-                                <div class="text-warning">abgegeben</div>
-                                <div>Deine Lehrkraft überprüft deine Aufgabe zur Zeit noch.</div>
-                            </div>
-                        </div>
-                        <div th:if="${taskStatus.toString() == 'DONE'}" class="d-flex flew-row">
-                            <div class="medium-icon text-success me-3">
-                                <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="d-flex flex-column justify-content-center">
-                                <div class="text-success">erledigt</div>
-                                <div th:if="${null != userTask.doneAt}">
-                                    Deine Lehrkraft hat die Aufgabe am
-                                    <span class="d-inline text-success">[[ ${#temporals.format(userTask.doneAt, 'dd.MM.yyyy HH:mm')} ]] Uhr</span>
-                                    als erledigt markiert. Sie hat dir dazu folgende Hinweise hinterlassen:
-                                    <figure class="mt-4 me-4">
-                                        <blockquote class="blockquote">
-                                            <p th:unless="${#strings.isEmpty(userTask.comment)}">
-                                                [(${#strings.replace(#strings.escapeXml(userTask.comment),'&#10;','&lt;br&gt;')})]</p>
-                                            <p th:if="${#strings.isEmpty(userTask.comment)}">Es wurde kein Kommentar
-                                                hinterlegt</p>
-                                        </blockquote>
-                                        <figcaption class="blockquote-footer">
-                                            [[ ${userTask.teacher.fullname} ]]
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                        <div th:classappend="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED' ? 'd-flex flex-column justify-content-center' : ''}">
-                            <button type="submit" name="save" class="btn btn-success text-white mb-4 mb-md-0"
-                                    th:if="${taskStatus.toString() == 'OPEN' || taskStatus.toString() == 'REJECTED'}">
-                                <i class="bi bi-check"></i>
-                                Speichern
-                            </button>
-                            <button type="submit" name="save" class="btn btn-danger ms-2 mb-4 mb-md-0"
-                                    th:if="${taskStatus.toString() == 'REJECTED'}">
-                                <i class="bi bi-trash"></i>
-                                Löschen
-                            </button>
-                            <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}"
-                               class="btn btn-secondary ms-2 mb-4 mb-md-0 text-nowrap"
-                               th:classappend="${taskStatus.toString() != 'OPEN' && taskStatus.toString() != 'REJECTED' ? 'float-end' : ''}">
-                                <i class="bi bi-list"></i>
-                                Zurück zur Aufgabenliste
-                            </a>
-                            <button type="submit" name="transmit"
-                                    class="btn btn-primary text-white float-end mb-4 mb-md-0"
-                                    th:if="${taskStatus.toString() == 'OPEN' || taskStatus.toString() == 'REJECTED'}">
-                                <i class="bi bi-envelope"></i>
-                                An Lehrkraft senden
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
+    </div>
+    <div class="m-4 d-flex flex-row justify-content-end">
+        <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}"
+           class="btn btn-sm btn-outline-secondary text-nowrap">
+            <i class="bi bi-list me-1"></i>
+            Zurück zur Aufgabenliste
+        </a>
     </div>
 </div>
 </body>

@@ -59,7 +59,7 @@ public class PublicCourseController extends AbstractController {
                 userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.COURSES);
 
         if (!courseOptional.isPresent() || (!isCourseEditor && !courseOptional.get()
-                                                          .getIsActive())) {
+                                                                              .getIsActive())) {
             return "redirect:/home";
         }
 
@@ -94,7 +94,7 @@ public class PublicCourseController extends AbstractController {
                 userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.COURSES);
 
         if (!courseOptional.isPresent() || (!isModuleEditor && !courseOptional.get()
-                                                          .getIsActive())) {
+                                                                              .getIsActive())) {
             return "redirect:/home";
         }
 
@@ -103,7 +103,7 @@ public class PublicCourseController extends AbstractController {
         Optional<Module> moduleOptional = moduleService.findById(moduleId);
 
         if (!moduleOptional.isPresent() || (!isModuleEditor && !moduleOptional.get()
-                                                          .getIsActive())) {
+                                                                              .getIsActive())) {
             if (null != moduleOptional.get()
                                       .getParent()) {
                 return "redirect:/public/course/" + course.getId() + "/module/" + moduleOptional.get()
@@ -209,6 +209,8 @@ public class PublicCourseController extends AbstractController {
         if (!module.getIsActive()) {
             return "redirect:/home";
         }
+
+        model.addAttribute("savedStatus", true);
 
         Optional<UserTask> userTaskOptional = userTaskService.findByTask(taskId);
         UserTask userTask = userTaskOptional.isPresent() ? userTaskOptional.get() : new UserTask();
@@ -321,6 +323,8 @@ public class PublicCourseController extends AbstractController {
         model.addAttribute("course", course);
         model.addAttribute("module", module);
         model.addAttribute("task", task);
+        model.addAttribute("nextTask", taskService.findNextTask(module.getId(), task.getOrderPosition()));
+        model.addAttribute("previousTask", taskService.findPreviousTask(module.getId(), task.getOrderPosition()));
 
         model.addAttribute("subjects", subjectService.findAllActive());
         model.addAttribute("teachers", userService.findAllActiveTeachers());
