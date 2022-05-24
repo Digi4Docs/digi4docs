@@ -1,9 +1,11 @@
 package de.digi4docs.service;
 
+import de.digi4docs.model.Course;
 import de.digi4docs.model.Module;
 import de.digi4docs.model.User;
 import de.digi4docs.repository.ModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -33,6 +35,38 @@ public class ModuleService {
 
     public List<Module> findAllByParentModule(Integer moduleId) {
         return moduleRepository.findAllByParentIdOrderByOrderPositionAscTitleAsc(moduleId);
+    }
+
+    @Nullable
+    public Module findNextModule(Integer moduleId, Integer currentTaskPosition) {
+        Optional<Module> module =
+                moduleRepository.findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(moduleId,
+                        currentTaskPosition);
+        return module.orElse(null);
+    }
+
+    @Nullable
+    public Module findNextModule(Course course, Integer currentTaskPosition) {
+        Optional<Module> module =
+                moduleRepository.findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(course.getId(),
+                        currentTaskPosition);
+        return module.orElse(null);
+    }
+
+    @Nullable
+    public Module findPreviousModule(Integer moduleId, Integer currentTaskPosition) {
+        Optional<Module> module =
+                moduleRepository.findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(moduleId,
+                        currentTaskPosition);
+        return module.orElse(null);
+    }
+
+    @Nullable
+    public Module findPreviousModule(Course course, Integer currentTaskPosition) {
+        Optional<Module> module =
+                moduleRepository.findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(course.getId(),
+                        currentTaskPosition);
+        return module.orElse(null);
     }
 
     public Integer findNextOrder(Module module) {

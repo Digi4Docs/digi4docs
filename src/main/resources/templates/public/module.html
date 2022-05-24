@@ -9,7 +9,7 @@
 </head>
 <body>
 <div layout:fragment="title-image">
-    <div th:replace="public/title-image(title=${course.title}, icon=${course.icon}, progressPercentage=${generalModuleTaskTotal > 0 and personalModuleTaskTotal > 0 ? (((personalModuleTaskTotal + 0.0) / generalModuleTaskTotal) * 100) : 0})"></div>
+    <div th:replace="public/title-image(title=${course.title}, subTitle=${module.title}, icon=${course.icon}, progressPercentage=${generalModuleTaskTotal > 0 and personalModuleTaskTotal > 0 ? (((personalModuleTaskTotal + 0.0) / generalModuleTaskTotal) * 100) : 0})"></div>
 </div>
 <div layout:fragment="content">
     <div th:unless="${module.isActive}" class="row mb-3">
@@ -17,25 +17,53 @@
             <div class="alert alert-danger">Achtung: Das angezeigte Modul wurde noch nicht aktiviert.</div>
         </div>
     </div>
-    <div th:if="${!module.tasks.empty or !module.modules.empty}" th:classappend="${module.modules.empty and module.modules.empty ? '' : 'mb-4 pb-4 border-bottom'}">
-        <div class="row mb-4">
-            <div class="col-12 text-center" th:if="${module.modules.empty}">
+    <div th:if="${!module.tasks.empty or !module.modules.empty}"
+         th:classappend="${module.modules.empty and module.modules.empty ? '' : 'mb-4 pb-4 border-bottom'}">
+        <div class="m-4 d-flex flex-row justify-content-between">
+            <div>
+                <a th:if="${null != previousModule}"
+                   th:href="@{'/public/course/' + ${course.id} + '/module/' + ${previousModule.id}}"
+                   class="btn btn-sm btn-outline-secondary text-nowrap">
+                    <i class="bi bi-arrow-left-short me-1"></i>
+                    Vorheriges Modul
+                </a>
+                <button type="button" th:unless="${null != previousModule}"
+                        class="btn btn-sm btn-light border text-nowrap disabled" disabled>
+                    <i class="bi bi-arrow-left-short me-1"></i>
+                    Vorheriges Modul
+                </button>
+            </div>
+
+            <div class="text-center" th:if="${module.modules.empty}">
                 Um dieses Modul abzuschließen, musst du
                 <span class="text-danger d-inline">[[ ${ #lists.size(module.tasks) == 1 ? '1 Aufgabe' : #lists.size(module.tasks) + ' Aufgaben' } ]]</span>
                 beenden. Du hast bisher <span class="text-success d-inline">[[ ${ userTasksDone == 1 ? '1 Aufgabe' : userTasksDone + ' Aufgaben' } ]]</span>
                 geschafft.
             </div>
-            <div class="col-12 text-center" th:if="${module.tasks.empty}">
+            <div class="text-center" th:if="${module.tasks.empty}">
                 Um dieses Modul abzuschließen, musst du
                 <span class="text-danger d-inline">[[ ${ #lists.size(module.modules) == 1 ? '1 Modul' : #lists.size(module.modules) + ' Module' } ]]</span>
                 beenden.
             </div>
-            <div class="col-12 text-center" th:if="${!module.tasks.empty and !module.modules.empty}">
+            <div class="text-center" th:if="${!module.tasks.empty and !module.modules.empty}">
                 Um dieses Modul abzuschließen, musst du
                 <span class="text-danger d-inline">[[ ${ #lists.size(module.tasks) == 1 ? '1 Aufgabe' : #lists.size(module.tasks) + ' Aufgaben' } ]]</span>
                 und <span class="text-danger d-inline">[[ ${ #lists.size(module.modules) == 1 ? '1 weiteres Modul' : #lists.size(module.modules) + ' weitere Module' } ]]</span>
                 beenden. Du hast bisher <span class="text-success d-inline">[[ ${ userTasksDone == 1 ? '1 Aufgabe' : userTasksDone + ' Aufgaben' } ]]</span>
                 geschafft.
+            </div>
+            <div>
+                <a th:if="${null != nextModule}"
+                   th:href="@{'/public/course/' + ${course.id} + '/module/' + ${nextModule.id}}"
+                   class="btn btn-sm btn-outline-secondary text-nowrap">
+                    <i class="bi bi-arrow-right-short me-1"></i>
+                    Nächstes Modul
+                </a>
+                <button type="button" th:unless="${null != nextModule}"
+                        class="btn btn-sm btn-light border text-nowrap disabled" disabled>
+                    <i class="bi bi-arrow-right-short me-1"></i>
+                    Nächstes Modul
+                </button>
             </div>
         </div>
 

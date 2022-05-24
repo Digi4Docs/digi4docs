@@ -118,6 +118,17 @@ public class PublicCourseController extends AbstractController {
         model.addAttribute("course", course);
         model.addAttribute("module", module);
 
+        Module nextModule = null != module.getParent() ? moduleService.findNextModule(module.getParent()
+                                                                                            .getId(),
+                module.getOrderPosition())
+                : moduleService.findNextModule(course, module.getOrderPosition());
+        model.addAttribute("nextModule", nextModule);
+        Module previousModule = null != module.getParent() ? moduleService.findPreviousModule(module.getParent()
+                                                                                                    .getId(),
+                module.getOrderPosition())
+                : moduleService.findPreviousModule(course, module.getOrderPosition());
+        model.addAttribute("previousModule", previousModule);
+
         List<Module> modulesToCount = new ArrayList<>();
         modulesToCount.add(module);
         if (null != module.getModules()) {
