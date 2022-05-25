@@ -30,4 +30,7 @@ public class ProfileForm {
 
     @Min(value = 1, message = "Der Wert für Klasse muss mindestens 1 sein.")
     protected Integer classNumber;
+
+    @Size(min = 0, max = 1, message = "Der Klassenbuchstabe darf maximal 1 Zeichen lang sein.")
+    protected String classIdentifier;
 }

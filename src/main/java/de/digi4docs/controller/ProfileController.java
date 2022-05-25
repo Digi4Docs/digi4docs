@@ -45,6 +45,7 @@ public class ProfileController extends AbstractController {
         user.setLastname(profileForm.getLastname());
         user.setEmail(profileForm.getEmail());
         user.setClassNumber(profileForm.getClassNumber());
+        user.setClassIdentifier(profileForm.getClassIdentifier());
 
         try {
             userService.save(user, false);
@@ -92,6 +93,7 @@ public class ProfileController extends AbstractController {
             profileForm.setLastname(user.getLastname());
             profileForm.setEmail(user.getEmail());
             profileForm.setClassNumber(user.getClassNumber());
+            profileForm.setClassIdentifier(user.getClassIdentifier());
         }
 
         model.addAttribute("user", user);

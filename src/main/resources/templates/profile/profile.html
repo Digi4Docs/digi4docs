@@ -81,7 +81,12 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Klasse (Buchstabe)</label>
-                    <input type="text" class="form-control" name="classIdentifier" th:value="${user.classIdentifier}" readonly/>
+                    <input type="text" th:field="*{classIdentifier}" class="form-control"
+                           th:classappend="${#fields.hasErrors('classIdentifier') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="classIdentifier"
+                           name="classIdentifier"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('classIdentifier')}"
+                         th:errors="*{classIdentifier}"></div>
                 </div>
             </div>
         </fieldset>
