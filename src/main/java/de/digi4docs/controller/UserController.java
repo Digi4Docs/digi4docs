@@ -13,6 +13,8 @@ import de.digi4docs.service.UserTaskService;
 import de.digi4docs.util.Importer;
 import de.digi4docs.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -87,6 +89,12 @@ public class UserController extends AbstractController {
         showBreadcrumbs(model);
 
         return "user/import";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/users/import-template")
+    public ResponseEntity<InputStreamResource> importTemplate() {
+        return importer.createTemplateFile();
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USERS')")

@@ -90,7 +90,7 @@
                 <div>
                     <span class="fw-bold">Hinweise: </span>
                     Um Benutzer zu importieren, lade bitte eine CSV-Datei mit den entsprechenden Benutzern hoch. Beachte
-                    dabei, dass die Datei keine Überschriftenzeile enthält. Die CSV-Datei muss die Benutzerinformationen
+                    dabei, dass die erste Zeile der Datei die Überschriften enthält. Die CSV-Datei muss die Benutzerinformationen
                     durch Semikolons trennen. Die Benutzerinformationen sind in der folgenden Reihenfolge anzugeben:
                     <table class="table table-bordered my-2">
                         <tr>
@@ -106,6 +106,10 @@
                     Existiert bereits ein Nutzer mit der angegebenen E-Mail im System, so wird dieser nicht erneut
                     importiert.
                 </div>
+                <a th:href="@{/users/import-template}" class="btn btn-secondary mt-4">
+                    <i class="bi bi-table"></i>
+                    Vorlage herunterladen
+                </a>
             </div>
         </div>
         <div class="row mt-4">

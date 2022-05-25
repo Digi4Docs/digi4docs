@@ -4,12 +4,22 @@ import de.digi4docs.model.Role;
 import de.digi4docs.model.User;
 import de.digi4docs.model.UserRole;
 import de.digi4docs.service.UserService;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Component
@@ -38,6 +48,11 @@ public class Importer {
     public List<List<String>> readCsv(MultipartFile file) throws IOException {
         List<List<String>> records = new ArrayList<>();
         try (Scanner scanner = new Scanner(file.getInputStream())) {
+            // skip title columns
+            if (scanner.hasNextLine()) {
+                scanner.nextLine();
+            }
+
             while (scanner.hasNextLine()) {
                 records.add(getRecordFromLine(scanner.nextLine()));
             }
@@ -95,5 +110,40 @@ public class Importer {
         }
 
         return errors;
+    }
+
+    public ResponseEntity<InputStreamResource> createTemplateFile()
+    {
+        String filename = "Import-Vorlage.csv";
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        CSVPrinter csvPrinter = null;
+        try {
+            csvPrinter = new CSVPrinter(new PrintWriter(out, false, StandardCharsets.ISO_8859_1),
+                    CSVFormat.EXCEL.builder()
+                                   .setDelimiter(";")
+                                   .build());
+
+            List<List<String>> rows = new ArrayList<>();
+            List<String> headerRow = new ArrayList<>();
+            headerRow.add("Vorname");
+            headerRow.add("Nachname");
+            headerRow.add("E-Mail");
+            headerRow.add("Jahrgang");
+            headerRow.add("Klasse (Zahl)");
+            headerRow.add("Klasse (Buchstabe)");
+            rows.add(headerRow);
+
+            csvPrinter.printRecords(rows);
+            csvPrinter.flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Export could not be created", e);
+        }
+
+        InputStreamResource file = new InputStreamResource(new ByteArrayInputStream(out.toByteArray()));
+        return ResponseEntity.ok()
+                             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                             .contentType(MediaType.parseMediaType("application/csv"))
+                             .body(file);
     }
 }
