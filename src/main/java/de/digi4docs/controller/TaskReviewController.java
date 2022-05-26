@@ -220,7 +220,9 @@ public class TaskReviewController extends AbstractController {
 
     private String saveTask(@PathVariable int id, @Valid TaskReviewForm taskReviewForm, BindingResult bindingResult,
             Model model, int formAction, boolean onSuccessGoToList) {
+
         if (userService.hasCurrentUserRole(Role.ADMIN) && bindingResult.hasErrors()) {
+            model.addAttribute("showEditTab", true);
             return task(id, taskReviewForm, model);
         }
 
@@ -272,6 +274,8 @@ public class TaskReviewController extends AbstractController {
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
         }
+
+        model.addAttribute("showEditTab", true);
 
         return successful;
     }

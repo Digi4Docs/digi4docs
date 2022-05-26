@@ -19,7 +19,7 @@
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="task-description-tab" data-bs-toggle="tab"
+            <button class="nav-link" th:classappend="${null == showEditTab ? 'active' : ''}" id="task-description-tab" data-bs-toggle="tab"
                     data-bs-target="#task-description" type="button"
                     role="tab" aria-controls="task-description" aria-selected="true">
                 <i class="bi bi-info-lg me-1"></i>
@@ -27,7 +27,7 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="review-task-tab" data-bs-toggle="tab" data-bs-target="#review-task"
+            <button class="nav-link" th:classappend="${null != showEditTab ? 'active' : ''}" id="review-task-tab" data-bs-toggle="tab" data-bs-target="#review-task"
                     type="button"
                     role="tab" aria-controls="review-task" aria-selected="false">
                 <i class="bi bi-star me-1"></i>
@@ -37,7 +37,7 @@
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane active py-4 px-3 border border-top-0 rounded-bottom" id="task-description" role="tabpanel"
+        <div class="tab-pane py-4 px-3 border border-top-0 rounded-bottom" th:classappend="${null == showEditTab ? 'active' : ''}" id="task-description" role="tabpanel"
              aria-labelledby="task-description-tab">
 
             <div class="d-flex flew-row justify-content-between">
@@ -86,7 +86,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane py-4 px-3 border border-top-0 rounded-bottom" id="review-task" role="tabpanel"
+        <div class="tab-pane py-4 px-3 border border-top-0 rounded-bottom" th:classappend="${null != showEditTab ? 'active' : ''}" id="review-task" role="tabpanel"
              aria-labelledby="review-task-tab">
             <form th:action="@{'/tasks/task/' + ${userTask.id}}"
                   method="post" th:object="${taskReviewForm}" novalidate>
@@ -106,9 +106,9 @@
                             <select th:field="*{subjectId}"
                                     th:classappend="${#fields.hasErrors('subjectId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                                     class="form-control" name="subjectId" id="subjectId"
-                                    th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
+                                    th:readonly="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
                                 <option value="">Bitte wähle ein Fach aus</option>
-                                <option th:each="subject: ${subjects}" th:value="${subject.id}">[[ ${subject.name} ]]
+                                <option th:each="subject: ${subjects}" th:value="${subject.id}" th:disabled="${(userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins) && subject.id != userTask.subject.id}">[[ ${subject.name} ]]
                                 </option>
                             </select>
                             <div class="invalid-feedback" th:if="${#fields.hasErrors('subjectId')}"
@@ -119,10 +119,10 @@
                             <select th:field="*{teacherId}"
                                     th:classappend="${#fields.hasErrors('teacherId') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                                     class="form-control" name="teacherId" id="teacherId"
-                                    th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
+                                    th:readonly="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
                                 <option value="">Bitte wähle eine Lehrkraft aus</option>
                                 <option th:each="teacher: ${teachers}" th:value="${teacher.id}"
-                                        th:data-subjects="${teacher.subjects}"
+                                        th:data-subjects="${teacher.subjects}"  th:disabled="${(userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins) && teacher.id != userTask.teacher.id}"
                                 >[[ ${teacher.fullname} ]]
                                 </option>
                             </select>
@@ -134,7 +134,7 @@
                             <input type="date" th:field="*{date}" class="form-control"
                                    th:classappend="${#fields.hasErrors('date') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                                    id="date" name="date"
-                                   th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
+                                   th:readonly="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
                             <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}"
                                  th:errors="*{date}"></div>
                         </div>
@@ -145,7 +145,7 @@
                             <textarea th:field="*{solution}" class="form-control" rows="10"
                                       th:classappend="${#fields.hasErrors('solution') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                                       id="solution" name="solution"
-                                      th:disabled="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
+                                      th:readonly="${userTask.status.toString() != 'TRANSMITTED' || !allowedForAdmins}">
                     </textarea>
                             <div class="invalid-feedback" th:if="${#fields.hasErrors('solution')}"
                                  th:errors="*{solution}"></div>
