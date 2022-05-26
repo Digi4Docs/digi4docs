@@ -176,6 +176,22 @@
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('comment')}"
                              th:errors="*{comment}"></div>
                     </div>
+                    <div class="col-12 col-md-6 col-lg-4 mt-4">
+                        <label for="textTemplates" class="form-label">Text aus Vorlage einfügen:</label>
+                        <select class="form-control" id="textTemplates">
+                            <option></option>
+                            <optgroup label="Vorlagen">
+                                <option th:each="textTemplate: ${textTemplates}" th:data-text="${textTemplate.text}">
+                                    [[${textTemplate.title}]]
+                                </option>
+                                <option th:if="${textTemplates.empty}">keine Vorlagen vorhanden - lege eine Vorlage über das Menü Aufgabe: Meine Text-Vorlagen an</option>
+                            </optgroup>
+                            <optgroup label="--------------------------------------">
+                                <option class="fst-italic" data-text="">Bemerkung löschen</option>
+                            </optgroup>
+                        </select>
+                        <div class="small text-muted"><a th:href="@{/templates}">Vorlagen bearbeiten</a></div>
+                    </div>
                 </div>
                 <div class="row mt-4">
                     <div class="col-12">

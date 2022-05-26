@@ -65,6 +65,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private List<UserTask> userTasks;
 
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    private List<TextTemplate> textTemplates;
+
 
     public String getFullname() {
         return (null != lastname ? lastname : "") + ", " + (null != firstname ? firstname : "");

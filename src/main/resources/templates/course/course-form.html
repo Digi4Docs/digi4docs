@@ -19,7 +19,7 @@
 </div>
 <div class="row">
     <div class="col-12 mb-3">
-        <label for="title" class="form-label">Untertitel</label>
+        <label for="subTitle" class="form-label">Untertitel</label>
         <input type="text" maxlength="255" th:field="*{subTitle}" class="form-control"
                th:classappend="${#fields.hasErrors('subTitle') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                id="subTitle" name="subTitle"/>
@@ -28,7 +28,7 @@
 </div>
 <div class="row">
     <div class="col-12 mb-3">
-        <label for="title" class="form-label">Externe Bild-URL</label>
+        <label for="externalImage" class="form-label">Externe Bild-URL</label>
         <div th:replace="fragments/license-hint"></div>
         <input type="text" maxlength="255" th:field="*{externalImage}" class="form-control"
                th:classappend="${#fields.hasErrors('externalImage') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Text-Vorlage bearbeiten</title>
+</head>
+<body>
+<div layout:fragment="title" class="mb-3">Text-Vorlage bearbeiten</div>
+
+<div layout:fragment="content">
+    <form th:action="@{'/template/' + ${textTemplate.id}}" method="post" th:object="${textTemplateForm}"
+          class="mt-4 border-top pt-4"
+          novalidate>
+        <div th:insert="templates/template-form"></div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success text-white">
+                    <i class="bi bi-text-paragraph"></i>
+                    Vorlage speichern
+                </button>
+                <a th:href="@{/templates}" class="btn btn-secondary ms-2">
+                    <i class="bi bi-table"></i>
+                    Zurück zur Liste
+                </a>
+                <a th:href="@{'/template/confirm-delete/' + ${textTemplate.id}}" class="btn btn-danger ms-2">
+                    <i class="bi bi-trash-fill"></i>
+                    Löschen
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

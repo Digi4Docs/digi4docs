@@ -20,7 +20,7 @@
                 </li>
                 <li class="nav-item dropdown me-2" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TEACHER')">
                     <a class="nav-link dropdown-toggle"
-                       th:classappend="${#httpServletRequest.requestURI.startsWith('/task') ? 'active' : ''}"
+                       th:classappend="${#httpServletRequest.requestURI.startsWith('/task') or #httpServletRequest.requestURI.startsWith('/template') ? 'active' : ''}"
                        href="#" id="navbarTasks" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-clipboard-fill"></i> Aufgaben</a>
                     </a>
@@ -51,6 +51,13 @@
                                th:classappend="${#httpServletRequest.requestURI == '/tasks/done-all' ? 'active' : ''}">
                                 <i class="bi bi-clipboard-fill"></i>
                                 Alle erledigten Aufgaben
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/templates}"
+                               th:classappend="${#httpServletRequest.requestURI == '/template' ? 'active' : ''}">
+                                <i class="bi bi-text-paragraph"></i>
+                                Meine Text-Vorlagen
                             </a>
                         </li>
                     </ul>

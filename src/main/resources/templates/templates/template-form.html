@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<div class="alert alert-success mb-3" th:if="${success}">Daten erfolgreich gespeichert.</div>
+<div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>
+<div class="alert alert-danger mb-3" th:if="${#fields.hasErrors('global')}">
+    <span th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <label for="title" class="form-label">Titel</label>
+        <input type="text" maxlength="255" th:field="*{title}" class="form-control"
+               th:classappend="${#fields.hasErrors('title') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+               id="title" name="title"/>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <label for="text" class="form-label">Vorlage</label>
+        <textarea th:field="*{text}" class="form-control"
+                  th:classappend="${#fields.hasErrors('text') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                  id="text" name="text" rows="15" placeholder="Ergänze hier den Text für deine Vorlage."></textarea>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
+    </div>
+    <div class="d-block text-muted small">
+        Die Vorlagen-Texte stehen dir bei der Bearbeitung deiner Aufgaben zur Verfügung. Du kannst ihn nutzen, um den
+        Schülerinnen und Schülern schnelle Antworten auf ihre Aufgaben zu geben.
+    </div>
+</div>
+</body>

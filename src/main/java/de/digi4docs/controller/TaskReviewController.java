@@ -7,6 +7,7 @@ import de.digi4docs.model.TaskStatus;
 import de.digi4docs.model.User;
 import de.digi4docs.model.UserTask;
 import de.digi4docs.service.SubjectService;
+import de.digi4docs.service.TextTemplateService;
 import de.digi4docs.service.UserService;
 import de.digi4docs.service.UserTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class TaskReviewController extends AbstractController {
 
     @Autowired
     private UserTaskService userTaskService;
+
+    @Autowired
+    private TextTemplateService textTemplateService;
 
     @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     @GetMapping("/tasks")
@@ -203,6 +207,8 @@ public class TaskReviewController extends AbstractController {
         model.addAttribute("subjects", subjectService.findAllActive());
         model.addAttribute("teachers", userService.findAllActiveTeachers());
         model.addAttribute("allowedForAdmins", isAdmin);
+
+        model.addAttribute("textTemplates", textTemplateService.findAll());
 
         return "taskReview/task";
     }
