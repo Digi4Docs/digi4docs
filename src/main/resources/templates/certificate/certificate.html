@@ -16,25 +16,70 @@
     <div th:insert="fragments/breadcrumbs" class="d-print-none"></div>
 </div>
 <div class="bg-light web-certificate d-print-p-none certificate">
-    <div class="d-print-none w-100 text-end">
-        <a class="btn btn-outline-secondary me-2" th:href="@{'/home'}">
-            <i class="bi bi-house-heart-fill mr-1"></i>
-            Zur Startseite
-        </a>
-        <th:block sec:authorize="hasAuthority('ADMIN') or hasAuthority('USERS')">
-            <a class="btn btn-outline-secondary me-2" th:href="@{'/user/' + ${user.id}}">
-                <i class="bi bi-arrow-left-short mr-1"></i>
-                Zum Benutzer
+    <div class="d-print-none d-flex justify-content-between">
+        <div sec:authorize="hasAuthority('ADMIN') or hasAuthority('USERS')">
+            <div class="h6 mb-3">Druck-Option</div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cbTitleImage" checked>
+                <label class="form-check-label" for="cbTitleImage">
+                    Bild in Deckblatt anzeigen
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cbImages" checked>
+                <label class="form-check-label" for="cbImages">
+                    Bilder in Aufgaben anzeigen
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cbPageBreaks" checked>
+                <label class="form-check-label" for="cbPageBreaks">
+                    Seitenumbrüche zwischen Hauptmodulen
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cbFirstPageBreak" checked>
+                <label class="form-check-label" for="cbFirstPageBreak">
+                    Seitenumbruch nach der ersten Seite
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cbLastPageBreak" checked>
+                <label class="form-check-label" for="cbLastPageBreak">
+                    Seitenumbruch vor der letzten Seite
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cbNoLastPage">
+                <label class="form-check-label" for="cbNoLastPage">
+                    letzte Seite ausblenden
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cbExcludeOpen">
+                <label class="form-check-label" for="cbExcludeOpen">
+                    ausschließlich abgeschlossene Aufgaben einbinden
+                </label>
+            </div>
+            <div class="my-3">
+                <button type="button" class="btn btn-primary" th:onclick="PublicScripts.print()">
+                    <i class="bi bi-printer-fill"></i>
+                    Drucken
+                </button>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="btn btn-outline-secondary me-2 mb-2 mb-md-0" th:href="@{'/home'}">
+                <i class="bi bi-house-heart-fill mr-1"></i>
+                Zur Startseite
             </a>
-            <button type="button" class="btn btn-primary me-2" th:onclick="PublicScripts.printWithImages()">
-                <i class="bi bi-printer-fill"></i>
-                Drucken
-            </button>
-            <button type="button" class="btn btn-secondary" th:onclick="PublicScripts.printWithoutImages()">
-                <i class="bi bi-printer-fill"></i>
-                Drucken (ohne Bilder)
-            </button>
-        </th:block>
+            <th:block sec:authorize="hasAuthority('ADMIN') or hasAuthority('USERS')">
+                <a class="btn btn-outline-secondary me-2" th:href="@{'/user/' + ${user.id}}">
+                    <i class="bi bi-arrow-left-short mr-1"></i>
+                    Zum Benutzer
+                </a>
+            </th:block>
+        </div>
     </div>
     <div class="text-center d-block pt-5">
         <h1 class="text-uppercase">[[${course.title}]]</h1>
@@ -42,7 +87,7 @@
         <h4 class="text-uppercase" th:if="${!#strings.isEmpty(course.subTitle)}">[[${course.subTitle}]]</h4>
     </div>
     <hr class="mb-3"/>
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between px-4">
         <div>
             <span class="fw-bold">Name, Vorname: </span>
             [[${user.fullname}]]
@@ -56,11 +101,11 @@
     <hr class="mb-3" th:if="${!#strings.isEmpty(course.description)}"/>
     <div class="mb-5" th:if="${!#strings.isEmpty(course.description)}">[(${course.description})]</div>
     <hr class="mb-5"/>
-    <img th:if="${#strings.isEmpty(course.externalImage)}" th:src="@{~/img/main-title.jpg}" class="w-100"/>
-    <img th:unless="${#strings.isEmpty(course.externalImage)}" th:src="${course.externalImage}" class="w-100"/>
+    <img th:if="${#strings.isEmpty(course.externalImage)}" th:src="@{~/img/main-title.jpg}" class="w-100 print-title-image"/>
+    <img th:unless="${#strings.isEmpty(course.externalImage)}" th:src="${course.externalImage}" class="w-100 print-title-image"/>
     <div th:if="${#lists.size(course.modules) > 0}"
          th:replace="certificate/modules(modules=${course.modules},outerloop=true)"></div>
-    <div class="d-none d-print-block w-100 me-4 page-break-before">
+    <div class="d-none d-print-block w-100 me-4 print-last-page-break print-last-page">
         <div class="mt-4">&nbsp;</div>
         [(${certificateFooter})]
         <div class="mt-4 text-center">

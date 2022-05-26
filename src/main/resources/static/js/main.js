@@ -27,48 +27,50 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     // setup data tables
-    $('table.datatables tfoot th').each(function () {
-        var title = $(this).text();
-        if ("" !== title) {
-            $(this).html('<input type="text" class="form-control" placeholder="Durchsuchen" />');
-        }
-    });
+    if ("undefined" != typeof window.jQuery) {
+        $('table.datatables tfoot th').each(function () {
+            var title = $(this).text();
+            if ("" !== title) {
+                $(this).html('<input type="text" class="form-control" placeholder="Durchsuchen" />');
+            }
+        });
 
-    $('table.datatables').DataTable({
-        "dom": "<'row'<'col-sm-12 mb-2'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
-        //stateSave: true,
-        language: {
-            paginate: {
-                first: "Erste",
-                last: "Letzte",
-                previous: "Vorherige",
-                next: "Nächste"
+        $('table.datatables').DataTable({
+            "dom": "<'row'<'col-sm-12 mb-2'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
+            //stateSave: true,
+            language: {
+                paginate: {
+                    first: "Erste",
+                    last: "Letzte",
+                    previous: "Vorherige",
+                    next: "Nächste"
+                },
+                "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+                "zeroRecords": "Keine Einträge gefunden",
+                "info": "Seite _PAGE_ von _PAGES_",
+                "infoEmpty": "Keine Einträge gefunden",
+                "infoFiltered": "(gefiltert von _MAX_ total Gesamteinträgen)"
             },
-            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
-            "zeroRecords": "Keine Einträge gefunden",
-            "info": "Seite _PAGE_ von _PAGES_",
-            "infoEmpty": "Keine Einträge gefunden",
-            "infoFiltered": "(gefiltert von _MAX_ total Gesamteinträgen)"
-        },
-        initComplete: function () {
-            var tableRow = $($(this).find('tfoot tr'));
-            $($(this).find('thead')).append(tableRow);
+            initComplete: function () {
+                var tableRow = $($(this).find('tfoot tr'));
+                $($(this).find('thead')).append(tableRow);
 
-            // Apply the search
-            this.api().columns().every(function () {
-                var that = this;
+                // Apply the search
+                this.api().columns().every(function () {
+                    var that = this;
 
-                $('input', this.footer()).on('keyup change clear', function () {
-                    if (that.search() !== this.value) {
-                        that
-                            .search(this.value)
-                            .draw();
-                    }
+                    $('input', this.footer()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
                 });
-            });
-        }
-    });
+            }
+        });
+    }
 
     // ensure forms will not be resubmitted on page reload
     if (window.history.replaceState) {
@@ -88,10 +90,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js')
-            .then(function(registration) {
+            .then(function (registration) {
                 console.log('Successfully registration of service worker, scope is:', registration.scope);
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.log('Service worker registration failed, error:', error);
             });
     }

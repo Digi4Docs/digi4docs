@@ -86,11 +86,25 @@ public class CertificateController extends AbstractController {
 
         Map<Integer, UserTask> userTaskMap = userTaskService.findByTasks(taskIds, user)
                                                             .stream()
+                                                            .filter(userTask -> TaskStatus.DONE.equals(
+                                                                    userTask.getStatus()))
                                                             .collect(Collectors.toMap(userTask -> userTask.getTask()
                                                                                                           .getId(),
                                                                     userTask -> userTask));
         model.addAttribute("userTaskMap", userTaskMap);
 
+
+        List<Integer> emptyModules = new ArrayList<>();
+        courseModules.forEach(courseModule -> {
+            long numberOfDoneTasks = RecursiveHandler.getTasks(courseModule)
+                                                     .stream()
+                                                     .filter(task -> userTaskMap.containsKey(task.getId()))
+                                                     .count();
+            if (numberOfDoneTasks <= 0) {
+                emptyModules.add(courseModule.getId());
+            }
+        });
+        model.addAttribute("emptyModules", emptyModules);
 
         if (isCurrentUserPage) {
             getBreadcrumbs(true).put("/public/course/" + course.getId(), course.getTitle());

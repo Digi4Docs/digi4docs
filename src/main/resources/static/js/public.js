@@ -28,27 +28,51 @@ const PublicScripts = {
         }
     },
 
-    printWithoutImages: function () {
-        let elements = document.querySelectorAll('.certificate .print-on-demand');
-        for (const element of elements) {
-            if(!element.classList.contains("d-print-none")) {
-                element.classList.add("d-print-none");
-            }
-        }
-
+    print: function () {
+        this.setupEmptyTask();
+        this.setupPageBreaks();
+        this.setupTitleImage();
+        this.setupTaskImages();
+        this.setupLastPage();
         window.print();
     },
 
-    printWithImages: function () {
-        let elements = document.querySelectorAll('.certificate .print-on-demand');
+    setupEmptyTask: function () {
+        this.togglePrintClass('.print-empty-task', !document.getElementById('cbExcludeOpen').checked, 'd-print-none');
+    },
+
+
+    setupPageBreaks: function () {
+        this.togglePrintClass('.print-page-break', !document.getElementById('cbPageBreaks').checked, 'page-break-before');
+        this.togglePrintClass('.print-first-page-break', !document.getElementById('cbFirstPageBreak').checked, 'page-break-before');
+        this.togglePrintClass('.print-last-page-break', !document.getElementById('cbLastPageBreak').checked, 'page-break-before');
+    },
+
+    setupLastPage: function () {
+        this.togglePrintClass('.print-last-page', !document.getElementById('cbNoLastPage').checked, 'd-print-none');
+    },
+
+    setupTaskImages: function () {
+        this.togglePrintClass('.print-image', document.getElementById('cbImages').checked, 'd-print-none');
+    },
+
+    setupTitleImage: function () {
+        this.togglePrintClass('.print-title-image', document.getElementById('cbTitleImage').checked, 'd-print-none');
+    },
+
+    togglePrintClass(querySelector, enablePrint, cssClass) {
+        let elements = document.querySelectorAll('.certificate ' + querySelector);
         for (const element of elements) {
-            if(element.classList.contains("d-print-none")) {
-                element.classList.remove("d-print-none");
+            if (enablePrint) {
+                if (element.classList.contains(cssClass)) {
+                    element.classList.remove(cssClass);
+                }
+            } else {
+                if (!element.classList.contains(cssClass)) {
+                    element.classList.add(cssClass);
+                }
             }
         }
-
-        window.print();
-
     }
 };
 
