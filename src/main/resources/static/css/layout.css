@@ -54,6 +54,10 @@ legend {
   height: 6rem;
 }
 
+.certificate-icon {
+  font-size: 8rem;
+}
+
 .home-badge {
   color: var(--bs-gray-700);
   text-decoration: none;
@@ -62,6 +66,15 @@ legend {
 
 .home-badge:hover {
   color: var(--bs-gray-900);
+}
+
+.home-badge i {
+  padding-top: 0.45rem;
+}
+
+.certificate-badge-text,
+.home-badge-text {
+  top: calc(50% - 0.725em);
 }
 
 .home-column-height {

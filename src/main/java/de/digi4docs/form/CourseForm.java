@@ -23,6 +23,9 @@ public class CourseForm {
 
     protected String color;
 
+    @Size(max = 20, message = "Der Badge-Text darf maximal 20 Zeichen lang sein.")
+    protected String badgeText;
+
     protected String description;
 
     protected Boolean isActive;

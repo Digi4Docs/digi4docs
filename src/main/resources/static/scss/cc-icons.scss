@@ -1,0 +1,37 @@
+@font-face {
+    font-family: 'icomoon';
+    src:  url('../fonts/icomoon.eot?s2fuv2');
+    src:  url('../fonts/icomoon.eot?s2fuv2#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?s2fuv2') format('truetype'),
+    url('../fonts/icomoon.woff?s2fuv2') format('woff'),
+    url('../fonts/icomoon.svg?s2fuv2#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class*="ccicon-"] {
+    font-family: 'icomoon' !important;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+}
+
+.ccicon-cc-0:before {
+    content: "\e900";
+}
+.ccicon-cc-1:before {
+    content: "\e901";
+}
+.ccicon-cc-2:before {
+    content: "\e902";
+}
+.ccicon-cc-3:before {
+    content: "\e903";
+}
+.ccicon-cc-4:before {
+    content: "\e904";
+}

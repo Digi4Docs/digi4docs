@@ -49,7 +49,8 @@ public abstract class AbstractModuleController extends AbstractController {
         }
 
         model.addAttribute("module", module);
-        model.addAttribute("linkCourseId", RecursiveHandler.getCourse(module).getId());
+        model.addAttribute("linkCourseId", RecursiveHandler.getCourse(module)
+                                                           .getId());
 
         if (addCourseToModel) {
             model.addAttribute("course", module.getCourse());

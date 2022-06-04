@@ -46,7 +46,7 @@ public class HomeController {
             coursePersonTaskCount.keySet()
                                  .forEach(course -> {
                                      LinkedList<Module> courseModules = RecursiveHandler.getCourseModules(course);
-                                     List<Integer> taskIds = RecursiveHandler.getCourseTaskIds(courseModules);
+                                     List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(courseModules);
                                      int userTaskCount =
                                              Math.toIntExact(userTaskService.findByTasks(taskIds, currentUser)
                                                                             .stream()

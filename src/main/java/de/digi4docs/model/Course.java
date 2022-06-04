@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,6 +44,9 @@ public class Course {
 
     @Column(length = 9)
     private String color;
+
+    @Column(length = 20)
+    protected String badgeText;
 
     @Column(name = "is_active")
     private Boolean isActive;

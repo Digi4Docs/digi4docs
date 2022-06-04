@@ -138,6 +138,7 @@ public class CourseController extends AbstractController {
             courseForm.setDescription(course.getDescription());
             courseForm.setIcon(course.getIcon());
             courseForm.setColor(course.getColor());
+            courseForm.setBadgeText(course.getBadgeText());
             courseForm.setIsActive(course.getIsActive());
         }
 
@@ -157,6 +158,7 @@ public class CourseController extends AbstractController {
         course.setDescription(courseForm.getDescription());
         course.setIcon(courseForm.getIcon());
         course.setColor(courseForm.getColor());
+        course.setBadgeText(courseForm.getBadgeText());
         course.setIsActive(courseForm.getIsActive());
 
         return course;

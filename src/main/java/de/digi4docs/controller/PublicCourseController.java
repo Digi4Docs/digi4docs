@@ -5,6 +5,7 @@ import de.digi4docs.model.Module;
 import de.digi4docs.model.*;
 import de.digi4docs.service.*;
 import de.digi4docs.util.ProgressCountProvider;
+import de.digi4docs.util.RecursiveHandler;
 import de.digi4docs.util.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -113,6 +114,7 @@ public class PublicCourseController extends AbstractController {
 
         model.addAttribute("course", course);
         model.addAttribute("module", module);
+        model.addAttribute("moduleFinished", isModuleFinished(module));
 
         Module nextModule = null != module.getParent() ? moduleService.findNextModule(module.getParent()
                                                                                             .getId(),
@@ -266,7 +268,8 @@ public class PublicCourseController extends AbstractController {
                 boolean successfulFileInit = UploadUtils.addUploadData(userTask.getFile(), publicTaskForm.getFile());
                 if (!successfulFileInit) {
                     model.addAttribute("error",
-                            "Deine Datei kann nicht hochgeladen werden. Beachte, dass die Datei maximal 25MB groß sein" +
+                            "Deine Datei kann nicht hochgeladen werden. Beachte, dass die Datei maximal 25MB groß " +
+                                    "sein" +
                                     " darf.");
                     return showTaskPage(id, taskId, model, publicTaskForm, false);
                 }
@@ -427,5 +430,22 @@ public class PublicCourseController extends AbstractController {
         for (int i = keyList.size() - 1; i >= 0; i--) {
             getBreadcrumbs().put(keyList.get(i), breadcrumbsReversed.get(keyList.get(i)));
         }
+    }
+
+    protected boolean isModuleFinished(Module module) {
+        User currentUser = userService.findCurrentUser();
+        LinkedList<Module> modules = RecursiveHandler.getModules(module);
+        List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(modules);
+        if (0 == taskIds.size()) {
+            return false;
+        }
+
+        int userTaskCount =
+                Math.toIntExact(userTaskService.findByTasks(taskIds, currentUser)
+                                               .stream()
+                                               .filter(userTask -> TaskStatus.DONE.equals(
+                                                       userTask.getStatus()))
+                                               .count());
+        return userTaskCount == taskIds.size();
     }
 }

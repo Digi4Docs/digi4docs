@@ -149,3 +149,4 @@ Digi4Docs uses some freely available resources and libraries. Thanks for this go
   * Fontawesome: https://fontawesome.com/
   * Bootstrap Icons: https://icons.getbootstrap.com/
   * Google Font "Barrio": https://fonts.google.com/specimen/Barrio
+  * Icon font creation: https://icomoon.io/

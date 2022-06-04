@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // warning for unsaved changes in forms
     let unsaved = false;
-    const inputs = document.querySelectorAll("input:not([type='password']),select,textarea");
+    const inputs = document.querySelectorAll("form input:not([type='password']),form select,form textarea");
     for (const input of inputs) {
         input.addEventListener("change", () => {
             unsaved = true;
