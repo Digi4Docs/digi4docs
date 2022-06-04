@@ -7,10 +7,10 @@
             <div class="d-block text-muted small mb-2">Aufgabe [[ ${taskStat.count} ]]</div>
             <div class="d-block h6 h-2-5rem overflow-hidden"><span class="fw-normal fst-italic">Lernziel:</span> [[ ${task.title} ]]</div>
             <div class="d-flex flex-column flex-md-row" th:if="${null != userTasks.get(task.id)}">
-                <div class="me-5">Fach: <span class="fw-bold">[[${userTasks.get(task.id).subject.name}]]</span></div>
-                <div class="me-5">Lehrkraft: <span class="fw-bold">[[${userTasks.get(task.id).teacher.fullname}]]</span>
+                <div class="me-5">Fach: <span class="fw-bold" th:if="${null != userTasks.get(task.id).subject}">[[${userTasks.get(task.id).subject.name}]]</span></div>
+                <div class="me-5">Lehrkraft: <span class="fw-bold" th:if="${null != userTasks.get(task.id).teacher}">[[${userTasks.get(task.id).teacher.fullname}]]</span>
                 </div>
-                <div class="me-5">Datum: <span class="fw-bold">[[${#temporals.format(userTasks.get(task.id).date, 'dd.MM.yyyy')}]]</span>
+                <div class="me-5">Datum: <span class="fw-bold" th:if="${null != userTasks.get(task.id).date}">[[${#temporals.format(userTasks.get(task.id).date, 'dd.MM.yyyy')}]]</span>
                 </div>
             </div>
         </div>

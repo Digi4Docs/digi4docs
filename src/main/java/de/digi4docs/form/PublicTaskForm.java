@@ -2,6 +2,7 @@ package de.digi4docs.form;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -23,4 +24,6 @@ public class PublicTaskForm {
 
     @NotEmpty(message = "Bitte fülle die Informationen zur Lernaufgabe bzw. zum Projekt aus.")
     protected String solution;
+
+    protected MultipartFile file;
 }

@@ -118,6 +118,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
+    const submits = document.querySelectorAll("input[type='submit'], button[type='submit']");
+    for (const submit of submits) {
+        submit.addEventListener("click", () => {
+            unsaved = false;
+        })
+    }
+
     window.onbeforeunload = function () {
         if (unsaved) {
             return "Achtung: Du hast nicht alle Änderungen gespeichert. Wenn du die Seite verlässt, gehen diese möglicherweise verloren.";

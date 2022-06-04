@@ -61,7 +61,8 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" th:classappend="${null != savedStatus ? 'active' : ''}" id="solution-description-tab" data-bs-toggle="tab"
+            <button class="nav-link" th:classappend="${null != savedStatus ? 'active' : ''}"
+                    id="solution-description-tab" data-bs-toggle="tab"
                     data-bs-target="#solution-description" type="button" role="tab" aria-controls="solution-description"
                     aria-selected="false">
                 <i class="bi bi-lightbulb me-1"></i>
@@ -185,11 +186,11 @@
                     <div class="col-12">
                         <label for="file" class="form-label">
                             Hier kannst du eine beliebige Datei hochladen, wenn dies in der Aufgabenstellung gefordert
+                            ist. Achte darauf, dass die Datei nicht größer als <span class="text-danger">25MB</span>
                             ist.
-                            Achte darauf, dass die Datei nicht größer als <span class="text-danger">25MB</span> ist.
                         </label>
                         <div class="d-block">
-                            <input type="file" name="file" id="file" class="form-control-file"/>
+                            <input type="file" th:field="*{file}" name="file" id="file" class="form-control-file"/>
                         </div>
                     </div>
                 </div>
