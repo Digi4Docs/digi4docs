@@ -21,6 +21,8 @@ public class CourseForm {
 
     protected String icon;
 
+    protected String color;
+
     protected String description;
 
     protected Boolean isActive;

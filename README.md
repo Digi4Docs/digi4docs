@@ -142,6 +142,7 @@ Digi4Docs uses some freely available resources and libraries. Thanks for this go
   * DataTables (SpryMedia Ltd.) -  https://datatables.net/
 * WYSIWYG editor: TinyMCE - https://www.tiny.cloud/
 * Icon picker: AppoloDev - https://github.com/AppoloDev/icon-picker
+* Color picker: Sphinxxxx - https://github.com/Sphinxxxx/vanilla-picker
 * Circular progress bar: tomik23 - https://github.com/tomik23/circular-progress-bar
 * Favicon generator: https://realfavicongenerator.net/
 * Fonts:

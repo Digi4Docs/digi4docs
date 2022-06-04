@@ -137,6 +137,7 @@ public class CourseController extends AbstractController {
             courseForm.setExternalImage(course.getExternalImage());
             courseForm.setDescription(course.getDescription());
             courseForm.setIcon(course.getIcon());
+            courseForm.setColor(course.getColor());
             courseForm.setIsActive(course.getIsActive());
         }
 
@@ -155,6 +156,7 @@ public class CourseController extends AbstractController {
         course.setExternalImage(courseForm.getExternalImage());
         course.setDescription(courseForm.getDescription());
         course.setIcon(courseForm.getIcon());
+        course.setColor(courseForm.getColor());
         course.setIsActive(courseForm.getIsActive());
 
         return course;

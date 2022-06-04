@@ -41,6 +41,9 @@ public class Course {
     @Column(length = 100)
     private String icon;
 
+    @Column(length = 9)
+    private String color;
+
     @Column(name = "is_active")
     private Boolean isActive;
 

@@ -64,6 +64,25 @@
     </div>
 </div>
 <div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="color" class="form-label">Farbe</label>
+        <div class="input-group">
+            <input type="text" maxlength="255" th:field="*{color}" class="form-control"
+                   th:classappend="${#fields.hasErrors('color') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                   id="color" name="color" readonly="readonly"/>
+            <button class="btn btn-outline-secondary color-picker-delete" type="button">
+                <i class="bi bi-trash-fill"></i>
+            <button class="btn btn-outline-primary color-picker" type="button">
+                <i class="bi bi-palette-fill"></i>
+            </button>
+        </div>
+        <div class="d-block text-muted small">Die Farbe ist optional. Wird eine Farbe ausgewählt, so wird diese für den
+            Badge des Kurses verwendet. Wird keine Farbe angegeben, wird der Badge automatisch in grün dargestellt.<br/>
+        </div>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
+    </div>
+</div>
+<div class="row">
     <div class="col-12 mb-3">
         <label for="description" class="form-label">Beschreibung</label>
         <textarea th:field="*{description}" class="form-control wysiwyg-editor"
