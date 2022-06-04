@@ -111,13 +111,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // warning for unsaved changes in forms
     let unsaved = false;
-    const inputs = document.querySelectorAll("input,select,textarea");
+    const inputs = document.querySelectorAll("input:not([type='password']),select,textarea");
     for (const input of inputs) {
         input.addEventListener("change", () => {
             unsaved = true;
         });
     }
-    
+
     window.onbeforeunload = function () {
         if (unsaved) {
             return "Achtung: Du hast nicht alle Änderungen gespeichert. Wenn du die Seite verlässt, gehen diese möglicherweise verloren.";
