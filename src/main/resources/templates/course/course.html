@@ -28,8 +28,7 @@
                 <i class="bi bi-pencil-fill me-1"></i> Kurs bearbeiten
             </button>
             <button th:onclick="'window.location.href = \'' + @{'/course/' + ${course.id} + '/modules'} + '\''"
-                    class="nav-link" id="nav-modules-tab" data-bs-toggle="tab" data-bs-target="#nav-modules"
-                    type="button" role="tab" aria-controls="nav-modules" aria-selected="false">
+                    class="nav-link" id="nav-modules-tab" type="button">
                 <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
             </button>
         </div>

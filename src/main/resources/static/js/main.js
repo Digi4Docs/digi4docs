@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     });
                 }
             });
-        } catch(e) {
+        } catch (e) {
             console.log("Can not initiate datatables");
         }
     }
@@ -108,6 +108,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
     }
+
+    // warning for unsaved changes in forms
+    let unsaved = false;
+    const inputs = document.querySelectorAll("input,select,textarea");
+    for (const input of inputs) {
+        input.addEventListener("change", () => {
+            unsaved = true;
+        });
+    }
+    
+    window.onbeforeunload = function () {
+        if (unsaved) {
+            return "Achtung: Du hast nicht alle Änderungen gespeichert. Wenn du die Seite verlässt, gehen diese möglicherweise verloren.";
+        }
+    };
 
 
     // add PWA

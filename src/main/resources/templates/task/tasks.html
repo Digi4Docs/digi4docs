@@ -12,13 +12,11 @@
 <div layout:fragment="content">
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link" id="nav-edit-tab" data-bs-toggle="tab" data-bs-target="#nav-edit"
-                    type="button" role="tab" aria-controls="nav-edit" aria-selected="false"
+            <button class="nav-link" id="nav-edit-tab" type="button"
                     th:onclick="'window.location.href = \'' + @{${null == course}  ? '/module/' + ${parentModule.parent.id} + '/module/' + ${parentModule.id} :  '/course/' + ${course.id} + '/module/' + ${parentModule.id}} + '\''">
                 <i class="bi bi-pencil-fill me-1"></i> Modul bearbeiten
             </button>
-            <button class="nav-link" id="nav-modules-tab" data-bs-toggle="tab" data-bs-target="#nav-modules"
-                    type="button" role="tab" aria-controls="nav-modules" aria-selected="false"
+            <button class="nav-link" id="nav-modules-tab" type="button"
                     th:onclick="'window.location.href = \'' + @{'/module/' + ${parentModule.id} + '/modules'} + '\''">
                 <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
             </button>

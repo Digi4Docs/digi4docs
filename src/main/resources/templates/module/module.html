@@ -26,14 +26,11 @@
                     type="button" role="tab" aria-controls="nav-edit" aria-selected="true">
                 <i class="bi bi-pencil-fill me-1"></i> Modul bearbeiten
             </button>
-            <button class="nav-link" id="nav-modules-tab" data-bs-toggle="tab" data-bs-target="#nav-modules"
-                    type="button" role="tab" aria-controls="nav-modules" aria-selected="false"
+            <button class="nav-link" id="nav-modules-tab" type="button"
                     th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/modules\''">
                 <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
             </button>
-            <button class="nav-link" id="nav-tasks-tab" data-bs-toggle="tab"
-                    data-bs-target="#nav-tasks"
-                    type="button" role="tab" aria-controls="nav-tasks" aria-selected="false"
+            <button class="nav-link" id="nav-tasks-tab" type="button"
                     th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/tasks\''">
                 <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
             </button>
