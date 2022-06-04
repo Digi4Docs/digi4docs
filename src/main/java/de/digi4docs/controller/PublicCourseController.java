@@ -266,7 +266,7 @@ public class PublicCourseController extends AbstractController {
                 boolean successfulFileInit = UploadUtils.addUploadData(userTask.getFile(), publicTaskForm.getFile());
                 if (!successfulFileInit) {
                     model.addAttribute("error",
-                            "Deine Datei kann nicht hochgeladen werden. Beachte, dass die Datei maximal 2MB groß sein" +
+                            "Deine Datei kann nicht hochgeladen werden. Beachte, dass die Datei maximal 25MB groß sein" +
                                     " darf.");
                     return showTaskPage(id, taskId, model, publicTaskForm, false);
                 }

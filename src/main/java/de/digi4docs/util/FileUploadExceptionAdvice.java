@@ -20,7 +20,7 @@ public class FileUploadExceptionAdvice {
 
     private String handleFileException(Model model) {
         model.addAttribute("error",
-                "Deine Datei konnte nicht hochgeladen werden. Achte darauf, dass die Datei nicht größer als 2MB sein " +
+                "Deine Datei konnte nicht hochgeladen werden. Achte darauf, dass die Datei nicht größer als 25MB sein " +
                         "darf.");
         return "error";
     }
