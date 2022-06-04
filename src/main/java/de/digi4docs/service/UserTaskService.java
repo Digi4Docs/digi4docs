@@ -126,4 +126,8 @@ public class UserTaskService {
         }
         return userTaskRepository.saveAll(userTasks);
     }
+
+    public void delete(UserTask userTask) {
+        userTaskRepository.delete(userTask);
+    }
 }

@@ -195,6 +195,37 @@ public class PublicCourseController extends AbstractController {
         return saveTask(id, taskId, file, publicTaskForm, bindingResult, model, false);
     }
 
+    @PreAuthorize("hasAuthority('STUDENT')")
+    @PostMapping(value = "/public/course/{id}/task/{taskId}", params = "delete")
+    public String deleteConfirmTask(@PathVariable int id, @PathVariable int taskId,@Valid PublicTaskForm publicTaskForm,Model model) {
+        model.addAttribute("savedStatus", true);
+
+        Optional<UserTask> userTaskOptional = userTaskService.findByTask(taskId);
+        if (userTaskOptional.isEmpty()) {
+            model.addAttribute("error", "Löschen nicht möglich");
+            return showTaskPage(id, taskId, model, publicTaskForm, false);
+        }
+
+        model.addAttribute("userTask", userTaskOptional.get());
+        model.addAttribute("courseId", id);
+
+        return "public/delete";
+    }
+
+    @PreAuthorize("hasAuthority('STUDENT')")
+    @GetMapping(value = "/public/course/{id}/task/{taskId}/delete")
+    public String delete(@PathVariable int id, @PathVariable int taskId) {
+        Optional<UserTask> userTaskOptional = userTaskService.findByTask(taskId);
+        if (userTaskOptional.isEmpty()) {
+            return "redirect:/home";
+        }
+
+        userTaskService.delete(userTaskOptional.get());
+
+
+        return "redirect:/public/course/" + id;
+    }
+
     private String saveTask(@PathVariable int id, @PathVariable int taskId, MultipartFile formFile,
             @Valid PublicTaskForm publicTaskForm,
             BindingResult bindingResult, Model model, boolean doTransmit) {
