@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             {
                 key: "ccicon",
                 prefix: "ccicon-",
-                url: 'http://localhost:8080/cc-badges.json'
+                url: '/cc-badges.json'
             }
         ],
         i18n: {
