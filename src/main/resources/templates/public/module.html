@@ -17,8 +17,7 @@
             <div class="alert alert-danger">Achtung: Das angezeigte Modul wurde noch nicht aktiviert.</div>
         </div>
     </div>
-    <div th:if="${!module.tasks.empty or !module.modules.empty}"
-         th:classappend="${module.modules.empty and module.modules.empty ? '' : 'mb-4 pb-4 border-bottom'}">
+    <div th:classappend="${module.modules.empty and module.modules.empty ? '' : 'mb-4 pb-4 border-bottom'}">
         <div class="m-4 d-flex flex-row justify-content-between">
             <div>
                 <a th:if="${null != previousModule}"
@@ -34,13 +33,13 @@
                 </button>
             </div>
 
-            <div class="text-center" th:if="${module.modules.empty}">
+            <div class="text-center" th:if="${module.modules.empty and !module.tasks.empty}">
                 Um dieses Modul abzuschließen, musst du
                 <span class="text-danger d-inline">[[ ${ #lists.size(module.tasks) == 1 ? '1 Aufgabe' : #lists.size(module.tasks) + ' Aufgaben' } ]]</span>
                 beenden. Du hast bisher <span class="text-success d-inline">[[ ${ userTasksDone == 1 ? '1 Aufgabe' : userTasksDone + ' Aufgaben' } ]]</span>
                 geschafft.
             </div>
-            <div class="text-center" th:if="${module.tasks.empty}">
+            <div class="text-center" th:if="${module.tasks.empty and !module.modules.empty}">
                 Um dieses Modul abzuschließen, musst du
                 <span class="text-danger d-inline">[[ ${ #lists.size(module.modules) == 1 ? '1 Modul' : #lists.size(module.modules) + ' Module' } ]]</span>
                 beenden.
@@ -51,6 +50,9 @@
                 und <span class="text-danger d-inline">[[ ${ #lists.size(module.modules) == 1 ? '1 weiteres Modul' : #lists.size(module.modules) + ' weitere Module' } ]]</span>
                 beenden. Du hast bisher <span class="text-success d-inline">[[ ${ userTasksDone == 1 ? '1 Aufgabe' : userTasksDone + ' Aufgaben' } ]]</span>
                 geschafft.
+            </div>
+            <div class="text-center" th:if="${module.tasks.empty and module.modules.empty}">
+                Aktuell liegen keine Aufgaben in diesem Modul vor.
             </div>
             <div>
                 <a th:if="${null != nextModule}"
