@@ -6,11 +6,11 @@
     <div th:classappend="${outerloop ? (0 == itStat.index ? 'print-first-page-break' : 'print-page-break')  : ''}"></div>
     <div class="text-center my-4">
         <div th:if="${module.icon}" class="certificate-icon position-relative">
-            <div th:if="${'' != course.badgeText}"
+            <div th:if="${!#strings.isEmpty(module.badgeText)}"
                  class="position-absolute w-100 me-auto ms-auto certificate-badge-text h4 pb-0">
                 <span class="badge bg-light text-wrap mx-1 text-secondary border">[[${course.badgeText}]]</span>
             </div>
-            <i th:class="${module.icon}" th:style="${'' != course.color ? 'color:' + course.color : ''}"></i>
+            <i th:class="${module.icon}" th:style="${!#strings.isEmpty(module.color) ? 'color:' + module.color : ''}"></i>
         </div>
         <h6 class="text-muted">[[${module.title}]]</h6>
         <h3 class="text-uppercase" th:if="${!#strings.isEmpty(module.subTitle)}">[[${module.subTitle}]]</h3>

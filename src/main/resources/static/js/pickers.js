@@ -20,11 +20,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
 
     var pickerButton = document.querySelector('.color-picker');
-    var picker = new Picker(pickerButton);
-    picker.onChange = function(color) {
-        const colorInput = document.getElementById('color');
-        colorInput.value = color.hex;
-    };
+    const colorInput = document.getElementById('color');
+    var picker = new Picker({
+        parent: pickerButton,
+        color: '' != colorInput.value ? colorInput.value : '#68B022',
+        alpha: false,
+        editorFormat: 'hex',
+        onDone: function (color) {
+            const colorInput = document.getElementById('color');
+            colorInput.value = color.hex;
+        }
+    });
 
     document.querySelector('.color-picker-delete').addEventListener("click", function (event) {
         const colorInput = document.getElementById('color');

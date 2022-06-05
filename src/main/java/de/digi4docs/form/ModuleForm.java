@@ -20,6 +20,12 @@ public class ModuleForm {
 
     protected String icon;
 
+    @Size(max = 9, message = "Die Farbe darf maximal 9 Zeichen lang sein.")
+    protected String color;
+
+    @Size(max = 20, message = "Der Badge-Text darf maximal 20 Zeichen lang sein.")
+    protected String badgeText;
+
     protected String description;
 
     protected Boolean isActive;

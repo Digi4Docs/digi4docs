@@ -41,8 +41,12 @@ public class CourseModuleController extends AbstractModuleController {
     public String module(@PathVariable int id, ModuleForm moduleForm, Model model) {
         Course course = courseService.findById(id)
                                      .get();
+
         model.addAttribute("course", course);
         model.addAttribute("linkCourseId", course.getId());
+
+        moduleForm.setColor(course.getColor());
+        moduleForm.setBadgeText(course.getBadgeText());
 
         initBreadcrumbCourseEntries(course);
         getBreadcrumbs().put("/course/" + course.getId() + "/module", "Neues Modul");
@@ -168,7 +172,7 @@ public class CourseModuleController extends AbstractModuleController {
     }
 
     private String showDetailPage(int courseId, int id, ModuleForm moduleForm, Model model, boolean initFormData) {
-        return showDetailPage(courseId, id, moduleForm, model, initFormData, "/course/" + courseId + "/modules", true,
+        return showDetailPage(id, moduleForm, model, initFormData, "/course/" + courseId + "/modules", true,
                 false);
     }
 }

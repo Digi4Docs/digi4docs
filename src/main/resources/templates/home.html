@@ -24,18 +24,18 @@
                         <th:block th:each="finishedCourse, itStat: ${finishedCourses}">
                             <a th:href="@{'/public/certificate/' + ${finishedCourse.id}}"
                                class="px-2 py-3 border rounded bg-white me-2 d-flex flex-column align-items-center home-badge text-center"
-                               th:style="${'' != finishedCourse.color ? 'color:' + finishedCourse.color : '' }">
+                               th:style="${!#strings.isEmpty(finishedCourse.color) ? 'color:' + finishedCourse.color : '' }">
                                 <div class="text-success position-relative">
-                                    <div th:if="${'' != finishedCourse.badgeText}" class="position-absolute w-100 me-auto ms-auto home-badge-text">
+                                    <div th:if="${!#strings.isEmpty(finishedCourse.badgeText)}" class="position-absolute w-100 me-auto ms-auto home-badge-text">
                                         <span class="badge bg-light text-wrap mx-1 text-secondary">[[${finishedCourse.badgeText}]]</span>
                                     </div>
                                     <i class="icon xxl-icon border-success"
                                        th:if="${!#strings.isEmpty(finishedCourse.icon)}"
                                        th:classappend="${finishedCourse.icon}"
-                                       th:style="${'' != finishedCourse.color ? 'color:' + finishedCourse.color + ';border-color:' + finishedCourse.color + '!important' : '' }"></i>
+                                       th:style="${!#strings.isEmpty(finishedCourse.color) ? 'color:' + finishedCourse.color + ';border-color:' + finishedCourse.color + '!important' : '' }"></i>
                                     <i th:if="${#strings.isEmpty(finishedCourse.icon)}"
                                        class="bi bi-emoji-smile icon xxl-icon border-success"
-                                       th:style="${'' != finishedCourse.color ? 'color:' + finishedCourse.color + ';border-color:' + finishedCourse.color + '!important' : '' }"></i>
+                                       th:style="${!#strings.isEmpty(finishedCourse.color) ? 'color:' + finishedCourse.color + ';border-color:' + finishedCourse.color + '!important' : '' }"></i>
                                 </div>
                                 <span class="mt-2">[[${finishedCourse.title}]]</span>
                             </a>

@@ -22,12 +22,14 @@ public abstract class AbstractModuleController extends AbstractController {
         module.setSubTitle(moduleForm.getSubTitle());
         module.setDescription(moduleForm.getDescription());
         module.setIcon(moduleForm.getIcon());
+        module.setColor(moduleForm.getColor());
+        module.setBadgeText(moduleForm.getBadgeText());
         module.setIsActive(moduleForm.getIsActive());
 
         return module;
     }
 
-    protected String showDetailPage(int parentId, int id, ModuleForm moduleForm, Model model,
+    protected String showDetailPage(int id, ModuleForm moduleForm, Model model,
             boolean initFormData, String missingModuleRedirect,
             boolean addCourseToModel, boolean addParentToModel) {
 
@@ -45,6 +47,8 @@ public abstract class AbstractModuleController extends AbstractController {
             moduleForm.setSubTitle(module.getSubTitle());
             moduleForm.setDescription(module.getDescription());
             moduleForm.setIcon(module.getIcon());
+            moduleForm.setColor(module.getColor());
+            moduleForm.setBadgeText(module.getBadgeText());
             moduleForm.setIsActive(module.getIsActive());
         }
 

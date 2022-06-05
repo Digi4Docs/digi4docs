@@ -35,21 +35,17 @@
 
             <div class="text-center" th:if="${moduleFinished eq true}">
                 <div class="text-success position-relative">
-                    <div th:if="${'' != course.badgeText}"
-                         class="position-absolute w-100 me-auto ms-auto home-badge-text">
-                        <span class="badge bg-light text-wrap mx-1 text-secondary">[[${course.badgeText}]]</span>
+                    <div th:if="${!#strings.isEmpty(module.badgeText)}"
+                         class="position-absolute w-100 me-auto ms-auto home-badge-text h4">
+                        <span class="badge bg-light text-wrap mx-1 text-secondary">[[${module.badgeText}]]</span>
                     </div>
-                    <i class="large-icon pt-0"
+                    <i class="certificate-icon pt-0"
                        th:if="${!#strings.isEmpty(module.icon)}"
                        th:classappend="${module.icon}"
-                       th:style="${'' != course.color ? 'color:' + course.color  : '' }"></i>
-                    <i class="large-icon pt-0"
-                       th:if="${#strings.isEmpty(module.icon) and !#strings.isEmpty(course.icon)}"
-                       th:classappend="${course.icon}"
-                       th:style="${'' != course.color ? 'color:' + course.color  : '' }"></i>
+                       th:style="${!#strings.isEmpty(module.color) ? 'color:' + module.color  : '' }"></i>
                     <i th:if="${#strings.isEmpty(module.icon) and #strings.isEmpty(course.icon)}"
-                       class="bi bi-emoji-smile large-icon pt-0"
-                       th:style="${'' != course.color ? 'color:' + course.color : '' }"></i>
+                       class="bi bi-emoji-smile certificate-icon pt-0"
+                       th:style="${!#strings.isEmpty(module.color) ? 'color:' + module.color : '' }"></i>
                 </div>
                 <div class="text-center mt-3">
                     Du hast dieses Modul abgeschlossen

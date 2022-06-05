@@ -42,6 +42,9 @@ public class ModuleController extends AbstractModuleController {
                                      .get();
         model.addAttribute("module", module);
 
+        moduleForm.setColor(module.getColor());
+        moduleForm.setBadgeText(module.getBadgeText());
+
         initBreadcrumbModuleEntries(module).showBreadcrumbs(model);
 
         return "module/new-module";
@@ -163,7 +166,7 @@ public class ModuleController extends AbstractModuleController {
     }
 
     private String showDetailPage(int parentId, int id, ModuleForm moduleForm, Model model, boolean initFormData) {
-        return showDetailPage(parentId, id, moduleForm, model, initFormData, "/module/" + parentId + "/modules", false,
+        return showDetailPage(id, moduleForm, model, initFormData, "/module/" + parentId + "/modules", false,
                 true);
     }
 }
