@@ -31,5 +31,5 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
     Optional<Module> findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer courseId,
             Integer orderPosition);
 
-    List<Module> findAllByAsBadgeTrueAndIsActiveTrueOrderByParentAscOrderPositionAsc();
+    List<Module> findAllByAsBadgeTrueAndIsActiveTrueOrderByParentAscOrderPositionDesc();
 }

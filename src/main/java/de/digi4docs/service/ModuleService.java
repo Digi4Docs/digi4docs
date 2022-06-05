@@ -16,13 +16,11 @@ import java.util.Optional;
 public class ModuleService {
     private final ModuleRepository moduleRepository;
     private final UserService userService;
-    private final TaskService taskService;
 
     @Autowired
-    public ModuleService(ModuleRepository moduleRepository, UserService userService, TaskService taskService) {
+    public ModuleService(ModuleRepository moduleRepository, UserService userService) {
         this.moduleRepository = moduleRepository;
         this.userService = userService;
-        this.taskService = taskService;
     }
 
     public Optional<Module> findById(int id) {
@@ -38,7 +36,7 @@ public class ModuleService {
     }
 
     public List<Module> findAllBadgeModules() {
-        return moduleRepository.findAllByAsBadgeTrueAndIsActiveTrueOrderByParentAscOrderPositionAsc();
+        return moduleRepository.findAllByAsBadgeTrueAndIsActiveTrueOrderByParentAscOrderPositionDesc();
     }
 
     @Nullable

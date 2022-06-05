@@ -75,19 +75,39 @@ public class HomeController {
 
             // adding special badge modules
             List<Module> finishedBadgeModules = new ArrayList<>();
+            List<Integer> existingModuleWithCourseParent = new ArrayList<>();
+            List<Integer> existingModuleWithModuleParent = new ArrayList<>();
             moduleService.findAllBadgeModules()
                          .forEach(badgeModule -> {
-                             LinkedList<Module> modules = RecursiveHandler.getModuleModules(badgeModule);
-                             List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(modules);
-                             if (taskIds.size() > 0) {
-                                 int userTaskCount =
-                                         Math.toIntExact(userTaskService.findByTasks(taskIds, currentUser)
-                                                                        .stream()
-                                                                        .filter(userTask -> TaskStatus.DONE.equals(
-                                                                                userTask.getStatus()))
-                                                                        .count());
-                                 if (userTaskCount == taskIds.size()) {
-                                     finishedBadgeModules.add(badgeModule);
+                             if ((null == badgeModule.getParent() && !existingModuleWithCourseParent.contains(
+                                     badgeModule.getCourse()
+                                                .getId()))
+                                     || (null != badgeModule.getParent() && !existingModuleWithModuleParent.contains(
+                                     badgeModule.getParent()
+                                                .getId()))
+                             ) {
+
+                                 LinkedList<Module> modules = RecursiveHandler.getModuleModules(badgeModule);
+                                 List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(modules);
+                                 if (taskIds.size() > 0) {
+                                     int userTaskCount =
+                                             Math.toIntExact(userTaskService.findByTasks(taskIds, currentUser)
+                                                                            .stream()
+                                                                            .filter(userTask -> TaskStatus.DONE.equals(
+                                                                                    userTask.getStatus()))
+                                                                            .count());
+                                     if (userTaskCount == taskIds.size()) {
+                                         finishedBadgeModules.add(badgeModule);
+
+                                         // grouping badges of the same course
+                                         if (null == badgeModule.getParent()) {
+                                             existingModuleWithCourseParent.add(badgeModule.getCourse()
+                                                                                           .getId());
+                                         } else {
+                                             existingModuleWithModuleParent.add(badgeModule.getParent()
+                                                                                           .getId());
+                                         }
+                                     }
                                  }
                              }
                          });
