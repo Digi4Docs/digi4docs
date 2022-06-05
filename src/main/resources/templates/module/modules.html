@@ -30,6 +30,7 @@
                     th:onclick="'window.location.href = \'' + @{'/module/' + ${parentModule.id} + '/tasks/' } + '\''">
                 <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
             </button>
+            <div th:replace="fragments/module-navigation"></div>
         </div>
     </nav>
     <div class="tab-content p-3 border border-top-0" id="nav-tabContent">

@@ -47,6 +47,9 @@ public class Module {
     @Column(length = 20)
     protected String badgeText;
 
+    @Column(name = "as_badge")
+    private Boolean asBadge;
+
     @Column(name = "is_active")
     private Boolean isActive;
 

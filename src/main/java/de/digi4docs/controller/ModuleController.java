@@ -30,6 +30,8 @@ public class ModuleController extends AbstractModuleController {
         }
         model.addAttribute("linkCourseId", RecursiveHandler.getCourse(parentModule).getId());
 
+        assignModuleNavigation(parentModule, model);
+
         initBreadcrumbModuleEntries(parentModule).showBreadcrumbs(model);
 
         return "module/modules";

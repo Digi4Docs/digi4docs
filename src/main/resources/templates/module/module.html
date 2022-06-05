@@ -26,16 +26,20 @@
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link active" id="nav-edit-tab" data-bs-toggle="tab" data-bs-target="#nav-edit"
                     type="button" role="tab" aria-controls="nav-edit" aria-selected="true">
-                <i class="bi bi-pencil-fill me-1"></i> Modul bearbeiten
+                <i class="bi bi-pencil-fill me-1"></i>
+                <span class="d-none d-md-inline-block">Modul bearbeiten</span>
             </button>
             <button class="nav-link" id="nav-modules-tab" type="button"
                     th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/modules\''">
-                <i class="bi bi-grid-3x3-gap-fill me-1"></i> Module
+                <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+                <span class="d-none d-md-inline-block">Module</span>
             </button>
             <button class="nav-link" id="nav-tasks-tab" type="button"
                     th:onclick="'window.location.href = \'' + @{'/module/' + ${module.id}} + '/tasks\''">
-                <i class="bi bi-clipboard-check-fill me-1"></i> Aufgaben
+                <i class="bi bi-clipboard-check-fill me-1"></i>
+                <span class="d-none d-md-inline-block">Aufgaben</span>
             </button>
+            <div th:replace="fragments/module-navigation"></div>
         </div>
     </nav>
 

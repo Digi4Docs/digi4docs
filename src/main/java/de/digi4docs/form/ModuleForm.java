@@ -26,6 +26,8 @@ public class ModuleForm {
     @Size(max = 20, message = "Der Badge-Text darf maximal 20 Zeichen lang sein.")
     protected String badgeText;
 
+    protected Boolean asBadge;
+
     protected String description;
 
     protected Boolean isActive;

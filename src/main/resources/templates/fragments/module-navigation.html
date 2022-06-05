@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<a th:if="${null != previousModule}" class="nav-link" title="Vorheriges Modul"
+   th:href="@{(${null == previousModule.parent} ? '/course/' + ${course.id} + '/module/' + ${previousModule.id} : '/module/' + ${previousModule.parent.id} + '/module/' + ${previousModule.id})}">
+    <i class="bi bi-arrow-left-short me-1"></i>
+    <span class="d-none d-md-inline-block">Vorheriges Modul</span>
+</a>
+<a th:if="${null != nextModule}" class="nav-link" title="Nächstes Modul"
+   th:href="@{(${null == nextModule.parent} ? '/course/' + ${course.id} + '/module/' + ${nextModule.id} : '/module/' + ${nextModule.parent.id} + '/module/' + ${nextModule.id})}">
+    <i class="bi bi-arrow-right-short me-1"></i>
+    <span class="d-none d-md-inline-block">Nächstes Modul</span>
+</a>
+</body>

@@ -64,35 +64,6 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6 mb-3">
-        <label for="color" class="form-label">Badge Farbe</label>
-        <div class="input-group">
-            <input type="text" maxlength="9" th:field="*{color}" class="form-control"
-                   th:classappend="${#fields.hasErrors('color') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-                   id="color" name="color" readonly="readonly"/>
-            <button class="btn btn-outline-secondary color-picker-delete" type="button">
-                <i class="bi bi-trash-fill"></i></button>
-            <button class="btn btn-outline-primary color-picker" type="button">
-                <i class="bi bi-palette-fill"></i>
-            </button>
-        </div>
-        <div class="d-block text-muted small">Die Farbe ist optional. Wird eine Farbe ausgewählt, so wird diese für den
-            Badge des Kurses verwendet. Wird keine Farbe angegeben, wird der Badge automatisch in grün dargestellt.<br/>
-        </div>
-        <div class="invalid-feedback" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
-    </div>
-    <div class="col-md-6 mb-3">
-        <label for="badgeText" class="form-label">Bagde Text</label>
-        <input type="text" maxlength="20" th:field="*{badgeText}" class="form-control"
-               th:classappend="${#fields.hasErrors('badgeText') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
-               id="badgeText" name="badgeText"/>
-        <div class="d-block text-muted small">Der Bagde-Text wird innerhalb des Icons des Kurses als zusätzlicher Text
-            angezeigt. Die Angabe ist optional.<br/>
-        </div>
-        <div class="invalid-feedback" th:if="${#fields.hasErrors('badgeText')}" th:errors="*{badgeText}"></div>
-    </div>
-</div>
-<div class="row">
     <div class="col-12 mb-3">
         <label for="description" class="form-label">Beschreibung</label>
         <textarea th:field="*{description}" class="form-control wysiwyg-editor"
@@ -100,6 +71,48 @@
                   id="description"
                   name="description"></textarea>
         <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <a data-bs-toggle="collapse" href="#collapseBadge" role="button" aria-expanded="false"
+           aria-controls="collapseBadge">
+            Bagde-Konfiguration »
+        </a>
+    </div>
+    <div class="collapse col-12" id="collapseBadge">
+        <div class="card card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="color" class="form-label">Badge Farbe</label>
+                    <div class="input-group">
+                        <input type="text" maxlength="9" th:field="*{color}" class="form-control"
+                               th:classappend="${#fields.hasErrors('color') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                               id="color" name="color" readonly="readonly"/>
+                        <button class="btn btn-outline-secondary color-picker-delete" type="button">
+                            <i class="bi bi-trash-fill"></i></button>
+                        <button class="btn btn-outline-primary color-picker" type="button">
+                            <i class="bi bi-palette-fill"></i>
+                        </button>
+                    </div>
+                    <div class="d-block text-muted small">Die Farbe ist optional. Wird eine Farbe ausgewählt, so wird diese für den
+                        Badge des Kurses verwendet. Wird keine Farbe angegeben, wird der Badge automatisch in grün dargestellt.<br/>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="badgeText" class="form-label">Bagde Text</label>
+                    <input type="text" maxlength="20" th:field="*{badgeText}" class="form-control"
+                           th:classappend="${#fields.hasErrors('badgeText') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                           id="badgeText" name="badgeText"/>
+                    <div class="d-block text-muted small">Der Bagde-Text wird innerhalb des Icons des Kurses als zusätzlicher Text
+                        angezeigt. Die Angabe ist optional.<br/>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('badgeText')}" th:errors="*{badgeText}"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

@@ -24,6 +24,7 @@ public abstract class AbstractModuleController extends AbstractController {
         module.setIcon(moduleForm.getIcon());
         module.setColor(moduleForm.getColor());
         module.setBadgeText(moduleForm.getBadgeText());
+        module.setAsBadge(moduleForm.getAsBadge());
         module.setIsActive(moduleForm.getIsActive());
 
         return module;
@@ -49,6 +50,7 @@ public abstract class AbstractModuleController extends AbstractController {
             moduleForm.setIcon(module.getIcon());
             moduleForm.setColor(module.getColor());
             moduleForm.setBadgeText(module.getBadgeText());
+            moduleForm.setAsBadge(module.getAsBadge());
             moduleForm.setIsActive(module.getIsActive());
         }
 
@@ -63,6 +65,8 @@ public abstract class AbstractModuleController extends AbstractController {
         if (addParentToModel) {
             model.addAttribute("parentModule", module.getParent());
         }
+
+        assignModuleNavigation(module, model);
 
         initBreadcrumbModuleEntries(module);
         showBreadcrumbs(model);
@@ -105,5 +109,19 @@ public abstract class AbstractModuleController extends AbstractController {
         }
 
         return this;
+    }
+
+    protected void assignModuleNavigation(Module module, Model model) {
+
+        Module nextModule = null != module.getParent() ? moduleService.findNextModule(module.getParent()
+                                                                                            .getId(),
+                module.getOrderPosition())
+                : moduleService.findNextModule(module.getCourse(), module.getOrderPosition());
+        model.addAttribute("nextModule", nextModule);
+        Module previousModule = null != module.getParent() ? moduleService.findPreviousModule(module.getParent()
+                                                                                                    .getId(),
+                module.getOrderPosition())
+                : moduleService.findPreviousModule(module.getCourse(), module.getOrderPosition());
+        model.addAttribute("previousModule", previousModule);
     }
 }

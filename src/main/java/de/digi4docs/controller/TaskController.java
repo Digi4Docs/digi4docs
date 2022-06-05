@@ -33,6 +33,8 @@ public class TaskController extends AbstractModuleController {
         model.addAttribute("course", parentModule.getCourse());
         model.addAttribute("linkCourseId", RecursiveHandler.getCourse(parentModule).getId());
 
+        assignModuleNavigation(parentModule, model);
+
         initBreadcrumbModuleEntries(parentModule);
         getBreadcrumbs().put("/module/" + id + "/tasks", "Aufgaben");
         showBreadcrumbs(model);
