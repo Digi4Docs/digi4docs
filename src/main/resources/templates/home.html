@@ -15,18 +15,21 @@
     <img th:src="@{~/img/home-title.jpg}" class="card-img-top rounded-0"/>
 </div>
 <div layout:fragment="content">
-    <div th:if="${null != finishedCourses and #lists.size(finishedCourses) > 0}" class="row">
+    <div th:if="${(null != finishedCourses and #lists.size(finishedCourses) > 0) or (null != finishedCourses and #lists.size(finishedCourses) > 0)}"
+         class="row">
         <div class="col-12">
             <div class="card bg-light home-column-height overflow-auto mb-4">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Meine Auszeichnungen</h5>
-                    <div class="card-text overflow-auto">
+                    <div class="card-text overflow-auto d-flex flex-row">
                         <th:block th:each="finishedCourse, itStat: ${finishedCourses}">
                             <a th:href="@{'/public/certificate/' + ${finishedCourse.id}}"
-                               class="px-2 py-3 border rounded bg-white me-2 d-flex flex-column align-items-center home-badge text-center"
+                               class="p-2 border rounded bg-white me-2 d-flex flex-column align-items-center home-badge text-center"
                                th:style="${!#strings.isEmpty(finishedCourse.color) ? 'color:' + finishedCourse.color : '' }">
+                                <span class="text-muted small">Kurs</span>
                                 <div class="text-success position-relative">
-                                    <div th:if="${!#strings.isEmpty(finishedCourse.badgeText)}" class="position-absolute w-100 me-auto ms-auto home-badge-text">
+                                    <div th:if="${!#strings.isEmpty(finishedCourse.badgeText)}"
+                                         class="position-absolute w-100 me-auto ms-auto home-badge-text">
                                         <span class="badge bg-light text-wrap mx-1 text-secondary">[[${finishedCourse.badgeText}]]</span>
                                     </div>
                                     <i class="icon xxl-icon border-success"
@@ -39,6 +42,27 @@
                                 </div>
                                 <span class="mt-2">[[${finishedCourse.title}]]</span>
                             </a>
+                        </th:block>
+                        <th:block th:each="finishedBadgeModule, itStat: ${finishedBadgeModules}">
+                            <div
+                                    class="p-2 border rounded bg-white me-2 d-flex flex-column align-items-center home-badge text-center"
+                                    th:style="${!#strings.isEmpty(finishedBadgeModule.color) ? 'color:' + finishedBadgeModule.color : '' }">
+                                <span class="text-muted small">Modul</span>
+                                <div class="text-success position-relative">
+                                    <div th:if="${!#strings.isEmpty(finishedBadgeModule.badgeText)}"
+                                         class="position-absolute w-100 me-auto ms-auto home-badge-text">
+                                        <span class="badge bg-light text-wrap mx-1 text-secondary">[[${finishedBadgeModule.badgeText}]]</span>
+                                    </div>
+                                    <i class="icon xxl-icon border-success"
+                                       th:if="${!#strings.isEmpty(finishedBadgeModule.icon)}"
+                                       th:classappend="${finishedBadgeModule.icon}"
+                                       th:style="${!#strings.isEmpty(finishedBadgeModule.color) ? 'color:' + finishedBadgeModule.color + ';border-color:' + finishedBadgeModule.color + '!important' : '' }"></i>
+                                    <i th:if="${#strings.isEmpty(finishedBadgeModule.icon)}"
+                                       class="bi bi-emoji-smile icon xxl-icon border-success"
+                                       th:style="${!#strings.isEmpty(finishedBadgeModule.color) ? 'color:' + finishedBadgeModule.color + ';border-color:' + finishedBadgeModule.color + '!important' : '' }"></i>
+                                </div>
+                                <span class="mt-2">[[${finishedBadgeModule.title}]]</span>
+                            </div>
                         </th:block>
                     </div>
                 </div>
@@ -59,7 +83,8 @@
                             Aufgaben in deinem Postfach.
                         </div>
                         <div class="mb-3" th:unless="${null != teacherTasks and #lists.size(teacherTasks) > 0}">
-                            Es liegen <span class="text-success">keine Aufgaben</span> in deinem Postfach. Du hast alles
+                            Es liegen <span class="text-success">keine Aufgaben</span> in deinem Postfach. Du hast
+                            alles
                             erledigt!
                         </div>
                         <div th:each="task, itStat: ${teacherTasks}">
@@ -162,7 +187,8 @@
                                         </div>
                                     </div>
                                     <div class="mt-2">
-                                        <a th:href="@{'/public/course/' + ${course.id}}" class="btn btn-primary me-2">
+                                        <a th:href="@{'/public/course/' + ${course.id}}"
+                                           class="btn btn-primary me-2">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
                                         <a th:href="@{'/public/certificate/' + ${course.id}}"

@@ -37,6 +37,10 @@ public class ModuleService {
         return moduleRepository.findAllByParentIdOrderByOrderPositionAscTitleAsc(moduleId);
     }
 
+    public List<Module> findAllBadgeModules() {
+        return moduleRepository.findAllByAsBadgeTrueAndIsActiveTrueOrderByParentAscOrderPositionAsc();
+    }
+
     @Nullable
     public Module findNextModule(Integer moduleId, Integer currentTaskPosition) {
         Optional<Module> module =

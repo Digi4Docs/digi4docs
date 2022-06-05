@@ -4,6 +4,7 @@ import de.digi4docs.dto.TaskReviewRow;
 import de.digi4docs.model.Module;
 import de.digi4docs.model.*;
 import de.digi4docs.service.CourseService;
+import de.digi4docs.service.ModuleService;
 import de.digi4docs.service.UserService;
 import de.digi4docs.service.UserTaskService;
 import de.digi4docs.util.ProgressCountProvider;
@@ -22,6 +23,9 @@ import java.util.Map;
 public class HomeController {
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private ModuleService moduleService;
 
     @Autowired
     private UserService userService;
@@ -68,6 +72,26 @@ public class HomeController {
             model.addAttribute("rejectTaskCourses", RecursiveHandler.getUserTaskCourseMap(rejectedOfCurrentUser));
 
             model.addAttribute("finishedCourses", finishedCourses);
+
+            // adding special badge modules
+            List<Module> finishedBadgeModules = new ArrayList<>();
+            moduleService.findAllBadgeModules()
+                         .forEach(badgeModule -> {
+                             LinkedList<Module> modules = RecursiveHandler.getModuleModules(badgeModule);
+                             List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(modules);
+                             if (taskIds.size() > 0) {
+                                 int userTaskCount =
+                                         Math.toIntExact(userTaskService.findByTasks(taskIds, currentUser)
+                                                                        .stream()
+                                                                        .filter(userTask -> TaskStatus.DONE.equals(
+                                                                                userTask.getStatus()))
+                                                                        .count());
+                                 if (userTaskCount == taskIds.size()) {
+                                     finishedBadgeModules.add(badgeModule);
+                                 }
+                             }
+                         });
+            model.addAttribute("finishedBadgeModules", finishedBadgeModules);
         }
 
         boolean showTeacherTasks =

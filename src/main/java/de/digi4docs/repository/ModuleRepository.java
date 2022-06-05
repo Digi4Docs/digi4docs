@@ -2,6 +2,7 @@ package de.digi4docs.repository;
 
 import de.digi4docs.model.Module;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,4 +30,6 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
 
     Optional<Module> findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer courseId,
             Integer orderPosition);
+
+    List<Module> findAllByAsBadgeTrueAndIsActiveTrueOrderByParentAscOrderPositionAsc();
 }

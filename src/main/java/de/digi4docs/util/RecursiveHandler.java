@@ -75,9 +75,9 @@ public class RecursiveHandler {
         return module.getCourse();
     }
 
-    public static List<Integer> getModulesTaskIds(List<Module> courseModules) {
+    public static List<Integer> getModulesTaskIds(List<Module> modules) {
 
-        return courseModules.stream()
+        return modules.stream()
                             .map(Module::getTasks)
                             .flatMap(Collection::stream)
                             .map(Task::getId)
@@ -90,6 +90,15 @@ public class RecursiveHandler {
         addModules(course.getModules(), courseModules);
 
         return courseModules;
+    }
+
+    public static LinkedList<Module> getModuleModules(Module module) {
+        LinkedList<Module> modules = new LinkedList<>();
+        modules.add(module);
+
+        addModules(module.getModules(), modules);
+
+        return modules;
     }
 
     public static LinkedList<Module> getModules(Module module) {
