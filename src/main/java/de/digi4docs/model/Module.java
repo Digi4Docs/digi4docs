@@ -50,6 +50,9 @@ public class Module {
     @Column(name = "as_badge")
     private Boolean asBadge;
 
+    @Column(name = "badge_has_border")
+    private Boolean badgeHasBorder;
+
     @Column(name = "is_active")
     private Boolean isActive;
 

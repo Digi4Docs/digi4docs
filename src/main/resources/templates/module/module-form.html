@@ -125,6 +125,24 @@
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('asBadge')}" th:errors="*{asBadge}"></div>
                     </div>
                 </div>
+                <div class="col-md-6 mb-3">
+                    <label class="mb-2">Badge-Text mit Rand</label>
+                    <div class="d-block">
+                        <input type="checkbox"
+                               th:classappend="${#fields.hasErrors('badgeHasBorder') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                               id="badgeHasBorder"
+                               name="badgeHasBorder"
+                               th:field="*{badgeHasBorder}"
+                               class="form-check-input"
+                               checked="checked"
+                        />
+                        <label for="badgeHasBorder" class="form-check-label">Rand hinzufügen</label>
+                        <div class="d-block text-muted small">
+                            Wenn du diese Option aktivierst, dann erhält dein Badge-Text eine zusätzliche Umrandung.<br/>
+                        </div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('badgeHasBorder')}" th:errors="*{badgeHasBorder}"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

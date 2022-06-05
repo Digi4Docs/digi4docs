@@ -74,7 +74,7 @@ legend {
 
 .certificate-badge-text,
 .home-badge-text {
-  top: calc(50% - 0.725em);
+  top: calc(50% - 0.8em);
 }
 
 .home-column-height {

@@ -51,7 +51,8 @@
                                 <div class="text-success position-relative">
                                     <div th:if="${!#strings.isEmpty(finishedBadgeModule.badgeText)}"
                                          class="position-absolute w-100 me-auto ms-auto home-badge-text">
-                                        <span class="badge bg-light text-wrap mx-1 text-secondary">[[${finishedBadgeModule.badgeText}]]</span>
+                                        <span class="badge bg-light text-wrap mx-1 text-secondary"
+                                              th:classappend="${finishedBadgeModule.badgeHasBorder eq true ? 'border border-3 border-secondary': ''}">[[${finishedBadgeModule.badgeText}]]</span>
                                     </div>
                                     <i class="icon xxl-icon border-success"
                                        th:if="${!#strings.isEmpty(finishedBadgeModule.icon)}"

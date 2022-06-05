@@ -24,6 +24,7 @@ public abstract class AbstractModuleController extends AbstractController {
         module.setIcon(moduleForm.getIcon());
         module.setColor(moduleForm.getColor());
         module.setBadgeText(moduleForm.getBadgeText());
+        module.setBadgeHasBorder(moduleForm.getBadgeHasBorder());
         module.setAsBadge(moduleForm.getAsBadge());
         module.setIsActive(moduleForm.getIsActive());
 
@@ -50,6 +51,7 @@ public abstract class AbstractModuleController extends AbstractController {
             moduleForm.setIcon(module.getIcon());
             moduleForm.setColor(module.getColor());
             moduleForm.setBadgeText(module.getBadgeText());
+            moduleForm.setBadgeHasBorder(module.getBadgeHasBorder());
             moduleForm.setAsBadge(module.getAsBadge());
             moduleForm.setIsActive(module.getIsActive());
         }
