@@ -16,7 +16,7 @@
 <div layout:fragment="title">Neue Aufgabe</div>
 <div layout:fragment="content">
     <form th:action="@{'/module/' + ${parentModule.id} + '/task'}"
-          method="post" th:object="${taskForm}" class="mt-4 border-top pt-4" novalidate>
+          method="post" th:object="${taskForm}" class="mt-4 border-top pt-4 changeable" novalidate>
         <div th:insert="task/task-form"></div>
 
         <div class="row mt-4">

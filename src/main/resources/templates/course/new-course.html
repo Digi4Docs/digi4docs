@@ -21,7 +21,7 @@
 <body>
 <div layout:fragment="title">Neuer Kurs</div>
 <div layout:fragment="content">
-    <form th:action="@{/course}" method="post" th:object="${courseForm}" class="mt-4 border-top pt-4" novalidate>
+    <form class="changeable" th:action="@{/course}" method="post" th:object="${courseForm}" class="mt-4 border-top pt-4" novalidate>
         <div th:insert="course/course-form"></div>
 
         <div class="row mt-4">

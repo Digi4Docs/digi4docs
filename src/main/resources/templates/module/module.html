@@ -45,7 +45,7 @@
 
     <div class="tab-content p-3 border border-top-0" id="nav-tabContent">
         <form th:action="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module/' + ${module.id}:'/module/' + ${parentModule.id} + '/module/' + ${module.id})}"
-              method="post" th:object="${moduleForm}" novalidate>
+              class="changeable" method="post" th:object="${moduleForm}" novalidate>
             <input type="hidden" th:field="*{id}" name="id"/>
 
             <div th:insert="module/module-form"></div>

@@ -37,7 +37,7 @@
     </nav>
     <div class="tab-content p-3 border border-top-0" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-edit" role="tabpanel" aria-labelledby="nav-edit-tab">
-            <form th:action="@{'/course/' + ${course.id}}" method="post" th:object="${courseForm}" novalidate>
+            <form class="changeable" th:action="@{'/course/' + ${course.id}}" method="post" th:object="${courseForm}" novalidate>
                 <input type="hidden" th:field="*{id}" name="id"/>
 
                 <div th:insert="course/course-form"></div>

@@ -18,8 +18,7 @@
 
 <div layout:fragment="content">
     <form th:action="@{'/settings/config/'}" method="post" th:object="${configForm}"
-          class="mt-4 border-top pt-4"
-          novalidate>
+          class="mt-4 border-top pt-4 changeable" novalidate>
 
         <div class="alert alert-success mb-3" th:if="${success}">Die Aufgabe wurde gespeichert.</div>
         <div class="alert alert-danger mb-3" th:if="${error}">[[${error}]]</div>

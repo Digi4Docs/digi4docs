@@ -10,7 +10,7 @@
 <div layout:fragment="title">Benutzer bearbeiten</div>
 
 <div layout:fragment="content">
-    <form th:action="@{'/user/' + ${user.id}}" method="post" th:object="${userEditForm}" class="mt-4 border-top pt-4"
+    <form th:action="@{'/user/' + ${user.id}}" method="post" th:object="${userEditForm}" class="mt-4 border-top pt-4 changeable"
           autocomplete="off" novalidate>
         <input type="hidden" th:field="*{id}" name="id"/>
 

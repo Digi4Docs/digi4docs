@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="title">Einstellungen - Neues Fach</div>
 <div layout:fragment="content">
-    <form th:action="@{/settings/subject}" method="post" th:object="${subjectForm}" class="mt-4 border-top pt-4" novalidate>
+    <form th:action="@{/settings/subject}" method="post" th:object="${subjectForm}" class="mt-4 border-top pt-4 changeable" class="changeable" novalidate>
         <div th:insert="settings/subject/subject-form"></div>
 
         <div class="row mt-4">

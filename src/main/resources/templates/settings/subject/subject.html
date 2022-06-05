@@ -10,8 +10,7 @@
 
 <div layout:fragment="content">
     <form th:action="@{'/settings/subject/' + ${subject.id}}" method="post" th:object="${subjectForm}"
-          class="mt-4 border-top pt-4"
-          novalidate>
+          class="mt-4 border-top pt-4 changeable" novalidate>
         <input type="hidden" th:field="*{id}" name="id"/>
 
         <div th:insert="settings/subject/subject-form"></div>

@@ -88,7 +88,7 @@
         </div>
         <div class="tab-pane py-4 px-3 border border-top-0 rounded-bottom" th:classappend="${null != showEditTab ? 'active' : ''}" id="review-task" role="tabpanel"
              aria-labelledby="review-task-tab">
-            <form th:action="@{'/tasks/task/' + ${userTask.id}}"
+            <form th:action="@{'/tasks/task/' + ${userTask.id}}" class="changeable"
                   method="post" th:object="${taskReviewForm}" novalidate>
                 <fieldset class="border bg-light p-3">
                     <legend class="mb-4">Angaben der Schülerin/des Schülers: [[${userTask.user.fullnameReverse}]]

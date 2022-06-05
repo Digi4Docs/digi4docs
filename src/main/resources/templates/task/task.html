@@ -37,7 +37,7 @@
     </nav>
 
     <div class="tab-content p-3 border border-top-0" id="nav-tabContent">
-        <form th:action="@{'/module/' + ${parentModule.id} + '/task/' + ${task.id}}" method="post"
+        <form th:action="@{'/module/' + ${parentModule.id} + '/task/' + ${task.id}}" method="post" class="changeable"
               th:object="${taskForm}" novalidate>
             <input type="hidden" th:field="*{id}" name="id"/>
 

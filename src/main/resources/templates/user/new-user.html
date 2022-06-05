@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="title">Neuer Benutzer</div>
 <div layout:fragment="content">
-    <form th:action="@{/user}" method="post" th:object="${userNewForm}" class="mt-4 border-top pt-4"
+    <form th:action="@{/user}" method="post" th:object="${userNewForm}" class="mt-4 border-top pt-4 changeable"
           autocomplete="off" novalidate>
 
         <div th:insert="user/user-form(showPasswordHint=false)"></div>
