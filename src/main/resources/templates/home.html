@@ -43,27 +43,42 @@
                                 <span class="mt-2">[[${finishedCourse.title}]]</span>
                             </a>
                         </th:block>
-                        <th:block th:each="finishedBadgeModule, itStat: ${finishedBadgeModules}">
-                            <div
-                                    class="p-2 border rounded bg-white me-2 d-flex flex-column align-items-center home-badge text-center"
-                                    th:style="${!#strings.isEmpty(finishedBadgeModule.color) ? 'color:' + finishedBadgeModule.color : '' }">
-                                <span class="text-muted small">Modul</span>
-                                <div class="text-success position-relative">
-                                    <div th:if="${!#strings.isEmpty(finishedBadgeModule.badgeText)}"
-                                         class="position-absolute w-100 me-auto ms-auto home-badge-text">
+                        <th:block th:each="badgeMapEntry: ${badgeMap}">
+                            <th:block th:each="badgeModule, itStat: ${badgeMapEntry.value}">
+                                <div th:classappend="${itStat.first ? '' : badgeMapEntry.key + '-hidden d-none'}"
+                                     class="p-2 border rounded bg-white me-2 d-flex flex-column align-items-center home-badge text-center"
+                                     th:style="${(!#strings.isEmpty(badgeModule.color) ? 'color:' + badgeModule.color +';' : '')}">
+                                    <span class="text-muted small">Modul</span>
+                                    <div class="text-success position-relative">
+                                        <div th:if="${!#strings.isEmpty(badgeModule.badgeText)}"
+                                             class="position-absolute w-100 me-auto ms-auto home-badge-text">
                                         <span class="badge bg-light text-wrap mx-1 text-secondary"
-                                              th:classappend="${finishedBadgeModule.badgeHasBorder eq true ? 'border border-3 border-secondary': ''}">[[${finishedBadgeModule.badgeText}]]</span>
+                                              th:classappend="${badgeModule.badgeHasBorder eq true ? 'border border-3 border-secondary': ''}">[[${badgeModule.badgeText}]]</span>
+                                        </div>
+                                        <i class="icon xxl-icon border-success"
+                                           th:if="${!#strings.isEmpty(badgeModule.icon)}"
+                                           th:classappend="${badgeModule.icon}"
+                                           th:style="${!#strings.isEmpty(badgeModule.color) ? 'color:' + badgeModule.color + ';border-color:' + badgeModule.color + '!important' : '' }"></i>
+                                        <i th:if="${#strings.isEmpty(badgeModule.icon)}"
+                                           class="bi bi-emoji-smile icon xxl-icon border-success"
+                                           th:style="${!#strings.isEmpty(badgeModule.color) ? 'color:' + badgeModule.color + ';border-color:' + badgeModule.color + '!important' : '' }"></i>
                                     </div>
-                                    <i class="icon xxl-icon border-success"
-                                       th:if="${!#strings.isEmpty(finishedBadgeModule.icon)}"
-                                       th:classappend="${finishedBadgeModule.icon}"
-                                       th:style="${!#strings.isEmpty(finishedBadgeModule.color) ? 'color:' + finishedBadgeModule.color + ';border-color:' + finishedBadgeModule.color + '!important' : '' }"></i>
-                                    <i th:if="${#strings.isEmpty(finishedBadgeModule.icon)}"
-                                       class="bi bi-emoji-smile icon xxl-icon border-success"
-                                       th:style="${!#strings.isEmpty(finishedBadgeModule.color) ? 'color:' + finishedBadgeModule.color + ';border-color:' + finishedBadgeModule.color + '!important' : '' }"></i>
+                                    <span class="mt-2">[[${badgeModule.title}]]</span>
+                                    <a th:attr="onclick=|showBadges('${badgeMapEntry.key}')|"
+                                       th:if="${itStat.first and #lists.size(badgeMapEntry.value) > 1}"
+                                       class="text-end w-100 cursor-pointer"
+                                       th:classappend="${badgeMapEntry.key + '-show'}"
+                                       title="Zugehörige Auszeichnungen anzeigen">
+                                        <i class="bi bi-caret-right-fill text-muted small"></i>
+                                    </a>
+                                    <a th:attr="onclick=|hideBadges('${badgeMapEntry.key}')|"
+                                       th:if="${itStat.first and #lists.size(badgeMapEntry.value) > 1}"
+                                       class="text-end w-100 cursor-pointer d-none"
+                                       th:classappend="${badgeMapEntry.key + '-hide'}" title="Zugehörige Auszeichnungen ausblenden">
+                                        <i class="bi bi-caret-left-fill text-muted small"></i>
+                                    </a>
                                 </div>
-                                <span class="mt-2">[[${finishedBadgeModule.title}]]</span>
-                            </div>
+                            </th:block>
                         </th:block>
                     </div>
                 </div>

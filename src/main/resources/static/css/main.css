@@ -26215,9 +26215,12 @@ legend {
   padding-top: 0.45rem;
 }
 
-.certificate-badge-text,
-.home-badge-text {
+.certificate-badge-text {
   top: calc(50% - 0.8em);
+}
+
+.home-badge-text {
+  top: calc(50% - 0.65em);
 }
 
 .home-column-height {
@@ -26235,6 +26238,10 @@ select option.inactive {
 
 .web-certificate {
   padding: 3rem 0.5rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 @media (min-width: 992px) {

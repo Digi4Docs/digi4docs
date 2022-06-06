@@ -6,7 +6,6 @@ import de.digi4docs.model.TaskStatus;
 import de.digi4docs.model.UserTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -55,4 +54,8 @@ public interface UserTaskRepository extends JpaRepository<UserTask, Integer> {
             "AND ut.status = 'DONE' AND ut.doneAt >= :start AND ut.doneAt <= :end AND u.classYear IS NOT NULL AND u" +
             ".isActive = true GROUP BY u.classYear, ut.task")
     List<TaskDoneCountResult> findTaskCountGroupedByYear(List<Integer> taskIds, LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT t.id FROM UserTask ut JOIN Task t ON ut.task.id = t.id AND ut.status = 'DONE' AND ut" +
+            ".user.id = :userId")
+    List<Integer> findAllDoneTaskIds(Integer userId);
 }

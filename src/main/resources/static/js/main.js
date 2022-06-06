@@ -131,7 +131,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     };
 
-
     // add PWA
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js')
@@ -143,3 +142,73 @@ document.addEventListener("DOMContentLoaded", function (event) {
             });
     }
 });
+
+// show and hide badges on home page
+function showBadges(classIdentifier) {
+    const initiallyHiddenElements = document.querySelectorAll('.' + classIdentifier + '-hidden');
+    for (const elem of initiallyHiddenElements) {
+        fadeIn(elem);
+    }
+    const hideIcon = document.querySelector('.' + classIdentifier + '-hide')
+    if (hideIcon.classList.contains('d-none')) {
+        hideIcon.classList.remove('d-none');
+    }
+
+    const initiallyShownElements = document.querySelectorAll('.' + classIdentifier + '-shown');
+    for (const elem of initiallyShownElements) {
+        fadeOut(elem);
+    }
+    const showIcon = document.querySelector('.' + classIdentifier + '-show')
+    if (!showIcon.classList.contains('d-none')) {
+        showIcon.classList.add('d-none');
+    }
+}
+
+function hideBadges(classIdentifier) {
+    const initiallyHiddenElements = document.querySelectorAll('.' + classIdentifier + '-hidden');
+    for (const elem of initiallyHiddenElements) {
+        fadeOut(elem);
+    }
+    const hideIcon = document.querySelector('.' + classIdentifier + '-hide')
+    if (!hideIcon.classList.contains('d-none')) {
+        hideIcon.classList.add('d-none');
+    }
+
+    const initiallyShownElements = document.querySelectorAll('.' + classIdentifier + '-shown');
+    for (const elem of initiallyShownElements) {
+        fadeIn(elem);
+    }
+    const showIcon = document.querySelector('.' + classIdentifier + '-show')
+    if (showIcon.classList.contains('d-none')) {
+        showIcon.classList.remove('d-none');
+    }
+}
+
+function fadeOut(element) {
+    element.style.opacity = 1;
+    (function fade() {
+        if ((element.style.opacity -= .1) < 0) {
+            if (!element.classList.contains('d-none')) {
+                element.classList.add('d-none');
+            }
+        } else {
+            requestAnimationFrame(fade);
+        }
+    })();
+};
+
+function fadeIn(element) {
+    element.style.opacity = 0;
+    element.style.display = "block";
+    if (element.classList.contains('d-none')) {
+        element.classList.remove('d-none');
+    }
+
+    (function fade() {
+        var val = parseFloat(element.style.opacity);
+        if (!((val += .1) > 1)) {
+            element.style.opacity = val;
+            requestAnimationFrame(fade);
+        }
+    })();
+};

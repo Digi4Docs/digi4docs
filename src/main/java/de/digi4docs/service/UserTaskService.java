@@ -108,6 +108,10 @@ public class UserTaskService {
         return userTasks;
     }
 
+    public List<Integer> findAllDoneTaskIds(User user) {
+        return userTaskRepository.findAllDoneTaskIds(user.getId());
+    }
+
     public UserTask save(UserTask userTask) {
         if (null == userTask.getUser()) {
             userTask.setUser(userService.findCurrentUser());

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -46,22 +43,9 @@ public class HomeController {
             model.addAttribute("courses", courseService.findAllActive());
 
             Map<Course, Integer> coursePersonTaskCount = progressCountProvider.getPersonalCourseTaskCountMap();
-            List<Course> finishedCourses = new ArrayList<>();
-            coursePersonTaskCount.keySet()
-                                 .forEach(course -> {
-                                     LinkedList<Module> courseModules = RecursiveHandler.getCourseModules(course);
-                                     List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(courseModules);
-                                     int userTaskCount =
-                                             Math.toIntExact(userTaskService.findByTasks(taskIds, currentUser)
-                                                                            .stream()
-                                                                            .filter(userTask -> TaskStatus.DONE.equals(
-                                                                                    userTask.getStatus()))
-                                                                            .count());
-                                     if (userTaskCount == taskIds.size()) {
-                                         finishedCourses.add(course);
-                                     }
-                                 });
-            finishedCourses.forEach(coursePersonTaskCount::remove);
+            List<Integer> doneTasks = userTaskService.findAllDoneTaskIds(currentUser);
+            assignFinishedCourses(model, coursePersonTaskCount, doneTasks);
+            assignBadges(model, doneTasks);
 
             model.addAttribute("personalCourses", coursePersonTaskCount);
             model.addAttribute("courseTaskCounts",
@@ -71,47 +55,6 @@ public class HomeController {
             model.addAttribute("rejectedTasks", rejectedOfCurrentUser);
             model.addAttribute("rejectTaskCourses", RecursiveHandler.getUserTaskCourseMap(rejectedOfCurrentUser));
 
-            model.addAttribute("finishedCourses", finishedCourses);
-
-            // adding special badge modules
-            List<Module> finishedBadgeModules = new ArrayList<>();
-            List<Integer> existingModuleWithCourseParent = new ArrayList<>();
-            List<Integer> existingModuleWithModuleParent = new ArrayList<>();
-            moduleService.findAllBadgeModules()
-                         .forEach(badgeModule -> {
-                             if ((null == badgeModule.getParent() && !existingModuleWithCourseParent.contains(
-                                     badgeModule.getCourse()
-                                                .getId()))
-                                     || (null != badgeModule.getParent() && !existingModuleWithModuleParent.contains(
-                                     badgeModule.getParent()
-                                                .getId()))
-                             ) {
-
-                                 LinkedList<Module> modules = RecursiveHandler.getModuleModules(badgeModule);
-                                 List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(modules);
-                                 if (taskIds.size() > 0) {
-                                     int userTaskCount =
-                                             Math.toIntExact(userTaskService.findByTasks(taskIds, currentUser)
-                                                                            .stream()
-                                                                            .filter(userTask -> TaskStatus.DONE.equals(
-                                                                                    userTask.getStatus()))
-                                                                            .count());
-                                     if (userTaskCount == taskIds.size()) {
-                                         finishedBadgeModules.add(badgeModule);
-
-                                         // grouping badges of the same course
-                                         if (null == badgeModule.getParent()) {
-                                             existingModuleWithCourseParent.add(badgeModule.getCourse()
-                                                                                           .getId());
-                                         } else {
-                                             existingModuleWithModuleParent.add(badgeModule.getParent()
-                                                                                           .getId());
-                                         }
-                                     }
-                                 }
-                             }
-                         });
-            model.addAttribute("finishedBadgeModules", finishedBadgeModules);
         }
 
         boolean showTeacherTasks =
@@ -123,5 +66,50 @@ public class HomeController {
         }
 
         return "home";
+    }
+
+    private void assignBadges(Model model, List<Integer> doneTasks) {
+        List<Module> finishedBadgeModules = new ArrayList<>();
+        LinkedHashMap<String, LinkedList<Module>> badgeMap = new LinkedHashMap<>();
+        moduleService.findAllBadgeModules()
+                     .forEach(badgeModule -> {
+                         String key = null == badgeModule.getParent() ? "Course" + badgeModule.getCourse()
+                                                                                              .getId() :
+                                 "Module" + badgeModule.getParent()
+                                                       .getId();
+                         if (!badgeMap.containsKey(key)) {
+                             badgeMap.put(key, new LinkedList<>());
+                         }
+
+                         LinkedList<Module> modules = RecursiveHandler.getModuleModules(badgeModule);
+                         List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(modules);
+                         if (taskIds.size() > 0) {
+                             int userTaskCount = Math.toIntExact(doneTasks.stream()
+                                                                          .filter(taskIds::contains)
+                                                                          .count());
+                             if (userTaskCount == taskIds.size()) {
+                                 badgeMap.get(key)
+                                         .add(badgeModule);
+                             }
+                         }
+                     });
+        model.addAttribute("badgeMap", badgeMap);
+    }
+
+    private void assignFinishedCourses(Model model, Map<Course, Integer> coursePersonTaskCount,
+            List<Integer> doneTasks) {
+        List<Course> finishedCourses = new ArrayList<>();
+        for (Course course : coursePersonTaskCount.keySet()) {
+            LinkedList<Module> courseModules = RecursiveHandler.getCourseModules(course);
+            List<Integer> taskIds = RecursiveHandler.getModulesTaskIds(courseModules);
+            int doneCourseTasks = Math.toIntExact(doneTasks.stream()
+                                                           .filter(taskIds::contains)
+                                                           .count());
+            if (taskIds.size() == doneCourseTasks) {
+                finishedCourses.add(course);
+            }
+        }
+        finishedCourses.forEach(coursePersonTaskCount::remove);
+        model.addAttribute("finishedCourses", finishedCourses);
     }
 }
