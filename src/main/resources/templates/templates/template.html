@@ -10,8 +10,7 @@
 
 <div layout:fragment="content">
     <form th:action="@{'/template/' + ${textTemplate.id}}" method="post" th:object="${textTemplateForm}"
-          class="mt-4 border-top pt-4 changeable"
-          novalidate>
+          class="mt-4 border-top pt-4 changeable" novalidate>
         <div th:insert="templates/template-form"></div>
 
         <div class="row mt-4">

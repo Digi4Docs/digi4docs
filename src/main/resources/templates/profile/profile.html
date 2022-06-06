@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="title">Mein Profil bearbeiten</div>
 <div layout:fragment="content">
-    <form class="changeable" th:action="@{/profile}" method="post" th:object="${profileForm}" class="mt-4 border-top pt-4">
+    <form th:action="@{/profile}" method="post" th:object="${profileForm}" class="mt-4 border-top pt-4 changeable">
 
         <input type="hidden" th:field="*{id}" name="id"/>
 
