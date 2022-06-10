@@ -15,9 +15,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -43,6 +41,17 @@ public class SecurityController {
     @GetMapping("/login")
     public String login(Model model) {
         addConfigInfo(model);
+        return "security/login";
+    }
+
+    @RequestMapping("/login/failed")
+    public String loginFailed(Model model, @ModelAttribute("email") String emailInput,
+            @ModelAttribute("password") String passwordInput, @ModelAttribute("remember-me") String checkedInput) {
+        model.addAttribute("error", true);
+        model.addAttribute("emailValue", emailInput);
+        model.addAttribute("passwordValue", passwordInput);
+        model.addAttribute("checkedValue", checkedInput);
+
         return "security/login";
     }
 
@@ -123,7 +132,7 @@ public class SecurityController {
         try {
             model.addAttribute("imprintUrl", configService.getImprintUrl());
             model.addAttribute("imprintInstitution", configService.getImprintInstitution());
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.log(Level.WARNING, "Imprint information is not available");
         }
     }
