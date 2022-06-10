@@ -383,6 +383,8 @@ public class PublicCourseController extends AbstractController {
                                                         .getId());
                 }
                 publicTaskForm.setSolution(userTask.getSolution());
+            } else {
+                publicTaskForm.setDate(LocalDate.now().toString());
             }
         }
 
