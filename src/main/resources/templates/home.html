@@ -52,8 +52,9 @@
                                     <div class="text-success position-relative">
                                         <div th:if="${!#strings.isEmpty(badgeModule.badgeText)}"
                                              class="position-absolute w-100 me-auto ms-auto home-badge-text">
-                                        <span class="badge bg-light text-wrap mx-1 text-secondary"
-                                              th:classappend="${badgeModule.badgeHasBorder eq true ? 'border border-3 border-secondary': ''}">[[${badgeModule.badgeText}]]</span>
+                                        <span class="badge text-wrap mx-1 text-secondary"
+                                              th:style="${badgeModule.badgeHasBorder eq true and !#strings.isEmpty(badgeModule.color) ? 'background-color:' + badgeModule.color + '!important;' : '' }"
+                                              th:classappend="${badgeModule.badgeHasBorder eq true ? 'border border-2 border-light text-white bg-success': 'bg-light'}">[[${badgeModule.badgeText}]]</span>
                                         </div>
                                         <i class="icon xxl-icon border-success"
                                            th:if="${!#strings.isEmpty(badgeModule.icon)}"
@@ -74,7 +75,8 @@
                                     <a th:attr="onclick=|hideBadges('${badgeMapEntry.key}')|"
                                        th:if="${itStat.first and #lists.size(badgeMapEntry.value) > 1}"
                                        class="text-end w-100 cursor-pointer d-none"
-                                       th:classappend="${badgeMapEntry.key + '-hide'}" title="Zugehörige Auszeichnungen ausblenden">
+                                       th:classappend="${badgeMapEntry.key + '-hide'}"
+                                       title="Zugehörige Auszeichnungen ausblenden">
                                         <i class="bi bi-caret-left-fill text-muted small"></i>
                                     </a>
                                 </div>

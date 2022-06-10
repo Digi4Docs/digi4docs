@@ -69,7 +69,6 @@ public class HomeController {
     }
 
     private void assignBadges(Model model, List<Integer> doneTasks) {
-        List<Module> finishedBadgeModules = new ArrayList<>();
         LinkedHashMap<String, LinkedList<Module>> badgeMap = new LinkedHashMap<>();
         moduleService.findAllBadgeModules()
                      .forEach(badgeModule -> {

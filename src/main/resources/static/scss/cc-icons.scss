@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'icomoon';
-    src:  url('../fonts/icomoon.eot?s2fuv2');
-    src:  url('../fonts/icomoon.eot?s2fuv2#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?s2fuv2') format('truetype'),
-    url('../fonts/icomoon.woff?s2fuv2') format('woff'),
-    url('../fonts/icomoon.svg?s2fuv2#icomoon') format('svg');
+    src:  url('../fonts/icomoon.eot?5tdn4j');
+    src:  url('../fonts/icomoon.eot?5tdn4j#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?5tdn4j') format('truetype'),
+    url('../fonts/icomoon.woff?5tdn4j') format('woff'),
+    url('../fonts/icomoon.svg?5tdn4j#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -20,18 +20,27 @@
     text-rendering: auto;
 }
 
-.ccicon-cc-0:before {
+.ccicon-cc-badge-0:before {
     content: "\e900";
 }
-.ccicon-cc-1:before {
+.ccicon-cc-badge-1:before {
     content: "\e901";
 }
-.ccicon-cc-2:before {
+.ccicon-cc-badge-2:before {
     content: "\e902";
 }
-.ccicon-cc-3:before {
+.ccicon-cc-badge-3:before {
     content: "\e903";
 }
-.ccicon-cc-4:before {
+.ccicon-cc-badge-4:before {
     content: "\e904";
+}
+.ccicon-cc-badge-5:before {
+    content: "\e905";
+}
+.ccicon-cc-badge-6:before {
+    content: "\e906";
+}
+.ccicon-cc-badge-7:before {
+    content: "\e907";
 }
