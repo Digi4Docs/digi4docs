@@ -42,7 +42,7 @@ public class ModuleService {
     @Nullable
     public Module findNextModule(Integer moduleId, Integer currentTaskPosition) {
         Optional<Module> module =
-                moduleRepository.findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(moduleId,
+                moduleRepository.findFirstByParentIdAndIsActiveTrueAndOrderPositionGreaterThanOrderByOrderPositionAsc(moduleId,
                         currentTaskPosition);
         return module.orElse(null);
     }
@@ -50,7 +50,7 @@ public class ModuleService {
     @Nullable
     public Module findNextModule(Course course, Integer currentTaskPosition) {
         Optional<Module> module =
-                moduleRepository.findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(course.getId(),
+                moduleRepository.findFirstByCourseIdAndIsActiveTrueAndOrderPositionGreaterThanOrderByOrderPositionAsc(course.getId(),
                         currentTaskPosition);
         return module.orElse(null);
     }
@@ -58,7 +58,7 @@ public class ModuleService {
     @Nullable
     public Module findPreviousModule(Integer moduleId, Integer currentTaskPosition) {
         Optional<Module> module =
-                moduleRepository.findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(moduleId,
+                moduleRepository.findFirstByParentIdAndIsActiveTrueAndOrderPositionLessThanOrderByOrderPositionDesc(moduleId,
                         currentTaskPosition);
         return module.orElse(null);
     }
@@ -66,7 +66,7 @@ public class ModuleService {
     @Nullable
     public Module findPreviousModule(Course course, Integer currentTaskPosition) {
         Optional<Module> module =
-                moduleRepository.findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(course.getId(),
+                moduleRepository.findFirstByCourseIdAndIsActiveTrueAndOrderPositionLessThanOrderByOrderPositionDesc(course.getId(),
                         currentTaskPosition);
         return module.orElse(null);
     }

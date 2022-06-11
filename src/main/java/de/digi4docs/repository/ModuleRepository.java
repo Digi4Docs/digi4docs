@@ -22,13 +22,25 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
     Optional<Module> findFirstByParentIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer parentId,
             Integer orderPosition);
 
+    Optional<Module> findFirstByParentIdAndIsActiveTrueAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer parentId,
+            Integer orderPosition);
+
     Optional<Module> findFirstByCourseIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer courseId,
+            Integer orderPosition);
+
+    Optional<Module> findFirstByCourseIdAndIsActiveTrueAndOrderPositionGreaterThanOrderByOrderPositionAsc(Integer courseId,
             Integer orderPosition);
 
     Optional<Module> findFirstByParentIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer parentId,
             Integer orderPosition);
 
+    Optional<Module> findFirstByParentIdAndIsActiveTrueAndOrderPositionLessThanOrderByOrderPositionDesc(Integer parentId,
+            Integer orderPosition);
+
     Optional<Module> findFirstByCourseIdAndOrderPositionLessThanOrderByOrderPositionDesc(Integer courseId,
+            Integer orderPosition);
+
+    Optional<Module> findFirstByCourseIdAndIsActiveTrueAndOrderPositionLessThanOrderByOrderPositionDesc(Integer courseId,
             Integer orderPosition);
 
     List<Module> findAllByAsBadgeTrueAndIsActiveTrueOrderByParentAscOrderPositionDesc();

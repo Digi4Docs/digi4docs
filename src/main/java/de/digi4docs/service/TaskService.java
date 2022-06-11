@@ -34,7 +34,7 @@ public class TaskService {
     @Nullable
     public Task findNextTask(Integer moduleId, Integer currentTaskPosition) {
         Optional<Task> task =
-                taskRepository.findFirstByModuleIdAndOrderPositionGreaterThanOrderByOrderPositionAsc(moduleId,
+                taskRepository.findFirstByModuleIdAndIsActiveTrueAndOrderPositionGreaterThanOrderByOrderPositionAsc(moduleId,
                         currentTaskPosition);
         return task.orElse(null);
     }
@@ -42,7 +42,7 @@ public class TaskService {
     @Nullable
     public Task findPreviousTask(Integer moduleId, Integer currentTaskPosition) {
         Optional<Task> task =
-                taskRepository.findFirstByModuleIdAndOrderPositionLessThanOrderByOrderPositionDesc(moduleId,
+                taskRepository.findFirstByModuleIdAndIsActiveTrueAndOrderPositionLessThanOrderByOrderPositionDesc(moduleId,
                         currentTaskPosition);
         return task.orElse(null);
     }
