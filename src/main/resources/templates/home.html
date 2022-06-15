@@ -10,7 +10,7 @@
 <div layout:fragment="title-image">
     <h2 class="mb-0 py-4 text-center bg-secondary bg-gradient text-white rounded-top">
         <i class="bi bi-sun"></i>
-        Herzlich Willkommen, [[${currentUser.firstname}]] [[${currentUser.lastname}]]!
+        Herzlich Willkommen, [[${currentUser.fullnameReverse}]]!
     </h2>
     <img th:src="@{~/img/home-title.jpg}" class="card-img-top rounded-0"/>
 </div>

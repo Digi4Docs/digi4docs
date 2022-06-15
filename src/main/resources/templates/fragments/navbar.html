@@ -76,7 +76,8 @@
                 </li>
                 <li class="nav-item me-2" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link"
-                       th:classappend="${#httpServletRequest.requestURI == '/statistic' ? 'active' : ''}" th:href="@{/statistic}">
+                       th:classappend="${#httpServletRequest.requestURI == '/statistic' ? 'active' : ''}"
+                       th:href="@{/statistic}">
                         <i class="bi bi-bar-chart-line-fill"></i> Statistik</a>
                 </li>
 
@@ -110,12 +111,18 @@
                        th:classappend="${#httpServletRequest.requestURI.startsWith('/profile') ? 'active' : ''}"
                        th:href="@{/profile}"><i class="bi bi-person-square"></i> Profil</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item me-2">
                     <form th:action="@{/logout}" method="post">
                         <button type="submit" class="btn btn-link nav-link">
                             <i class="bi bi-power"></i> Abmelden
                         </button>
                     </form>
+                </li>
+                <li class="nav-item me-2">
+                    <a class="nav-link" th:href="@{/help}"
+                       th:classappend="${#httpServletRequest.requestURI.startsWith('/help') ? 'active' : ''}">
+                        <i class="bi bi-question-circle"></i>
+                    </a>
                 </li>
             </ul>
         </div>
