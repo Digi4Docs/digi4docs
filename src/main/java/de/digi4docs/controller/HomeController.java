@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -40,12 +41,18 @@ public class HomeController {
 
         boolean isStudent = userService.hasUserRole(currentUser, Role.STUDENT);
         if (isStudent) {
-            model.addAttribute("courses", courseService.findAllActive());
 
             Map<Course, Integer> coursePersonTaskCount = progressCountProvider.getPersonalCourseTaskCountMap();
             List<Integer> doneTasks = userTaskService.findAllDoneTaskIds(currentUser);
-            assignFinishedCourses(model, coursePersonTaskCount, doneTasks);
+            List<Course> courses = assignFinishedCourses(model, coursePersonTaskCount, doneTasks);
             assignBadges(model, doneTasks);
+            model.addAttribute("courses", courseService.findAllActive()
+                                                       .stream()
+                                                       .filter(course -> 0 == courses.stream()
+                                                                                     .filter(finishedCourse -> course.getId()
+                                                                                                                     .equals(finishedCourse.getId()))
+                                                                                     .count())
+                                                       .collect(Collectors.toList()));
 
             model.addAttribute("personalCourses", coursePersonTaskCount);
             model.addAttribute("courseTaskCounts",
@@ -95,7 +102,7 @@ public class HomeController {
         model.addAttribute("badgeMap", badgeMap);
     }
 
-    private void assignFinishedCourses(Model model, Map<Course, Integer> coursePersonTaskCount,
+    private List<Course> assignFinishedCourses(Model model, Map<Course, Integer> coursePersonTaskCount,
             List<Integer> doneTasks) {
         List<Course> finishedCourses = new ArrayList<>();
         for (Course course : coursePersonTaskCount.keySet()) {
@@ -110,5 +117,7 @@ public class HomeController {
         }
         finishedCourses.forEach(coursePersonTaskCount::remove);
         model.addAttribute("finishedCourses", finishedCourses);
+
+        return finishedCourses;
     }
 }

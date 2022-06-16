@@ -23,13 +23,13 @@
                 <a th:if="${null != previousModule}"
                    th:href="@{'/public/course/' + ${course.id} + '/module/' + ${previousModule.id}}"
                    class="btn btn-sm btn-outline-secondary text-nowrap">
-                    <i class="bi bi-arrow-left-short me-1"></i>
-                    Vorheriges Modul
+                    <i class="bi bi-arrow-left-short"></i>
+                    <span class="d-none d-md-inline-block ms-1">Vorheriges Modul</span>
                 </a>
                 <button type="button" th:unless="${null != previousModule}"
                         class="btn btn-sm btn-light border text-nowrap disabled" disabled>
-                    <i class="bi bi-arrow-left-short me-1"></i>
-                    Vorheriges Modul
+                    <i class="bi bi-arrow-left-short"></i>
+                    <span class="d-none d-md-inline-block ms-1">Vorheriges Modul</span>
                 </button>
             </div>
 
@@ -79,13 +79,13 @@
                 <a th:if="${null != nextModule}"
                    th:href="@{'/public/course/' + ${course.id} + '/module/' + ${nextModule.id}}"
                    class="btn btn-sm btn-outline-secondary text-nowrap">
-                    <i class="bi bi-arrow-right-short me-1"></i>
-                    Nächstes Modul
+                    <i class="bi bi-arrow-right-short"></i>
+                    <span class="d-none d-md-inline-block ms-1">Nächstes Modul</span>
                 </a>
                 <button type="button" th:unless="${null != nextModule}"
                         class="btn btn-sm btn-light border text-nowrap disabled" disabled>
-                    <i class="bi bi-arrow-right-short me-1"></i>
-                    Nächstes Modul
+                    <i class="bi bi-arrow-right-short"></i>
+                    <span class="d-none d-md-inline-block ms-1">Nächstes Modul</span>
                 </button>
             </div>
         </div>

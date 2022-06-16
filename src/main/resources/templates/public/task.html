@@ -17,28 +17,29 @@
             <a th:if="${null != previousTask}"
                th:href="@{'/public/course/' + ${course.id} + '/task/' + ${previousTask.id}}"
                class="btn btn-sm btn-outline-secondary text-nowrap">
-                <i class="bi bi-arrow-left-short me-1"></i>
-                Vorherige Aufgabe
+                <i class="bi bi-arrow-left-short"></i>
+                <span class="d-none d-md-inline-block ms-1">Vorherige Aufgabe</span>
             </a>
             <button type="button" th:unless="${null != previousTask}"
                     class="btn btn-sm btn-light border text-nowrap disabled" disabled>
-                <i class="bi bi-arrow-left-short me-1"></i>
-                Vorherige Aufgabe
+                <i class="bi bi-arrow-left-short"></i>
+                <span class="d-none d-md-inline-block ms-1">Vorherige Aufgabe</span>
             </button>
         </div>
-        <div><a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}">
-            Aufgabe [[${task.orderPosition}]] von [[${#lists.size(module.tasks)}]]</a>
+        <div>
+            <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}">
+            <span class="d-none d-md-inline-block">Aufgabe</span> [[${task.orderPosition}]] von [[${#lists.size(module.tasks)}]]</a>
         </div>
         <div>
             <a th:if="${null != nextTask}" th:href="@{'/public/course/' + ${course.id} + '/task/' + ${nextTask.id}}"
                class="btn btn-sm btn-outline-secondary text-nowrap">
-                <i class="bi bi-arrow-right-short me-1"></i>
-                Nächste Aufgabe
+                <i class="bi bi-arrow-right-short"></i>
+                <span class="d-none d-md-inline-block ms-1">Nächste Aufgabe</span>
             </a>
             <button type="button" th:unless="${null != nextTask}"
                     class="btn btn-sm btn-light border text-nowrap disabled" disabled>
-                <i class="bi bi-arrow-right-short me-1"></i>
-                Nächste Aufgabe
+                <i class="bi bi-arrow-right-short"></i>
+                <span class="d-none d-md-inline-block ms-1">Nächste Aufgabe</span>
             </button>
         </div>
     </div>
