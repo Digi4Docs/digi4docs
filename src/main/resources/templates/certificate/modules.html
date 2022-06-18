@@ -39,7 +39,7 @@
                 <div class="col-3 fst-italic">Lernaufgabe / Projekt:</div>
                 <div class="col-9">
                     <span th:if="${null != userTaskMap.get(task.id)}">
-                        [[${userTaskMap.get(task.id).solution}]]
+                        [(${#strings.replace(#strings.escapeXml(userTaskMap.get(task.id).solution),'&#10;','&lt;br&gt;')})]
                     </span>
                 </div>
             </div>
