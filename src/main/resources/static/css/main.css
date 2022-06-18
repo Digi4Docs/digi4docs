@@ -26095,8 +26095,8 @@ readers do not read off random characters that represent icons */
 
 @font-face {
   font-family: "icomoon";
-  src: url("../fonts/icomoon.eot?5tdn4j");
-  src: url("../fonts/icomoon.eot?5tdn4j#iefix") format("embedded-opentype"), url("../fonts/icomoon.ttf?5tdn4j") format("truetype"), url("../fonts/icomoon.woff?5tdn4j") format("woff"), url("../fonts/icomoon.svg?5tdn4j#icomoon") format("svg");
+  src: url("../fonts/icomoon.eot?h6rte8");
+  src: url("../fonts/icomoon.eot?h6rte8#iefix") format("embedded-opentype"), url("../fonts/icomoon.ttf?h6rte8") format("truetype"), url("../fonts/icomoon.woff?h6rte8") format("woff"), url("../fonts/icomoon.svg?h6rte8#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26141,6 +26141,18 @@ readers do not read off random characters that represent icons */
 
 .ccicon-cc-badge-7:before {
   content: "\e907";
+}
+
+.ccicon-scratch:before {
+  content: "\e908";
+}
+
+.ccicon-lego-mindstorms:before {
+  content: "\e909";
+}
+
+.ccicon-tiger-jython:before {
+  content: "\e90a";
 }
 
 .public-page .wrap {
