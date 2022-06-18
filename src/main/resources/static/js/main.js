@@ -164,6 +164,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 console.log('Service worker registration failed, error:', error);
             });
     }
+
+    // show loading animation on button submit
+    $('button[type="submit"].btn-success, button[type="submit"].btn-primary').click(function () {
+        $(this).prepend('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        $(this).find('i.bi').each(function () {
+            $(this).remove();
+        });
+    })
 });
 
 // show and hide badges on home page
