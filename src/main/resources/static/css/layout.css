@@ -126,10 +126,6 @@ select option.inactive {
   right: 0;
 }
 
-a span {
-  text-decoration: underline;
-}
-
 @media (min-width: 992px) {
   .web-certificate {
     padding: 3rem 20vw;

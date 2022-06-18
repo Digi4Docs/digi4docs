@@ -28,7 +28,7 @@
         </div>
         <div>
             <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}">
-            <span class="d-none d-md-inline-block">Aufgabe</span> [[${task.orderPosition}]] von [[${#lists.size(module.tasks)}]]</a>
+            <span class="d-none d-md-inline-block text-decoration-underline">Aufgabe</span> [[${task.orderPosition}]] von [[${#lists.size(module.tasks)}]]</a>
         </div>
         <div>
             <a th:if="${null != nextTask}" th:href="@{'/public/course/' + ${course.id} + '/task/' + ${nextTask.id}}"
