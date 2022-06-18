@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             $('table.datatables').DataTable({
                 "dom": "<'row'<'col-sm-12 mb-2'tr>>" +
                     "<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
-                //stateSave: true,
+                stateSave: true,
                 language: {
                     paginate: {
                         first: "Erste",
@@ -57,6 +57,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     var tableRow = $($(this).find('tfoot tr'));
                     $($(this).find('thead')).append(tableRow);
 
+                    // Restore existing values
+                    var state = this.api().state.loaded();
+                    if (state) {
+                        this.api().columns().eq(0).each(function (colIdx) {
+                            var that = this;
+                            var colSearch = state.columns[colIdx].search;
+
+                            if (colSearch.search) {
+                                $('input', that.column(colIdx).footer()).val(colSearch.search);
+                            }
+                        });
+
+                        this.api().draw();
+                    }
+
                     // Apply the search
                     this.api().columns().every(function () {
                         var that = this;
@@ -69,10 +84,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
                             }
                         });
                     });
+
+                    // reset
+                    var that = this;
+                    $('.datatables-filter-reset').click(function () {
+                        that.api().state.clear();
+                        window.location.reload();
+                    });
                 }
             });
+
         } catch (e) {
-            console.log("Can not initiate datatables");
+            console.log("Can not initiate datatables", e);
         }
     }
 

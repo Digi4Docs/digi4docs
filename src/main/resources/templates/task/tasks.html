@@ -32,8 +32,12 @@
     <div class="tab-content p-3 border border-top-0" id="nav-tabContent">
         <div class="row text-end mb-3">
             <div class="col-12">
+                <button type="button" class="btn btn-sm btn-light border mb-2 me-2 mb-md-0 datatables-filter-reset">
+                    <i class="bi bi-reply"></i>
+                    Filter zurücksetzen
+                </button>
                 <a th:href="@{'/module/' + ${parentModule.id} + '/task'}"
-                   class="btn btn-primary">
+                   class="btn btn-sm btn-primary">
                     <i class="bi bi-collection-fill"></i>
                     Neue Aufgabe
                 </a>

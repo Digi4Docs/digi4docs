@@ -26294,6 +26294,10 @@ select option.inactive {
   display: none;
 }
 
+.datatables thead input[type=text].form-control {
+  color: var(--bs-danger);
+}
+
 @media (min-width: 992px) {
   .web-certificate {
     padding: 3rem 20vw;

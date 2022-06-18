@@ -23,6 +23,10 @@
                 Du hast [[${taskSize}]] Aufgaben in deinem Postfach.
             </div>
             <div class="col-6 text-end">
+                <button type="button" class="btn btn-sm btn-light border mb-2 me-2 mb-md-0 datatables-filter-reset">
+                    <i class="bi bi-reply"></i>
+                    Filter zurücksetzen
+                </button>
                 <a th:href="@{/tasks/edit}" class="btn btn-sm btn-secondary mb-2 mb-md-0"
                    th:if="${true != editTasks and !showDone and !showAll and !tasks.empty}">
                     <i class="bi bi-check-all"></i>

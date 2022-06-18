@@ -13,7 +13,11 @@
 <div layout:fragment="content">
     <div class="row text-end mb-3">
         <div class="col-12">
-            <a th:href="@{/template}" class="btn btn-primary">
+            <button type="button" class="btn btn-sm btn-light border mb-2 me-2 mb-md-0 datatables-filter-reset">
+                <i class="bi bi-reply"></i>
+                Filter zurücksetzen
+            </button>
+            <a th:href="@{/template}" class="btn btn-sm btn-primary">
                 <i class="bi bi-text-paragraph"></i>
                 Neue Text-Vorlage
             </a>

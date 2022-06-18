@@ -37,8 +37,12 @@
         <div class="tab-pane fade show active" id="nav-modules" role="tabpanel" aria-labelledby="nav-modules-tab">
             <div class="row text-end mb-3">
                 <div class="col-12">
+                    <button type="button" class="btn btn-sm btn-light border mb-2 me-2 mb-md-0 datatables-filter-reset">
+                        <i class="bi bi-reply"></i>
+                        Filter zurücksetzen
+                    </button>
                     <a th:href="@{(${null == parentModule} ? '/course/' + ${course.id} + '/module' : '/module/' + ${parentModule.id} + '/module')}"
-                       class="btn btn-primary">
+                       class="btn btn-sm btn-primary">
                         <i class="bi bi-collection-fill"></i>
                         Neues Modul
                     </a>

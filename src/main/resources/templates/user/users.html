@@ -11,11 +11,15 @@
 <div layout:fragment="content">
     <div class="row text-end mb-3">
         <div class="col-12">
-            <a th:href="@{/user}" class="btn btn-primary mb-2 mb-md-0">
+            <button type="button" class="btn btn-sm btn-light border mb-2 me-2 mb-md-0 datatables-filter-reset">
+                <i class="bi bi-reply"></i>
+                Filter zurücksetzen
+            </button>
+            <a th:href="@{/user}" class="btn btn-sm btn-primary mb-2 mb-md-0">
                 <i class="bi bi-person-plus-fill"></i>
                 Neuer Benutzer
             </a>
-            <a th:href="@{/users/import}" class="btn btn-secondary ms-3 mb-2 mb-md-0" sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/users/import}" class="btn btn-sm btn-secondary ms-2 mb-2 mb-md-0" sec:authorize="hasAuthority('ADMIN')">
                 <i class="bi bi-arrow-bar-down"></i>
                 Benutzer importieren
             </a>
