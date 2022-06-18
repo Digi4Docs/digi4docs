@@ -7,6 +7,10 @@ import de.digi4docs.model.User;
 import de.digi4docs.model.UserTask;
 import de.digi4docs.repository.UserTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,6 +22,8 @@ import java.util.Optional;
 
 @Component
 public class UserTaskService {
+    private final static int PAGE_LIMIT = 2000;
+
     private UserTaskRepository userTaskRepository;
     private UserService userService;
 
@@ -60,36 +66,29 @@ public class UserTaskService {
 
     public List<TaskReviewRow> findTransmittedOfCurrentUser() {
         User currentUser = userService.findCurrentUser();
-        List<TaskReviewRow> userTasks =
-                userTaskRepository.findDtoByTeacherIdAndStatus(currentUser.getId(), TaskStatus.TRANSMITTED);
-        userTasks.sort(Comparator.comparing(TaskReviewRow::getTransmittedAt, Comparator.nullsLast(
-                Comparator.naturalOrder())));
-        return userTasks;
+        Pageable pageable = PageRequest.of(0, PAGE_LIMIT, Sort.by(Sort.Direction.ASC, "transmittedAt"));
+        Page<TaskReviewRow> userTasks =
+                userTaskRepository.findTransmitted(currentUser.getId(), pageable);
+        return userTasks.getContent();
     }
 
     public List<TaskReviewRow> findAllTransmitted() {
-        List<TaskReviewRow> userTasks = userTaskRepository.findDtoByStatus(TaskStatus.TRANSMITTED);
-        userTasks.sort(Comparator.comparing(TaskReviewRow::getTransmittedAt, Comparator.nullsLast(
-                Comparator.naturalOrder())));
-        return userTasks;
+        Pageable pageable = PageRequest.of(0, PAGE_LIMIT, Sort.by(Sort.Direction.ASC, "transmittedAt"));
+        Page<TaskReviewRow> userTasks = userTaskRepository.findDtoByStatus(TaskStatus.TRANSMITTED, pageable);
+        return userTasks.getContent();
     }
 
     public List<TaskReviewRow> findDoneOfCurrentUser() {
         User currentUser = userService.findCurrentUser();
-        List<TaskReviewRow> userTasks =
-                userTaskRepository.findDtoByTeacherIdAndStatus(currentUser.getId(), TaskStatus.DONE);
-        userTasks.addAll(userTaskRepository.findDtoByTeacherIdAndStatus(currentUser.getId(), TaskStatus.REJECTED));
-        userTasks.sort(Comparator.comparing(TaskReviewRow::getTransmittedAt, Comparator.nullsLast(
-                Comparator.naturalOrder())));
-        return userTasks;
+        Pageable pageable = PageRequest.of(0, PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "transmittedAt"));
+        Page<TaskReviewRow> userTasks = userTaskRepository.findDone(currentUser.getId(), pageable);
+        return userTasks.getContent();
     }
 
     public List<TaskReviewRow> findAllDone() {
-        List<TaskReviewRow> tasks = userTaskRepository.findDtoByStatus(TaskStatus.DONE);
-        tasks.addAll(userTaskRepository.findDtoByStatus(TaskStatus.REJECTED));
-        tasks.sort(Comparator.comparing(TaskReviewRow::getTransmittedAt, Comparator.nullsLast(
-                Comparator.naturalOrder())));
-        return tasks;
+        Pageable pageable = PageRequest.of(0, PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "transmittedAt"));
+        Page<TaskReviewRow> userTasks = userTaskRepository.findDone(pageable);
+        return userTasks.getContent();
     }
 
     public List<TaskDoneCountResult> findDoneTaskCount(List<Integer> taskIds, String start, String end) {
