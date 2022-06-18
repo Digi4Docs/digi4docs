@@ -126,6 +126,19 @@ select option.inactive {
   right: 0;
 }
 
+.home-courses img {
+  max-width: 100% !important;
+}
+
+.home-courses .card-row-description {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.home-courses .card-row-description img {
+  display: none;
+}
+
 @media (min-width: 992px) {
   .web-certificate {
     padding: 3rem 20vw;
