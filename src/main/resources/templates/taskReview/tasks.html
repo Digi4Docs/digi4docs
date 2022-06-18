@@ -69,7 +69,7 @@
                 <tr th:each="task : ${tasks}">
                     <td>[[${task.moduleTitle}]]</td>
                     <td>[[${task.title}]]</td>
-                    <td>
+                    <td th:data-order="${null != task.transmittedAt ? #temporals.format(task.transmittedAt, 'yyyyMMddHHmm') : 0}">
                         <th:block th:if="${null != task.transmittedAt}">
                             [[ ${#temporals.format(task.transmittedAt, 'dd.MM.yyyy')} ]]
                             [[ ${#temporals.format(task.transmittedAt, 'HH:mm')} ]] Uhr
