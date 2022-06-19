@@ -185,48 +185,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card bg-light home-column-height overflow-auto mt-4" sec:authorize="hasAuthority('STUDENT')"
-                 th:if="${null != finishedCourses and #lists.size(finishedCourses) > 0}">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">Meine abgeschlossenen Kurse</h5>
-                    <div class="card-text">
-                        <div th:each="course, itStat: ${finishedCourses}"
-                             th:classappend="${!itStat.last ? 'mb-2' : ''}">
-                            <div class="p-2 border rounded-0 rounded-top d-flex flex-column bg-white">
-
-                                <div class="row">
-                                    <div class="col-12 col-lg-7 ">
-                                        <span th:if="${!#strings.isEmpty(course.icon)}">
-                                            <i th:classappend="${course.icon}" class="me-3 icon"></i>
-                                        </span>
-                                        <div class="d-inline-block">
-                                            <div class="d-block fw-bold">[[ ${course.title} ]]</div>
-                                            <div class="d-block text-secondary">[[ ${#lists.size(course.modules) }]]
-                                                Kurseinheiten
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-lg-5 mt-3 mt-lg-2 text-end">
-                                        <a th:href="@{'/public/course/' + ${course.id}}"
-                                           class="btn btn-primary me-2">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>
-                                        <a th:href="@{'/public/certificate/' + ${course.id}}"
-                                           class="btn btn-secondary me-2">
-                                            <i class="bi bi-award-fill"></i>
-                                        </a>
-                                        <a th:href="@{'/public/course-overview/' + ${course.id}}"
-                                           class="btn btn-outline-secondary">
-                                            <i class="bi bi-list-check"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-md-6 mt-3 mt-md-0" sec:authorize="hasAuthority('STUDENT')">
             <div class="card bg-light border-danger home-column-height overflow-auto mb-4"
@@ -306,6 +264,48 @@
                                 </div>
                             </div>
                             <hr class="mb-1" th:if="${!itStat.last}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-light home-column-height overflow-auto mt-4" sec:authorize="hasAuthority('STUDENT')"
+                 th:if="${null != finishedCourses and #lists.size(finishedCourses) > 0}">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Meine abgeschlossenen Kurse</h5>
+                    <div class="card-text">
+                        <div th:each="course, itStat: ${finishedCourses}"
+                             th:classappend="${!itStat.last ? 'mb-2' : ''}">
+                            <div class="p-2 border rounded-0 rounded-top d-flex flex-column bg-white">
+
+                                <div class="row">
+                                    <div class="col-12 col-lg-7 ">
+                                        <span th:if="${!#strings.isEmpty(course.icon)}">
+                                            <i th:classappend="${course.icon}" class="me-3 icon"></i>
+                                        </span>
+                                        <div class="d-inline-block">
+                                            <div class="d-block fw-bold">[[ ${course.title} ]]</div>
+                                            <div class="d-block text-secondary">[[ ${#lists.size(course.modules) }]]
+                                                Kurseinheiten
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-5 mt-3 mt-lg-2 text-end">
+                                        <a th:href="@{'/public/course/' + ${course.id}}"
+                                           class="btn btn-primary me-2">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        <a th:href="@{'/public/certificate/' + ${course.id}}"
+                                           class="btn btn-secondary me-2">
+                                            <i class="bi bi-award-fill"></i>
+                                        </a>
+                                        <a th:href="@{'/public/course-overview/' + ${course.id}}"
+                                           class="btn btn-outline-secondary">
+                                            <i class="bi bi-list-check"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
