@@ -95,7 +95,7 @@ public class Importer {
 
                 user.setClassIdentifier(null == row.get(5) ? "" : row.get(5));
                 user.setIsActive(isActive);
-                user.setPassword("");
+                user.setPassword(null == row.get(6) ? null : row.get(6));
                 user.setRoles(new HashSet<>());
 
                 roles.forEach(role -> {
@@ -132,6 +132,7 @@ public class Importer {
             headerRow.add("Jahrgang");
             headerRow.add("Klasse (Zahl)");
             headerRow.add("Klasse (Buchstabe)");
+            headerRow.add("Passwort");
             rows.add(headerRow);
 
             csvPrinter.printRecords(rows);
