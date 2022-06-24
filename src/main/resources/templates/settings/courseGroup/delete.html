@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<head>
+    <title>Einstellungen - Gruppe löschen</title>
+</head>
+<body>
+<div layout:fragment="title">Einstellungen - Gruppe löschen</div>
+
+<div layout:fragment="content">
+    <div class="alert alert-danger">
+        Möchtest du die Gruppe "[[${courseGroup.name}]]" löschen? Wenn die Gruppe gelöscht wird, werden alle im System
+        damit verknüpften Daten entfernt. Das kann nicht mehr rückgängig gemacht werden. Überlege, ob du stattdessen
+        besser den aktiven Status der Gruppe entfernst.
+    </div>
+    <a th:href="@{'/settings/group/delete/' + ${courseGroup.id}}" class="btn btn-danger ms-2">
+        <i class="bi bi-trash-fill"></i>
+        Löschen
+    </a>
+    <a th:href="@{'/settings/group/' + ${courseGroup.id}}" class="btn btn-secondary ms-2">
+        <i class="bi bi-x-circle-fill"></i>
+        Abbrechen
+    </a>
+</div>
+</body>
+</html>

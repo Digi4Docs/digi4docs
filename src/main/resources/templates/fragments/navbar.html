@@ -96,6 +96,13 @@
                             </a>
                         </li>
                         <li>
+                            <a class="dropdown-item" th:href="@{/settings/groups}"
+                               th:classappend="${#httpServletRequest.requestURI.startsWith('/settings/group') ? 'active' : ''}">
+                                <i class="bi bi-person-video2"></i>
+                                Gruppen
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item" th:href="@{/settings/config}"
                                th:classappend="${#httpServletRequest.requestURI.startsWith('/settings/config') ? 'active' : ''}">
                                 <i class="bi bi-gear-fill"></i>

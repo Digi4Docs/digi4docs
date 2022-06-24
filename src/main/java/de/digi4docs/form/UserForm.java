@@ -33,4 +33,6 @@ public class UserForm {
 
     @NotEmpty(message = "Bitte wähle mindestens eine Rolle aus.")
     protected List<Role> roles;
+
+    protected List<Integer> courseGroups;
 }

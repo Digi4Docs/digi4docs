@@ -79,7 +79,7 @@
 <fieldset class="border rounded p-3 mt-4">
     <legend>Berechtigungen</legend>
     <div class="row">
-        <div class="col-md-6 mb-3 pe-md-3">
+        <div class="col-md-4 mb-3 pe-md-3">
             <label class="mb-2">Status</label>
             <div class="d-block">
                 <input type="checkbox"
@@ -94,8 +94,9 @@
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('isActive')}" th:errors="*{isActive}"></div>
             </div>
         </div>
-        <div class="col-md-3 mb-3 ps-md-3">
+        <div class="col-md-4 mb-3 ps-md-3">
             <label class="mb-2">Rollen</label>
+            <div class="text-muted small mb-4">Mindestens eine Rolle muss zugewiesen sein, um Zugriff auf Digi4Docs zu gewähren.</div>
             <div class="d-block" th:each="roleOpt : ${T(de.digi4docs.model.Role).values()}">
                 <input
                         th:classappend="${#fields.hasErrors('roles') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
@@ -109,6 +110,24 @@
                 <label th:for="${roleOpt}" th:text="${roleOpt.displayValue}"
                        class="form-check-label"></label>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3 ps-md-3">
+            <label class="mb-2">Gruppen</label>
+            <div class="text-muted small mb-4">Optional: Kann genutzt werden, um auf Gruppen eingeschränkte Kurse zu zuweisen.</div>
+            <div class="d-block" th:each="group : ${courseGroups}">
+                <input
+                        th:classappend="${#fields.hasErrors('courseGroups') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                        name="courseGroups"
+                        type="checkbox"
+                        class="form-check-input ms-2"
+                        th:id="${'courseGroup-' + group.id}"
+                        th:value="${group.id}"
+                        th:field="*{courseGroups}"
+                />
+                <label th:for="${'courseGroup-' + group.id}" th:text="${group.name}"
+                       class="form-check-label"></label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('courseGroups')}" th:errors="*{courseGroups}"></div>
             </div>
         </div>
     </div>

@@ -62,6 +62,12 @@ public class User {
     @ManyToMany(mappedBy = "users")
     Set<Subject> subjects;
 
+    @ManyToMany
+    Set<CourseGroup> courseGroups;
+
+    @ManyToMany(mappedBy = "courseGroups")
+    Set<Course> courses;
+
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private List<UserTask> userTasks;
 

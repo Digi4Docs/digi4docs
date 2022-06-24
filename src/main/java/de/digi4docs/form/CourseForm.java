@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,4 +31,6 @@ public class CourseForm {
     protected String description;
 
     protected Boolean isActive;
+
+    protected List<Integer> courseGroups;
 }

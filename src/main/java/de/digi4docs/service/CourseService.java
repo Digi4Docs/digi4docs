@@ -1,15 +1,14 @@
 package de.digi4docs.service;
 
 import de.digi4docs.model.Course;
+import de.digi4docs.model.CourseGroup;
 import de.digi4docs.model.User;
 import de.digi4docs.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class CourseService {
@@ -34,10 +33,19 @@ public class CourseService {
         return courses;
     }
 
-    public List<Course> findAllActive() {
-        return courseRepository.findAllByIsActiveTrueOrderByTitle();
+    public List<Course> findAllActiveUngrouped() {
+        return courseRepository.findAllByIsActiveTrueAndCourseGroupsIsNullOrderByTitle();
     }
 
+    public List<Course> findAllActiveGroupedOfUser() {
+        User currentUser = userService.findCurrentUser();
+        Set<CourseGroup> courseGroups = currentUser.getCourseGroups();
+        if (courseGroups.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return courseRepository.findAllByIsActiveTrueAndCourseGroupsInOrderByTitle(courseGroups);
+    }
 
     public Course save(Course course) {
         User currentUser = userService.findCurrentUser();

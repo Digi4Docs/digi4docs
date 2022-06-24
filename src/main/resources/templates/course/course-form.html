@@ -75,7 +75,42 @@
 </div>
 
 <div class="row">
-    <div class="col-12 mb-3">
+    <div class="col-12 my-3">
+        <a data-bs-toggle="collapse" href="#collapseGroups" role="button" aria-expanded="false"
+           aria-controls="collapseBadge">
+            Gruppen zuweisen »
+        </a>
+    </div>
+    <div class="collapse col-12" id="collapseGroups">
+        <div class="card card-body">
+            <label class="mb-2">Gruppen</label>
+            <div class="text-muted small mb-4">
+                Optional: Um den Zugriff auf den Kurs einzuschränken, kann dieser verschiedenen Gruppen
+                zugeordnet werden.
+                Wenn der Kurs keiner Gruppe zugeordnet ist, dann ist er automatisch für alle Schülerinnen und
+                Schüler verfügbar.
+            </div>
+            <div class="d-block" th:each="group : ${courseGroups}">
+                <input
+                        th:classappend="${#fields.hasErrors('courseGroups') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
+                        name="courseGroups"
+                        type="checkbox"
+                        class="form-check-input ms-2"
+                        th:id="${'courseGroup-' + group.id}"
+                        th:value="${group.id}"
+                        th:field="*{courseGroups}"
+                />
+                <label th:for="${'courseGroup-' + group.id}" th:text="${group.name}"
+                       class="form-check-label"></label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('courseGroups')}"
+                     th:errors="*{courseGroups}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 my-3">
         <a data-bs-toggle="collapse" href="#collapseBadge" role="button" aria-expanded="false"
            aria-controls="collapseBadge">
             Bagde-Konfiguration »
@@ -96,8 +131,10 @@
                             <i class="bi bi-palette-fill"></i>
                         </button>
                     </div>
-                    <div class="d-block text-muted small">Die Farbe ist optional. Wird eine Farbe ausgewählt, so wird diese für den
-                        Badge des Kurses verwendet. Wird keine Farbe angegeben, wird der Badge automatisch in grün dargestellt.<br/>
+                    <div class="d-block text-muted small">Die Farbe ist optional. Wird eine Farbe ausgewählt, so wird
+                        diese für den
+                        Badge des Kurses verwendet. Wird keine Farbe angegeben, wird der Badge automatisch in grün
+                        dargestellt.<br/>
                     </div>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
                 </div>
@@ -106,10 +143,12 @@
                     <input type="text" maxlength="20" th:field="*{badgeText}" class="form-control"
                            th:classappend="${#fields.hasErrors('badgeText') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"
                            id="badgeText" name="badgeText"/>
-                    <div class="d-block text-muted small">Der Bagde-Text wird innerhalb des Icons des Kurses als zusätzlicher Text
+                    <div class="d-block text-muted small">Der Bagde-Text wird innerhalb des Icons des Kurses als
+                        zusätzlicher Text
                         angezeigt. Die Angabe ist optional.<br/>
                     </div>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('badgeText')}" th:errors="*{badgeText}"></div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('badgeText')}"
+                         th:errors="*{badgeText}"></div>
                 </div>
             </div>
         </div>

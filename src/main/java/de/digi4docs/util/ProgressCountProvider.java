@@ -18,7 +18,7 @@ public class ProgressCountProvider {
         this.userTaskService = userTaskService;
     }
 
-    public Map<Course, Integer> getPersonalCourseTaskCountMap() {
+    public Map<Course, Integer> getPersonalCourseTaskCountMap(List<Integer> availableCourseIds) {
         List<UserTask> userTasks = userTaskService.findByUser();
 
         if (userTasks.isEmpty()) {
@@ -53,6 +53,8 @@ public class ProgressCountProvider {
 
         List<Course> coursesArr = new ArrayList<>(courses.values()).stream()
                                                                    .filter(Course::getIsActive)
+                                                                   .filter(course -> availableCourseIds.contains(
+                                                                           course.getId()))
                                                                    .sorted(Comparator.comparing(Course::getTitle))
                                                                    .collect(Collectors.toList());
 

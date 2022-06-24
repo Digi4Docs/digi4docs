@@ -42,17 +42,25 @@ public class HomeController {
         boolean isStudent = userService.hasUserRole(currentUser, Role.STUDENT);
         if (isStudent) {
 
-            Map<Course, Integer> coursePersonTaskCount = progressCountProvider.getPersonalCourseTaskCountMap();
+            List<Course> availableCoursesForUser = courseService.findAllActiveUngrouped();
+            availableCoursesForUser.addAll(courseService.findAllActiveGroupedOfUser());
+            List<Integer> availableCourseIds = availableCoursesForUser.stream()
+                                                                      .map(Course::getId)
+                                                                      .collect(Collectors.toList());
+
+            Map<Course, Integer> coursePersonTaskCount =
+                    progressCountProvider.getPersonalCourseTaskCountMap(availableCourseIds);
             List<Integer> doneTasks = userTaskService.findAllDoneTaskIds(currentUser);
-            List<Course> courses = assignFinishedCourses(model, coursePersonTaskCount, doneTasks);
+            List<Course> finishedCourses = assignFinishedCourses(model, coursePersonTaskCount, doneTasks);
             assignBadges(model, doneTasks);
-            model.addAttribute("courses", courseService.findAllActive()
-                                                       .stream()
-                                                       .filter(course -> 0 == courses.stream()
-                                                                                     .filter(finishedCourse -> course.getId()
-                                                                                                                     .equals(finishedCourse.getId()))
-                                                                                     .count())
-                                                       .collect(Collectors.toList()));
+
+            model.addAttribute("courses", availableCoursesForUser
+                    .stream()
+                    .filter(course -> finishedCourses.stream()
+                                                     .noneMatch(finishedCourse -> course.getId()
+                                                                                        .equals(finishedCourse.getId())))
+                    .filter(course -> !coursePersonTaskCount.containsKey(course))
+                    .collect(Collectors.toList()));
 
             model.addAttribute("personalCourses", coursePersonTaskCount);
             model.addAttribute("courseTaskCounts",

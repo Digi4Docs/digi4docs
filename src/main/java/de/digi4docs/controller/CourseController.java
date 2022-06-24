@@ -2,23 +2,33 @@ package de.digi4docs.controller;
 
 import de.digi4docs.form.CourseForm;
 import de.digi4docs.model.Course;
+import de.digi4docs.model.CourseGroup;
+import de.digi4docs.service.CourseGroupService;
 import de.digi4docs.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class CourseController extends AbstractController {
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private CourseGroupService courseGroupService;
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES')")
     @GetMapping("/courses")
@@ -129,6 +139,8 @@ public class CourseController extends AbstractController {
             return "redirect:/course";
         }
 
+        model.addAttribute("courseGroups", courseGroupService.findAllActive());
+
         Course course = courseOptional.get();
         if (initFormData) {
             courseForm.setId(course.getId());
@@ -140,6 +152,13 @@ public class CourseController extends AbstractController {
             courseForm.setColor(course.getColor());
             courseForm.setBadgeText(course.getBadgeText());
             courseForm.setIsActive(course.getIsActive());
+
+            courseForm.setCourseGroups(new ArrayList<>());
+            course.getCourseGroups()
+                  .forEach(courseGroup -> {
+                      courseForm.getCourseGroups()
+                                .add(courseGroup.getId());
+                  });
         }
 
         model.addAttribute("course", course);
@@ -160,6 +179,27 @@ public class CourseController extends AbstractController {
         course.setColor(courseForm.getColor());
         course.setBadgeText(courseForm.getBadgeText());
         course.setIsActive(courseForm.getIsActive());
+
+
+        if (null == course.getCourseGroups()) {
+            course.setCourseGroups(new HashSet<>());
+        }
+
+        course.getCourseGroups()
+              .clear();
+        if (!CollectionUtils.isEmpty(courseForm.getCourseGroups())) {
+            Map<Integer, CourseGroup> groups = courseGroupService.findAllActive()
+                                                                 .stream()
+                                                                 .collect(Collectors.toMap(CourseGroup::getId,
+                                                                         courseGroup -> courseGroup));
+            courseForm.getCourseGroups()
+                      .forEach(groupId -> {
+                          if (groups.containsKey(groupId)) {
+                              course.getCourseGroups()
+                                    .add(groups.get(groupId));
+                          }
+                      });
+        }
 
         return course;
     }

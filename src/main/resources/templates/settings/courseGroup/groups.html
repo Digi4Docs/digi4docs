@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout}">
+<body>
+<head>
+    <title>Einstellungen - Gruppen</title>
+</head>
+<body>
+<div layout:fragment="title">Einstellungen - Gruppen</div>
+
+<div layout:fragment="content">
+    <div class="row text-end mb-3">
+        <div class="col-12">
+            <button type="button" class="btn btn-sm btn-light border mb-2 me-2 mb-md-0 datatables-filter-reset">
+                <i class="bi bi-reply"></i>
+                Filter zurücksetzen
+            </button>
+            <a th:href="@{/settings/group}" class="btn btn-sm btn-primary">
+                <i class="bi bi-inboxes-fill"></i>
+                Neue Gruppe
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover datatables border mt-2 mb-1" id="courseGroupList">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th data-sortable="false"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${courseGroups.empty}">
+                <td colspan="3"> Keine Gruppen gefunden</td>
+            </tr>
+            <tr th:each="group : ${courseGroups}">
+                <td>[[${group.name}]]</td>
+                <td>
+                    <span th:if="${group.isActive}" class="badge bg-success">aktiv</span>
+                    <span th:unless="${group.isActive}" class="badge bg-danger">gesperrt</span>
+                </td>
+                <td class="text-end">
+                    <a th:href="@{'/settings/group/' + ${group.id}}" class="btn btn-outline-primary">
+                        Bearbeiten
+                    </a>
+                </td>
+            </tr>
+
+            </tbody>
+            <tfoot th:if="${!courseGroups.empty}">
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+</body>

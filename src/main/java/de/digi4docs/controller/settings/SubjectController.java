@@ -187,7 +187,6 @@ public class SubjectController extends AbstractController {
                                subject.getUsers()
                                       .add(teachers.get(userId));
                            }
-                           ;
                        });
         }
 

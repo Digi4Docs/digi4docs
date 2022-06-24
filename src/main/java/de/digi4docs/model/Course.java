@@ -10,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -69,4 +70,7 @@ public class Course {
     @Where(clause = "is_active = '1'")
     @OrderBy("orderPosition, title")
     private List<Module> modules;
+
+    @ManyToMany
+    Set<CourseGroup> courseGroups;
 }
