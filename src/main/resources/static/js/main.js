@@ -132,6 +132,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
+    let templateSelectAdd = document.getElementById("textTemplatesAdd");
+    if (null !== templateSelectAdd) {
+        templateSelectAdd.addEventListener("change", (event) => {
+            try {
+                const text = event.currentTarget.options[event.currentTarget.options.selectedIndex].getAttribute('data-text');
+                if (null !== text) {
+                    document.getElementById("comment").value =  document.getElementById("comment").value + "\n\n" + text;
+                }
+                event.currentTarget.options.selectedIndex = 0;
+            } catch (e) {
+                console.log(e);
+            }
+        });
+    }
+
     // warning for unsaved changes in forms
     let unsaved = false;
     const inputs = document.querySelectorAll("form.changeable input:not([type='password']),form.changeable select,form.changeable textarea");
