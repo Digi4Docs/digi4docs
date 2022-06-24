@@ -1,6 +1,7 @@
 package de.digi4docs.repository;
 
 import de.digi4docs.dto.StudentCountResult;
+import de.digi4docs.model.CourseGroup;
 import de.digi4docs.model.Role;
 import de.digi4docs.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT COUNT(u.id) as total, u.classYear as year FROM User u, UserRole ur WHERE ur.user.id = u.id AND ur" +
             ".role = 'STUDENT' AND u.isActive = true AND u.classYear IS NOT NULL GROUP BY u.classYear")
     List<StudentCountResult> findStudentCountGroupedByYear();
+
+    List<User> findAllByCourseGroups(CourseGroup courseGroup);
 }

@@ -114,7 +114,7 @@
         </div>
         <div class="col-md-4 mb-3 ps-md-3">
             <label class="mb-2">Gruppen</label>
-            <div class="text-muted small mb-4">Optional: Kann genutzt werden, um auf Gruppen eingeschränkte Kurse zu zuweisen.</div>
+            <div class="text-muted small mb-4">Optional: Kann genutzt werden, um auf Gruppen eingeschränkte Kurse zuzuweisen.</div>
             <div class="d-block" th:each="group : ${courseGroups}">
                 <input
                         th:classappend="${#fields.hasErrors('courseGroups') ? 'is-invalid' : (#fields.hasAnyErrors() ? 'is-valid' : '')}"

@@ -1,6 +1,7 @@
 package de.digi4docs.service;
 
 import de.digi4docs.dto.StudentCountResult;
+import de.digi4docs.model.CourseGroup;
 import de.digi4docs.model.Role;
 import de.digi4docs.model.User;
 import de.digi4docs.repository.UserRepository;
@@ -93,5 +94,14 @@ public class UserService {
             .forEach(subject -> subject.getUsers()
                                        .remove(user));
         userRepository.delete(user);
+    }
+
+    public void removeCourseGroup(CourseGroup courseGroup) {
+        List<User> courseGroupUsers = userRepository.findAllByCourseGroups(courseGroup);
+        courseGroupUsers.forEach(user -> {
+            user.getCourseGroups()
+                .remove(courseGroup);
+            userRepository.save(user);
+        });
     }
 }

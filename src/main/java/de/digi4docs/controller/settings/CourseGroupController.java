@@ -4,6 +4,8 @@ import de.digi4docs.controller.AbstractController;
 import de.digi4docs.form.CourseGroupForm;
 import de.digi4docs.model.CourseGroup;
 import de.digi4docs.service.CourseGroupService;
+import de.digi4docs.service.CourseService;
+import de.digi4docs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,12 @@ import java.util.Optional;
 public class CourseGroupController extends AbstractController {
     @Autowired
     private CourseGroupService courseGroupService;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private UserService userService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/settings/groups")
@@ -108,7 +116,7 @@ public class CourseGroupController extends AbstractController {
         getBreadcrumbs().put("/settings/group/confirm-delete/" + courseGroup.getId(), "Gruppe löschen");
         showBreadcrumbs(model);
 
-        return "settings/group/delete";
+        return "settings/courseGroup/delete";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -120,6 +128,8 @@ public class CourseGroupController extends AbstractController {
         }
 
         CourseGroup courseGroup = groupOptional.get();
+        courseService.removeCourseGroup(courseGroup);
+        userService.removeCourseGroup(courseGroup);
         courseGroupService.delete(courseGroup);
 
         return "redirect:/settings/groups";

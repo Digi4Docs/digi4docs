@@ -14,13 +14,11 @@ import java.util.*;
 public class CourseService {
     private CourseRepository courseRepository;
     private UserService userService;
-    private TaskService taskService;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserService userService, TaskService taskService) {
+    public CourseService(CourseRepository courseRepository, UserService userService) {
         this.courseRepository = courseRepository;
         this.userService = userService;
-        this.taskService = taskService;
     }
 
     public Optional<Course> findById(int id) {
@@ -63,5 +61,14 @@ public class CourseService {
 
     public void delete(Course course) {
         courseRepository.delete(course);
+    }
+
+    public void removeCourseGroup(CourseGroup courseGroup) {
+        List<Course> courseGroupUsers = courseRepository.findAllByCourseGroups(courseGroup);
+        courseGroupUsers.forEach(user -> {
+            user.getCourseGroups()
+                .remove(courseGroup);
+            courseRepository.save(user);
+        });
     }
 }
