@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             try {
                 const text = event.currentTarget.options[event.currentTarget.options.selectedIndex].getAttribute('data-text');
                 if (null !== text) {
-                    document.getElementById("comment").value =  document.getElementById("comment").value + "\n\n" + text;
+                    document.getElementById("comment").value =  document.getElementById("comment").value + text;
                 }
                 event.currentTarget.options.selectedIndex = 0;
             } catch (e) {
