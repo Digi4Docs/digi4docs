@@ -37,7 +37,7 @@
                 <td colspan="3"> Keine Gruppen gefunden</td>
             </tr>
             <tr th:each="group : ${courseGroups}">
-                <td>[[${group.name}]]</td>
+                <td><a th:href="@{'/settings/group/' + ${group.id}}">[[${group.name}]]</a></td>
                 <td>
                     <span th:if="${group.isActive}" class="badge bg-success">aktiv</span>
                     <span th:unless="${group.isActive}" class="badge bg-danger">gesperrt</span>

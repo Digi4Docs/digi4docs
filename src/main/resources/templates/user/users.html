@@ -44,7 +44,7 @@
                 <td colspan="7"> Keine Benutzer gefunden</td>
             </tr>
             <tr th:each="user : ${users}">
-                <td>[[${user.fullname}]]</td>
+                <td><a th:href="@{'/user/' + ${user.id}}">[[${user.fullname}]]</a></td>
                 <td>[[${user.email}]]</td>
                 <td>
                 <span th:each="userRole: ${user.roles}" th:text="${userRole.role.displayValue}"

@@ -38,7 +38,7 @@
                 <td colspan="4"> Keine Fächer gefunden</td>
             </tr>
             <tr th:each="subject : ${subjects}">
-                <td>[[${subject.name}]]</td>
+                <td><a th:href="@{'/settings/subject/' + ${subject.id}}">[[${subject.name}]]</a></td>
                 <td>
                     <a class="d-block" th:each="teacher : ${subject.users}" th:href="@{'/user/' + ${teacher.id}}">[[${teacher.fullname}]]</a>
                 </td>
