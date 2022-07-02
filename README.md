@@ -1,6 +1,6 @@
 # Digi4Docs
 ## The Project
-The for Digi4Docs is a tool what can help schools to document students' digital skills. This software is a simple prototype that was developed as part of my master's thesis. The software provides the following functionalities:
+Digi4Docs is a tool that can help schools to document students' digital skills. This software is a simple prototype that was developed as part of my master's thesis. The software provides the following functionalities:
 
 ### Security / Login
 The application is password protected. Each user receives a personal access with e-mail and password. Everyone can change his own profile data. Furthermore, a forgotten password function is available.
