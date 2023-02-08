@@ -1,10 +1,13 @@
 package de.digi4docs.controller;
 
+import de.digi4docs.dto.CourseOverviewResult;
 import de.digi4docs.form.CourseForm;
 import de.digi4docs.model.Course;
 import de.digi4docs.model.CourseGroup;
+import de.digi4docs.model.Module;
 import de.digi4docs.service.CourseGroupService;
 import de.digi4docs.service.CourseService;
+import de.digi4docs.util.RecursiveHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,10 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -131,6 +131,53 @@ public class CourseController extends AbstractController {
         courseService.delete(course);
 
         return "redirect:/courses";
+    }
+
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COURSES') or hasAuthority('TEACHER')")
+    @GetMapping("/course/overview/{id}")
+    public String overview(@PathVariable int id, Model model) {
+        Optional<Course> courseOptional = courseService.findById(id);
+        if (courseOptional.isEmpty()) {
+            return "redirect:/course";
+        }
+        Course course = courseOptional.get();
+
+        model.addAttribute("course", course);
+
+        LinkedList<Module> modules = RecursiveHandler.getCourseModules(course);
+
+        modules.stream()
+               .collect(Collectors.toMap(Module::getId, m -> m));
+        model.addAttribute("modules", modules);
+
+        List<CourseOverviewResult> overview = courseService.findCourseOverview(modules.stream()
+                                                                                      .map(Module::getId)
+                                                                                      .collect(
+                                                                                              Collectors.toList()));
+
+        Map<Integer, String> users = overview.stream()
+                                             .collect(Collectors.toMap(CourseOverviewResult::getUserId,
+                                                     cor -> cor.getLastname() + ", " + cor.getFirstname(),
+                                                     (u1, u2) -> u1));
+        model.addAttribute("users", users);
+
+        Map<Integer, Map<Integer, CourseOverviewResult>> overviewMap = new HashMap<>();
+        overview.forEach(row -> {
+            if (!overviewMap.containsKey(row.getUserId())) {
+                overviewMap.put(row.getUserId(), new HashMap<>());
+            }
+            overviewMap.get(row.getUserId())
+                       .put(row.getModuleId(), row);
+        });
+        model.addAttribute("overviewMap", overviewMap);
+
+        getBreadcrumbs(true).put("/courses", "Kurse");
+        getBreadcrumbs().put("/course/" + id, course.getTitle());
+        getBreadcrumbs().put("/course/overview" + id, "Übersicht");
+        showBreadcrumbs(model);
+
+        return "course/overview";
     }
 
     private String showDetailPage(int id, CourseForm courseForm, Model model, boolean initFormData) {

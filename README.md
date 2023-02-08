@@ -128,7 +128,7 @@ The program uses SASS to compile style files. To translate the edited SASS files
 * Add as ROOT.war to webapps folder of Tomcat
 
 ## Credits
-Digi4Docs uses some freely available resources and libraries. Thanks for this go to:
+Digi4Docs uses some freely available resources and libraries. Thanks for this goes to:
 
 ### Images
 * Home page image: @kreatikar - https://pixabay.com/de/illustrations/online-bildung-lernprogramm-3412473/

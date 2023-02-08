@@ -1,5 +1,6 @@
 package de.digi4docs.service;
 
+import de.digi4docs.dto.CourseOverviewResult;
 import de.digi4docs.model.Course;
 import de.digi4docs.model.CourseGroup;
 import de.digi4docs.model.User;
@@ -43,6 +44,10 @@ public class CourseService {
         }
 
         return courseRepository.findAllByIsActiveTrueAndCourseGroupsInOrderByTitle(courseGroups);
+    }
+
+    public List<CourseOverviewResult> findCourseOverview(List<Integer> moduleIds) {
+        return courseRepository.findCourseOverview(moduleIds);
     }
 
     public Course save(Course course) {
