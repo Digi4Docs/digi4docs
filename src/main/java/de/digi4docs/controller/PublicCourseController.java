@@ -343,8 +343,8 @@ public class PublicCourseController extends AbstractController {
                 userService.hasUserRole(currentUser, Role.ADMIN) || userService.hasUserRole(currentUser, Role.COURSES);
 
         Optional<Course> courseOptional = courseService.findById(courseId);
-        if (!courseOptional.isPresent() || (!isTaskEditor && !courseOptional.get()
-                                                                            .getIsActive())) {
+        if (courseOptional.isEmpty() || (!isTaskEditor && !courseOptional.get()
+                                                                         .getIsActive())) {
             return "redirect:/home";
         }
 
@@ -359,6 +359,12 @@ public class PublicCourseController extends AbstractController {
         Module module = task.getModule();
 
         if (!module.getIsActive() && !isTaskEditor) {
+            return "redirect:/home";
+        }
+
+        if (!RecursiveHandler.getCourse(module)
+                             .getId()
+                             .equals(courseId)) {
             return "redirect:/home";
         }
 
@@ -384,7 +390,8 @@ public class PublicCourseController extends AbstractController {
                 }
                 publicTaskForm.setSolution(userTask.getSolution());
             } else {
-                publicTaskForm.setDate(LocalDate.now().toString());
+                publicTaskForm.setDate(LocalDate.now()
+                                                .toString());
             }
         }
 
