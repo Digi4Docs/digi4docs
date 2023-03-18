@@ -28,7 +28,8 @@
         </div>
         <div>
             <a th:href="@{'/public/course/' + ${course.id} + '/module/' + ${module.id}}">
-            <span class="d-none d-md-inline-block text-decoration-underline">Aufgabe</span> [[${task.orderPosition}]] von [[${#lists.size(module.tasks)}]]</a>
+                <span class="d-none d-md-inline-block text-decoration-underline">Aufgabe</span>
+                [[${task.orderPosition}]] von [[${#lists.size(module.tasks)}]]</a>
         </div>
         <div>
             <a th:if="${null != nextTask}" th:href="@{'/public/course/' + ${course.id} + '/task/' + ${nextTask.id}}"
@@ -276,7 +277,8 @@
                                     <figure class="mt-4">
                                         <blockquote class="blockquote">
                                             <p th:unless="${#strings.isEmpty(userTask.comment)}">
-                                                [[${userTask.comment}]]</p>
+                                                [(${#strings.replace(#strings.escapeXml(userTask.comment),'&#10;','&lt;br&gt;')})]
+                                            </p>
                                             <p th:if="${#strings.isEmpty(userTask.comment)}">Es wurde kein Kommentar
                                                 hinterlegt</p>
                                         </blockquote>
